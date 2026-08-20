@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FinanceRouteImport } from './routes/finance'
 import { Route as FreeLearningRouteImport } from './routes/free-learning'
+import { Route as IndicesRouteImport } from './routes/indices'
 import { Route as InsuranceRouteImport } from './routes/insurance'
 import { Route as JobsRouteImport } from './routes/jobs'
 import { Route as ShoppingRouteImport } from './routes/shopping'
@@ -50,6 +51,11 @@ const FreeLearningRoute = FreeLearningRouteImport.update({
   path: '/free-learning',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IndicesRoute = IndicesRouteImport.update({
+  id: '/indices',
+  path: '/indices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InsuranceRoute = InsuranceRouteImport.update({
   id: '/insurance',
   path: '/insurance',
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/finance': typeof FinanceRoute
   '/free-learning': typeof FreeLearningRoute
+  '/indices': typeof IndicesRoute
   '/insurance': typeof InsuranceRoute
   '/jobs': typeof JobsRoute
   '/shopping': typeof ShoppingRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/finance': typeof FinanceRoute
   '/free-learning': typeof FreeLearningRoute
+  '/indices': typeof IndicesRoute
   '/insurance': typeof InsuranceRoute
   '/jobs': typeof JobsRoute
   '/shopping': typeof ShoppingRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/finance': typeof FinanceRoute
   '/free-learning': typeof FreeLearningRoute
+  '/indices': typeof IndicesRoute
   '/insurance': typeof InsuranceRoute
   '/jobs': typeof JobsRoute
   '/shopping': typeof ShoppingRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/finance'
     | '/free-learning'
+    | '/indices'
     | '/insurance'
     | '/jobs'
     | '/shopping'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/finance'
     | '/free-learning'
+    | '/indices'
     | '/insurance'
     | '/jobs'
     | '/shopping'
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/finance'
     | '/free-learning'
+    | '/indices'
     | '/insurance'
     | '/jobs'
     | '/shopping'
@@ -154,6 +166,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   FinanceRoute: typeof FinanceRoute
   FreeLearningRoute: typeof FreeLearningRoute
+  IndicesRoute: typeof IndicesRoute
   InsuranceRoute: typeof InsuranceRoute
   JobsRoute: typeof JobsRoute
   ShoppingRoute: typeof ShoppingRoute
@@ -204,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FreeLearningRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/indices': {
+      id: '/indices'
+      path: '/indices'
+      fullPath: '/indices'
+      preLoaderRoute: typeof IndicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/insurance': {
       id: '/insurance'
       path: '/insurance'
@@ -242,6 +262,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   FinanceRoute: FinanceRoute,
   FreeLearningRoute: FreeLearningRoute,
+  IndicesRoute: IndicesRoute,
   InsuranceRoute: InsuranceRoute,
   JobsRoute: JobsRoute,
   ShoppingRoute: ShoppingRoute,

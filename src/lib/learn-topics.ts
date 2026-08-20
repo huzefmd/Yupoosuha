@@ -1,7 +1,12 @@
 import stockImg from "@/assets/topic-stock.jpg";
+
 import creditCardImg from "@/assets/topic-credit-card.jpg";
 import insuranceImg from "@/assets/topic-insurance.jpg";
 import financeImg from "@/assets/topic-finance.jpg";
+import mutualfunds from "@/assets/mutual_funds.jpg";
+import shopping from "@/assets/shopping.jpg";
+import jobsImg from "@/assets/jobsImg.jpg";
+
 
 export type NextStep = {
   label: string;
@@ -74,6 +79,103 @@ export const learnTopics: LearnTopic[] = [
     ],
     nextSteps: [buyFinance, keepLearning, buyInsurance],
   },
+
+  {
+  slug: "mutual-funds",
+  name: "Mutual Funds",
+  image: mutualfunds,
+  tagline:
+    "Invest in a basket of assets without picking every stock yourself.",
+  intro:
+    "A mutual fund pools money from many investors and invests it across stocks, bonds or other assets. You choose the type of fund based on your goal, risk and time horizon.",
+  sections: [
+    {
+      heading: "1. What are mutual funds?",
+      body:
+        "A mutual fund collects money from investors and uses that money to buy a portfolio of investments.",
+      points: [
+        "One investment can give you exposure to many companies",
+        "Different funds have different levels of risk",
+        "The value of your investment changes with the underlying assets",
+      ],
+    },
+    {
+      heading: "2. SIP and lump-sum investing",
+      body:
+        "A SIP lets you invest a fixed amount regularly, while a lump-sum investment puts money into a fund at one time.",
+      points: [
+        "Invest regularly",
+        "Choose the SIP amount based on your goals",
+        "Increase your SIP when your income increases",
+      ],
+    },
+    {
+      heading: "3. Choosing a fund",
+      body:
+        "Look at the fund category, investment objective, costs, portfolio, risk and long-term performance.",
+      points: [
+        "Understand what the fund invests in",
+        "Compare costs",
+        "Match the fund with your investment horizon",
+      ],
+    },
+  ],
+  nextSteps: [
+    buyFinance,
+    keepLearning,
+    buyInsurance,
+  ],
+  },
+
+
+  {
+  slug: "shopping",
+  name: "Shopping",
+  image: shopping,
+  tagline:
+    "Spend wisely, compare prices and avoid unnecessary debt.",
+  intro:
+    "Smart shopping means understanding prices, discounts, credit and your actual needs before buying.",
+  sections: [
+    {
+      heading: "1. Needs vs wants",
+      body:
+        "Before buying something, ask whether you actually need it. Separating needs from wants helps control unnecessary spending.",
+      points: [
+        "Make a list before shopping",
+        "Avoid impulse purchases",
+        "Set a spending limit before buying",
+      ],
+    },
+    {
+      heading: "2. Compare before you buy",
+      body:
+        "A discount does not automatically mean you are saving money. Compare prices and check the final cost before purchasing.",
+      points: [
+        "Compare the final price",
+        "Check reviews and seller ratings",
+        "Read return and warranty conditions",
+      ],
+    },
+    {
+      heading: "3. Shop using credit responsibly",
+      body:
+        "Credit cards and buy-now-pay-later products can make purchases convenient, but they can also encourage overspending.",
+      points: [
+        "Only borrow what you can repay",
+        "Pay your credit card statement in full",
+        "Do not buy something simply because you can pay later",
+      ],
+    },
+  ],
+  nextSteps: [
+    keepLearning,
+    buyFinance,
+    buyInsurance,
+  ],
+  },
+
+
   {
     slug: "credit-card",
     name: "Credit Cards",
@@ -188,6 +290,52 @@ export const learnTopics: LearnTopic[] = [
     ],
     nextSteps: [buyFinance, buyInsurance, keepLearning],
   },
+
+
+  {
+  slug: "online-jobs",
+  name: "Online Jobs",
+  image: jobsImg,
+  tagline: "Find remote, freelance and online work opportunities.",
+  intro:
+    "Learn how to find legitimate online jobs, remote work and freelance opportunities while avoiding scams and fake job offers.",
+  sections: [
+    {
+      heading: "1. Find the right opportunity",
+      body:
+        "Online work includes remote jobs, freelancing, internships and part-time opportunities. Choose work based on your skills, experience and availability.",
+      points: [
+        "Identify your strongest skills",
+        "Look for roles that match your experience",
+        "Check the company before applying",
+      ],
+    },
+    {
+      heading: "2. Build your profile",
+      body:
+        "A strong resume and professional online profile can make it easier for employers and clients to understand what you can offer.",
+      points: [
+        "Keep your resume simple and up to date",
+        "Show projects and practical skills",
+        "Use a professional profile photo and description",
+      ],
+    },
+    {
+      heading: "3. Avoid job scams",
+      body:
+        "Be careful with online jobs that promise unusually high earnings or ask you to pay money before you can start working.",
+      points: [
+        "Never pay a fee just to apply for a job",
+        "Verify the company and recruiter",
+        "Avoid sharing sensitive financial information with unknown recruiters",
+      ],
+    },
+  ],
+  nextSteps: [
+    keepLearning,
+    buyFinance,
+  ],
+},
 ];
 
 export function getLearnTopic(slug: string) {

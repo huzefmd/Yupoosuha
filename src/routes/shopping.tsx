@@ -5,6 +5,7 @@ import { useContent, type Deal } from "@/lib/content";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
+
 export const Route = createFileRoute("/shopping")({
   head: () => ({
     meta: [

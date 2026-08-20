@@ -109,6 +109,24 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
+.shopping-track {
+  animation: shopping-scroll-right 30s linear infinite;
+}
+
+.shopping-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes shopping-scroll-right {
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
 
 .dark {
   --background: oklch(0.129 0.042 264.695);
