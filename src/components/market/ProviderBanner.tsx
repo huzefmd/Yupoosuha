@@ -10,20 +10,20 @@ import type { ProviderMeta } from "@/lib/market/types";
 export function ProviderBanner({ meta }: { meta: ProviderMeta | undefined }) {
   if (!meta) return null;
 
-  if (meta.isMock) {
-    return (
-      <div
-        role="status"
-        className="mb-3 flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs font-medium text-amber-700 dark:text-amber-300"
-      >
-        <FlaskConical className="h-4 w-4 shrink-0" aria-hidden="true" />
-        <span>
-          Showing synthetic mock data ({meta.displayName}). The deployed app does not connect to any
-          live broker — all values are generated server-side for UI demonstration.
-        </span>
-      </div>
-    );
-  }
+  // if (meta.isMock) {
+  //   return (
+  //     <div
+  //       role="status"
+  //       className="mb-3 flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs font-medium text-amber-700 dark:text-amber-300"
+  //     >
+  //       <FlaskConical className="h-4 w-4 shrink-0" aria-hidden="true" />
+  //       <span>
+  //         {/* Showing synthetic mock data ({meta.displayName}). The deployed app does not connect to any
+  //         live broker — all values are generated server-side for UI demonstration. */}
+  //       </span>
+  //     </div>
+  //   );
+  // }
 
   if (meta.id === "noop") {
     return (
