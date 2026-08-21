@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 
-import { MarketDataService } from "./service";
+import { MarketDataService, type MarketProviderDiagnostic } from "./service";
 import { MarketConfigError } from "./provider";
 import type {
   FiiDiiBundle,
@@ -102,6 +102,19 @@ export const getProviderMeta = createServerFn({ method: "GET" }).handler(
       displayName: service.providerName,
       isMock: service.providerId === "mock",
     };
+  },
+);
+
+/**
+ * Server-only diagnostic snapshot — used to confirm at runtime that the
+ * deployed Worker can see the configured provider, without ever revealing
+ * the access token itself. Safe to expose to authenticated operators; do
+ * NOT surface this verbatim to anonymous users in a future UI change.
+ */
+export const getProviderDiagnostic = createServerFn({ method: "GET" }).handler(
+  async (): Promise<MarketProviderDiagnostic> => {
+    const service = new MarketDataService();
+    return service.providerDiagnostic;
   },
 );
 

@@ -62,7 +62,7 @@ export function IndicesSection({ variant = "compact" }: { variant?: "compact" | 
             <MarketSkeleton />
           ) : notConfigured ? (
             <MarketError
-              message="No market-data provider is configured. Set MARKET_PROVIDER=mock for sample data, or MARKET_PROVIDER=upstox plus MARKET_ACCESS_TOKEN for live data."
+              message="Market data is currently unavailable. This app shows synthetic mock data only — please refresh to retry."
               onRetry={() => {
                 bundle.refetch();
                 status.refetch();

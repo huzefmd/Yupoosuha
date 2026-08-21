@@ -1,5 +1,6 @@
 import "@tanstack/react-start/server-only";
 
+import { getServerEnv } from "./env";
 import type {
   Candle,
   FiiDiiBundle,
@@ -62,15 +63,7 @@ type FinnhubCandles = {
   s: "ok" | "no_data";
 };
 
-type FinnhubResolution =
-  | "1"
-  | "5"
-  | "15"
-  | "30"
-  | "60"
-  | "D"
-  | "W"
-  | "M";
+type FinnhubResolution = "1" | "5" | "15" | "30" | "60" | "D" | "W" | "M";
 
 /** Look-back window + resolution per `HistoricalRange`. */
 function rangeFor(range: HistoricalRange): {
@@ -94,7 +87,7 @@ function rangeFor(range: HistoricalRange): {
 }
 
 function getApiKey(): string | undefined {
-  const key = process.env["FINNHUB_API_KEY"];
+  const key = getServerEnv("FINNHUB_API_KEY");
   return key && key.length > 0 ? key : undefined;
 }
 
@@ -126,10 +119,7 @@ async function throttle(): Promise<void> {
   lastRequestAt = Date.now();
 }
 
-async function finnhubFetch<T>(
-  path: string,
-  params: Record<string, string | number>,
-): Promise<T> {
+async function finnhubFetch<T>(path: string, params: Record<string, string | number>): Promise<T> {
   const key = getApiKey();
   if (!key) {
     throw new MarketConfigError("FINNHUB_API_KEY is not set");
@@ -252,7 +242,7 @@ export class FinnhubMarketDataProvider implements MarketDataProvider {
   async getFiiDii(): Promise<FiiDiiBundle> {
     // Finnhub doesn't expose FII/DII. Reuse the JSON URL the Upstox
     // provider uses so a single source can serve both providers.
-    const url = process.env["MARKET_FII_DII_URL"];
+    const url = getServerEnv("MARKET_FII_DII_URL");
     if (!url) {
       return { fii: [], dii: [], fiiLatest: 0, diiLatest: 0 };
     }

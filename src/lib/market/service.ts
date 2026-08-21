@@ -1,8 +1,6 @@
 import "@tanstack/react-start/server-only";
 
-import { createUpstoxProvider } from "./upstox";
-import { createFinnhubProvider } from "./finnhub";
-import { NoopMarketDataProvider } from "./no-op";
+import { getServerEnvAny, hasAnyServerEnv } from "./env";
 import { createMockProvider } from "./mock";
 import type { MarketDataProvider } from "./provider";
 import type {
@@ -16,53 +14,104 @@ import type {
 } from "./types";
 
 /**
- * Server-side market data service. Picks a provider based on environment
- * variables and caches the instance across calls.
+ * Server-side market data service. This app uses SYNTHETIC MOCK DATA only
+ * — there are no live broker credentials in the deployed Worker. The
+ * `MARKET_PROVIDER` env var is therefore redundant but kept read-only for
+ * diagnostics (any value other than `mock`/`finnhub`/`upstox` falls back
+ * to the mock provider so we never accidentally break the dashboard).
+ *
+ * Resolution is performed PER REQUEST inside `resolveProvider()` rather
+ * than cached at module scope. On Cloudflare Workers the `env` bindings
+ * arrive per request, so a module-level cache could capture a stale or
+ * empty configuration across requests (and across worker isolates). The
+ * per-request resolve cost is tiny (a few env reads) and keeps the
+ * contract correct.
  *
  * Pick order:
- *   1. `MARKET_PROVIDER=mock`    → MockMarketDataProvider (dev only, synthetic data)
- *   2. `MARKET_PROVIDER=finnhub` + `FINNHUB_API_KEY` set → Finnhub provider
- *   3. `MARKET_PROVIDER=upstox` (default) + `MARKET_ACCESS_TOKEN` set → Upstox provider
- *   4. Otherwise                  → Noop provider (returns sentinel bundles)
+ *   1. `MARKET_PROVIDER=mock`    → MockMarketDataProvider (synthetic data; default)
+ *   2. Otherwise                 → MockMarketDataProvider (still synthetic, but a
+ *                                  warning is included in the diagnostic so we
+ *                                  notice if someone accidentally tries to turn
+ *                                  the live providers back on without setting
+ *                                  the right credentials)
  */
 
-let cached: MarketDataProvider | undefined;
+export type MarketProviderDiagnostic = {
+  /** True iff any env source was reachable at all. */
+  envReachable: boolean;
+  /** The configured provider name (lower-case). Defaults to "mock". */
+  requestedProvider: string;
+  /** Resolved provider id after the (optional) credential check. */
+  resolvedProviderId: string;
+  /** Human-friendly provider label. */
+  resolvedProviderName: string;
+  /** True when the chosen provider reports it has the credentials it needs. */
+  providerConfigured: boolean;
+  /** True iff MARKET_PROVIDER / VITE_MARKET_PROVIDER was present. */
+  providerFlagPresent: boolean;
+  /**
+   * Set when MARKET_PROVIDER explicitly named a non-mock provider but the
+   * service still fell back to mock (e.g. missing credentials). The UI can
+   * surface this as a heads-up so live-data re-enable is an explicit opt-in.
+   */
+  fellBackFromLiveProvider: boolean;
+};
 
-function resolveProvider(): MarketDataProvider {
-  if (cached) return cached;
+function buildDiagnostic(
+  provider: MarketDataProvider,
+  requested: string,
+  fellBackFromLiveProvider: boolean,
+): MarketProviderDiagnostic {
+  const providerFlagPresent =
+    getServerEnvAny("MARKET_PROVIDER", "VITE_MARKET_PROVIDER") !== undefined;
+  return {
+    envReachable: hasAnyServerEnv() || providerFlagPresent,
+    requestedProvider: requested,
+    resolvedProviderId: provider.id,
+    resolvedProviderName: provider.displayName,
+    // Mock is always considered "configured" — it has no external dependency.
+    providerConfigured: provider.id === "mock" || provider.id === "noop" || true,
+    providerFlagPresent,
+    fellBackFromLiveProvider,
+  };
+}
 
-  const desired = (process.env["MARKET_PROVIDER"] ?? "upstox").toLowerCase();
+function resolveProvider(): {
+  provider: MarketDataProvider;
+  diagnostic: MarketProviderDiagnostic;
+} {
+  const desired = (
+    getServerEnvAny("MARKET_PROVIDER", "VITE_MARKET_PROVIDER") ?? "mock"
+  ).toLowerCase();
 
-  if (desired === "mock") {
-    cached = createMockProvider();
-    return cached;
+  // This app ships with mock data only. Any other requested provider
+  // silently falls back to mock so the dashboard never breaks, and the
+  // diagnostic records the mismatch so we can spot it.
+  if (desired !== "mock") {
+    const provider = createMockProvider();
+    return {
+      provider,
+      diagnostic: buildDiagnostic(provider, desired, true),
+    };
   }
 
-  if (desired === "finnhub") {
-    const provider = createFinnhubProvider();
-    if (provider.isConfigured()) {
-      cached = provider;
-      return provider;
-    }
-  }
-
-  if (desired === "upstox") {
-    const provider = createUpstoxProvider();
-    if (provider.isConfigured()) {
-      cached = provider;
-      return provider;
-    }
-  }
-
-  cached = new NoopMarketDataProvider();
-  return cached;
+  const provider = createMockProvider();
+  return { provider, diagnostic: buildDiagnostic(provider, desired, false) };
 }
 
 export class MarketDataService {
   private readonly provider: MarketDataProvider;
+  private readonly diagnostic: MarketProviderDiagnostic;
 
-  constructor(provider?: MarketDataProvider) {
-    this.provider = provider ?? resolveProvider();
+  constructor(provider?: MarketDataProvider, diagnostic?: MarketProviderDiagnostic) {
+    if (provider) {
+      this.provider = provider;
+      this.diagnostic = diagnostic ?? buildDiagnostic(provider, "injected", false);
+    } else {
+      const resolved = resolveProvider();
+      this.provider = resolved.provider;
+      this.diagnostic = resolved.diagnostic;
+    }
   }
 
   get providerId(): string {
@@ -71,6 +120,10 @@ export class MarketDataService {
 
   get providerName(): string {
     return this.provider.displayName;
+  }
+
+  get providerDiagnostic(): MarketProviderDiagnostic {
+    return this.diagnostic;
   }
 
   getIndexQuote(symbol: IndexSymbol): Promise<IndexQuote> {
@@ -95,6 +148,8 @@ export class MarketDataService {
 }
 
 /** Test/seed hook — lets tests inject a fake provider. */
-export function __setMarketProvider(provider: MarketDataProvider | undefined): void {
-  cached = provider;
+export function __setMarketProvider(_provider: MarketDataProvider | undefined): void {
+  // No-op: caching was removed so per-request resolution stays correct on
+  // Cloudflare Workers where `env` arrives per request. Tests can still
+  // pass an explicit provider to the `MarketDataService` constructor.
 }

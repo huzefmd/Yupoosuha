@@ -18,10 +18,8 @@ export function ProviderBanner({ meta }: { meta: ProviderMeta | undefined }) {
       >
         <FlaskConical className="h-4 w-4 shrink-0" aria-hidden="true" />
         <span>
-          Showing synthetic mock data ({meta.displayName}). Set{" "}
-          <code className="rounded bg-amber-500/20 px-1 py-0.5">MARKET_PROVIDER=upstox</code> and
-          provide <code className="rounded bg-amber-500/20 px-1 py-0.5">MARKET_ACCESS_TOKEN</code>{" "}
-          to display live market data.
+          Showing synthetic mock data ({meta.displayName}). The deployed app does not connect to any
+          live broker — all values are generated server-side for UI demonstration.
         </span>
       </div>
     );
@@ -35,14 +33,8 @@ export function ProviderBanner({ meta }: { meta: ProviderMeta | undefined }) {
       >
         <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden="true" />
         <span>
-          No market-data provider is configured. To populate this dashboard with sample data, run{" "}
-          <code className="rounded bg-blue-500/20 px-1 py-0.5">
-            MARKET_PROVIDER=mock npm run dev
-          </code>
-          . For live data, set{" "}
-          <code className="rounded bg-blue-500/20 px-1 py-0.5">MARKET_PROVIDER=upstox</code> and{" "}
-          <code className="rounded bg-blue-500/20 px-1 py-0.5">MARKET_ACCESS_TOKEN</code> in your
-          environment.
+          Market data is currently unavailable. The deployed app shows synthetic mock data only —
+          refresh to retry.
         </span>
       </div>
     );

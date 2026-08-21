@@ -2,6 +2,7 @@ import "@tanstack/react-start/server-only";
 // (TanStack Start bundles `createServerFn` as the only thing the client sees;
 // this module is only reached on the server via the RPC bridge.)
 
+import { getServerEnv, getServerEnvAny } from "./env";
 import type {
   Candle,
   FiiDiiBundle,
@@ -86,7 +87,7 @@ function rangeFor(range: HistoricalRange): UpstoxRange {
 }
 
 function getAccessToken(): string | undefined {
-  const token = process.env["MARKET_ACCESS_TOKEN"] ?? process.env["UPSTOX_ACCESS_TOKEN"];
+  const token = getServerEnvAny("MARKET_ACCESS_TOKEN", "UPSTOX_ACCESS_TOKEN");
   return token && token.length > 0 ? token : undefined;
 }
 
@@ -201,7 +202,7 @@ export class UpstoxMarketDataProvider implements MarketDataProvider {
   }
 
   async getFiiDii(): Promise<FiiDiiBundle> {
-    const url = process.env["MARKET_FII_DII_URL"];
+    const url = getServerEnv("MARKET_FII_DII_URL");
     if (!url) {
       return { fii: [], dii: [], fiiLatest: 0, diiLatest: 0 };
     }
