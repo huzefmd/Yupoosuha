@@ -15,11 +15,7 @@ import {
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 
-import hero from "@/assets/hero.jpg";
-
 import { learnTopics } from "@/lib/learn-topics";
-import { IndicesSection } from "@/components/market/IndicesSection";
-
 import angelOneLogo from "@/assets/angel-one.png";
 import jmFinancialLogo from "@/assets/jm-financial.jpg";
 import hjWealthLogo from "@/assets/hj-wealth.png";
@@ -29,6 +25,7 @@ import insuranceLogo from "@/assets/insurance.jpg";
 
 import { useContent, type Deal, type Video, type Insurance } from "@/lib/content";
 import { youtubeEmbed } from "@/lib/content";
+import { MarketIndices } from "@/components/MarketIndices";
 export const Route = createFileRoute("/")({
   head: () => ({
 
@@ -271,78 +268,8 @@ function Home() {
     useContent<Insurance>("insurance_types");
   return (
     <SiteLayout>
-      <IndicesSection />
-      <section style={{ background: "var(--gradient-hero)" }} className="py-0">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 py-0 sm:px-6">
-          {/* <div>
-            <span className="inline-flex items-center rounded-full bg-brand-yellow/40 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-accent-foreground">
-              Financial literacy, made simple
-            </span>
-            <h1 className="mt-5 text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-              Learn money the way it should have been taught.
-            </h1>
-            <p className="mt-5 max-w-xl text-lg text-muted-foreground">
-              Yupoosuha is a free learning platform for the stock market, insurance, personal
-              finance and smart shopping — with freelance and job opportunities coming soon.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg">
-                <Link to="/free-learning">
-                  Start learning <ArrowRight className="ml-1.5 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link to="/auth">Sign in with email</Link>
-              </Button>
-            </div>
-          </div> */}
-          {/* <img
-            src={hero}
-            alt="Illustration of charts, a shield and a shopping bag representing finance learning"
-            className="w-full rounded-2xl"
-            loading="eager"
-            width={1280}
-            height={960}
-          /> */}
-        </div>
-      </section>
+      <MarketIndices/>
 
-      {/* <section className="mx-auto max-w-7xl px-4 py-2 sm:px-6">
-        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Start learning</h2>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Pick a topic, read the short lesson, then take the next step — buy cover, open an account
-          or watch more free videos.
-        </p>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {learnTopics.map((t) => (
-            <Link
-              key={t.slug}
-              to="/learn/$topic"
-              params={{ topic: t.slug }}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-shadow hover:shadow-lift"
-            >
-              <div className="aspect-[4/3] overflow-hidden bg-secondary">
-                <img
-                  src={t.image}
-                  alt={`${t.name} lesson`}
-                  loading="lazy"
-                  width={1024}
-                  height={768}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-5">
-                <h3 className="font-semibold">{t.name}</h3>
-                <p className="mt-1.5 text-sm text-muted-foreground">{t.tagline}</p>
-                <span className="mt-4 inline-flex items-center text-sm font-medium text-primary">
-                  Learn now
-                  <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section> */}
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:py-10">
 
         {/* Section Header */}
