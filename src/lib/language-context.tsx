@@ -523,7 +523,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   };
 
   const t = (key: string, params?: Record<string, string>) => {
-    const translation = translations[language]?.[key] || translations["en"]?.[key] || key;
+    let translation = translations[language]?.[key] || translations["en"]?.[key] || key;
     if (params) {
       Object.entries(params).forEach(([k, v]) => {
         translation = translation.replace(`{${k}}`, v);
