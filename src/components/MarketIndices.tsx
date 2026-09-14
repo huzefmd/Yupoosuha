@@ -5,6 +5,19 @@ import {
     getMarketIndices,
     type IndexQuote,
 } from "@/lib/indices.functions";
+import {
+    Area,
+    AreaChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from "recharts";
+import {
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+} from "@/components/ui/chart";
 
 function fmt(n: number) {
     return n.toLocaleString("en-IN", {
@@ -14,144 +27,133 @@ function fmt(n: number) {
 }
 
 /* =========================================================
-   DEMO CHART DATA
-   Replace with historical API data when available.
+   MOCK SERIES DATA
 ========================================================= */
 
-const chartPoints = [
-    24420, 24465, 24510, 24490, 24535, 24500, 24470,
-    24495, 24540, 24515, 24570, 24610, 24650, 24720,
-    24700, 24780, 24840, 24920, 25010, 25100, 25070,
-    25150, 25210, 25280, 25310, 25250, 25170, 25090,
-    24980, 24870, 24830, 24860, 24790, 24810, 24860,
-    24820, 24760, 24690, 24640, 24580, 24520, 24470,
-    24510, 24570, 24620, 24590, 24640, 24580, 24510,
-    24560, 24490, 24450, 24420, 24480, 24440,
-];
+const generateMockPoints = (base: number, variance: number, count: number) => {
+    const points = [];
+    let currentVal = base;
+
+    // Create a slight trend for the pattern
+    const trend = (Math.random() - 0.4) * (variance * 0.1);
+
+    for (let i = 0; i < count; i++) {
+        currentVal += trend + (Math.random() - 0.5) * variance;
+        points.push({
+            t: Date.now() - (count - i) * 3600000,
+            v: currentVal,
+        });
+    }
+    return points;
+};
+
+const MOCK_SERIES_DATA: Record<string, Record<string, any>> = {
+    "NIFTY": {
+        "1D": { points: generateMockPoints(24500, 100, 50) },
+        "1W": { points: generateMockPoints(24300, 500, 40) },
+        "1M": { points: generateMockPoints(24000, 1000, 30) },
+        "3M": { points: generateMockPoints(23500, 2000, 60) },
+        "1Y": { points: generateMockPoints(22000, 5000, 100) },
+    },
+    "SENSEX": {
+        "1D": { points: generateMockPoints(74000, 200, 50) },
+        "1W": { points: generateMockPoints(73500, 800, 40) },
+        "1M": { points: generateMockPoints(72000, 1500, 30) },
+        "3M": { points: generateMockPoints(71000, 3000, 60) },
+        "1Y": { points: generateMockPoints(65000, 8000, 100) },
+    },
+    "BANK NIFTY": {
+        "1D": { points: generateMockPoints(52000, 300, 50) },
+        "1W": { points: generateMockPoints(51500, 1000, 40) },
+        "1M": { points: generateMockPoints(50000, 2000, 30) },
+        "3M": { points: generateMockPoints(48000, 4000, 60) },
+        "1Y": { points: generateMockPoints(44000, 8000, 100) },
+    },
+};
 
 /* =========================================================
-   MINI MARKET CHART
+   INTERACTIVE MARKET CHART
 ========================================================= */
 
-function MiniChart({ quote }: { quote: IndexQuote }) {
-    const width = 620;
-    const height = 150;
-    const paddingX = 5;
-    const paddingY = 10;
+function InteractiveChart({
+    quote,
+    timeRange,
+    seriesData
+}: {
+    quote: IndexQuote;
+    timeRange: string;
+    seriesData: any
+}) {
+    const chartConfig = {
+        value: {
+            label: "Index Value",
+            color: quote.change >= 0 ? "#10b981" : "#ef4444",
+        },
+    };
 
-    const min = Math.min(...chartPoints);
-    const max = Math.max(...chartPoints);
+    // Format data for Recharts
+    const data = seriesData?.points?.map((p: any) => ({
+        time: new Date(p.t).toLocaleTimeString("en-IN", {
+            hour: "2-digit",
+            minute: "2-digit",
+        }),
+        value: p.v,
+    })) ?? [];
 
-    const points = chartPoints
-        .map((value, index) => {
-            const x =
-                paddingX +
-                (index / (chartPoints.length - 1)) *
-                (width - paddingX * 2);
-
-            const y =
-                height -
-                paddingY -
-                ((value - min) / (max - min)) *
-                (height - paddingY * 2);
-
-            return `${x},${y}`;
-        })
-        .join(" ");
-
-    const areaPoints = `
-    ${paddingX},${height}
-    ${points}
-    ${width - paddingX},${height}
-  `;
-
-    const positive = quote.change >= 0;
+    if (!data.length) {
+        return (
+            <div className="flex h-full items-center justify-center text-sm text-slate-400">
+                Loading chart data...
+            </div>
+        );
+    }
 
     return (
         <div className="relative h-[180px] w-full">
-            {/* Grid */}
-            <div className="pointer-events-none absolute inset-0 flex flex-col justify-between py-2">
-                {[0, 1, 2, 3, 4].map((line) => (
-                    <div
-                        key={line}
-                        className="border-t border-dashed border-slate-200"
+            <ChartContainer config={chartConfig} className="h-full w-full">
+                <AreaChart
+                    data={data}
+                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                >
+                    <defs>
+                        <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop
+                                offset="0%"
+                                stopColor={chartConfig.value.color}
+                                stopOpacity={0.2}
+                            />
+                            <stop
+                                offset="100%"
+                                stopColor={chartConfig.value.color}
+                                stopOpacity={0}
+                            />
+                        </linearGradient>
+                    </defs>
+                    <XAxis
+                        dataKey="time"
+                        hide
                     />
-                ))}
-            </div>
-
-            <svg
-                viewBox={`0 0 ${width} ${height}`}
-                preserveAspectRatio="none"
-                className="relative h-full w-full overflow-visible"
-            >
-                <defs>
-                    <linearGradient
-                        id="marketChartGradient"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                    >
-                        <stop
-                            offset="0%"
-                            stopColor={positive ? "#ef4444" : "#ef4444"}
-                            stopOpacity="0.12"
-                        />
-
-                        <stop
-                            offset="100%"
-                            stopColor={positive ? "#ef4444" : "#ef4444"}
-                            stopOpacity="0"
-                        />
-                    </linearGradient>
-                </defs>
-
-                {/* Chart area */}
-                <polygon
-                    points={areaPoints}
-                    fill="url(#marketChartGradient)"
-                />
-
-                {/* Chart line */}
-                <polyline
-                    points={points}
-                    fill="none"
-                    stroke="#ef4444"
-                    strokeWidth="2.2"
-                    vectorEffect="non-scaling-stroke"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-            </svg>
-
-            {/* Y-axis */}
-            <div className="pointer-events-none absolute right-full top-0 mr-2 hidden h-full flex-col justify-between py-1 text-[9px] text-slate-400 sm:flex">
-                <span>{fmt(max)}</span>
-
-                <span>
-                    {fmt(max - (max - min) * 0.25)}
-                </span>
-
-                <span>
-                    {fmt(max - (max - min) * 0.5)}
-                </span>
-
-                <span>
-                    {fmt(max - (max - min) * 0.75)}
-                </span>
-
-                <span>{fmt(min)}</span>
-            </div>
-
-            {/* X-axis */}
-            <div className="absolute left-0 right-0 top-full flex justify-between pt-2 text-[9px] text-slate-400">
-                <span>09:07 am</span>
-                <span>12:00 pm</span>
-                <span>04:04 pm</span>
-                <span>07:00 pm</span>
-                <span>11:01 pm</span>
-                <span>09:02 am</span>
-            </div>
+                    <YAxis
+                        domain={["auto", "auto"]}
+                        tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
+                        axisLine={false}
+                        tickLine={false}
+                        width={40}
+                    />
+                    <Tooltip
+                        content={<ChartTooltipContent />}
+                    />
+                    <Area
+                        type="linear"
+                        dataKey="value"
+                        stroke={chartConfig.value.color}
+                        fill="url(#chartGradient)"
+                        strokeWidth={1.5}
+                        dot={false}
+                        activeDot={{ r: 3, strokeWidth: 0 }}
+                    />
+                </AreaChart>
+            </ChartContainer>
         </div>
     );
 }
@@ -207,7 +209,7 @@ function FlowBars() {
                             }}
                         />
 
-                        <span className="mt-2 text-[10px] text-slate-500">
+                        <span className="mt-2 text-[10px] text-muted-foreground">
                             {item.day}
                         </span>
                     </div>
@@ -235,14 +237,14 @@ function IndexTab({
             type="button"
             onClick={onClick}
             className={`relative pb-3 text-base font-medium transition ${active
-                    ? "text-slate-900"
-                    : "text-slate-500 hover:text-slate-800"
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
         >
             {label}
 
             {active && (
-                <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full bg-slate-900" />
+                <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full bg-foreground" />
             )}
         </button>
     );
@@ -254,6 +256,7 @@ function IndexTab({
 
 export function MarketIndices() {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [timeRange, setTimeRange] = useState("1D");
 
     const {
         data,
@@ -263,35 +266,22 @@ export function MarketIndices() {
         refetch,
     } = useQuery({
         queryKey: ["market-indices"],
-
         queryFn: () => getMarketIndices(),
-
         refetchInterval: 30_000,
-
         refetchOnWindowFocus: true,
-
         staleTime: 0,
     });
 
     const quotes = data?.quotes ?? [];
 
-    /* -------------------------------------------------------
-       Find NIFTY
-    ------------------------------------------------------- */
-
     const nifty =
         quotes.find((q) => {
             const name = q.name.toLowerCase();
-
             return (
                 name.includes("nifty") &&
                 !name.includes("bank")
             );
         }) ?? quotes[0];
-
-    /* -------------------------------------------------------
-       Find SENSEX
-    ------------------------------------------------------- */
 
     const sensex =
         quotes.find((q) =>
@@ -300,23 +290,14 @@ export function MarketIndices() {
                 .includes("sensex")
         ) ?? quotes[1];
 
-    /* -------------------------------------------------------
-       Find BANK NIFTY
-    ------------------------------------------------------- */
-
     const bankNifty =
         quotes.find((q) => {
             const name = q.name.toLowerCase();
-
             return (
                 name.includes("bank nifty") ||
                 name.includes("banknifty")
             );
         }) ?? quotes[2];
-
-    /* -------------------------------------------------------
-       Selected quote
-    ------------------------------------------------------- */
 
     const selectedQuote =
         activeIndex === 0
@@ -325,45 +306,37 @@ export function MarketIndices() {
                 ? sensex
                 : bankNifty;
 
-    /* -------------------------------------------------------
-       Market status
-  
-       Replace this with your real market status API
-       when available.
-    ------------------------------------------------------- */
+    const currentLabel = activeIndex === 0 ? "NIFTY" : activeIndex === 1 ? "SENSEX" : "BANK NIFTY";
+
+    const seriesData = MOCK_SERIES_DATA[currentLabel]?.[timeRange];
 
     const marketClosed = true;
 
     return (
         <section className="mx-auto max-w-7xl px-4 pt-10 pb-10 sm:px-6">
             {/* ===================================================
-          HEADER
-      =================================================== */}
+              HEADER
+          =================================================== */}
 
             <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
                     Indices
                 </h2>
 
-                <button
-                    type="button"
-                    className="text-sm font-medium text-red-500 transition hover:text-red-600"
-                >
-                    View All
-                </button>
+               
             </div>
 
             {/* ===================================================
-          MAIN CARD
-      =================================================== */}
+              MAIN CARD
+          =================================================== */}
 
-            <div className="overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-[0_4px_20px_rgba(15,23,42,0.06)]">
+            <div className="overflow-hidden rounded-[24px] border border-border bg-card shadow-card">
                 {/* =================================================
-            INDEX TABS
-        ================================================= */}
+                    INDEX TABS
+                ================================================= */}
 
                 <div className="px-6 pt-5 sm:px-7">
-                    <div className="flex gap-7 border-b border-slate-200">
+                    <div className="flex gap-7 border-b border-border">
                         <IndexTab
                             label="NIFTY"
                             active={activeIndex === 0}
@@ -385,12 +358,12 @@ export function MarketIndices() {
                 </div>
 
                 {/* =================================================
-            LOADING
-        ================================================= */}
+                    LOADING
+                ================================================= */}
 
                 {isLoading ? (
                     <div className="grid min-h-[450px] place-items-center">
-                        <div className="flex items-center gap-2 text-sm text-slate-500">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <RefreshCw className="h-4 w-4 animate-spin" />
                             Loading market data...
                         </div>
@@ -398,17 +371,17 @@ export function MarketIndices() {
                 ) : selectedQuote ? (
                     <>
                         {/* =============================================
-                QUOTE + CHART
-            ============================================= */}
+                            QUOTE + CHART
+                        ============================================= */}
 
                         <div className="grid gap-8 px-6 py-7 lg:grid-cols-[0.9fr_1.6fr] lg:px-7">
                             {/* ===========================================
-                  LEFT QUOTE
-              =========================================== */}
+                                  LEFT QUOTE
+                            =========================================== */}
 
                             <div className="flex flex-col justify-center">
                                 <div className="flex items-baseline gap-2">
-                                    <span className="text-[34px] font-medium tracking-tight text-slate-900 sm:text-[38px]">
+                                    <span className="text-[34px] font-medium tracking-tight text-foreground sm:text-[38px]">
                                         {fmt(selectedQuote.last)}
                                     </span>
 
@@ -441,7 +414,7 @@ export function MarketIndices() {
                                     %
                                 </div>
 
-                                <div className="mt-4 space-y-1 text-[11px] text-slate-500">
+                                <div className="mt-4 space-y-1 text-[11px] text-muted-foreground">
                                     <p>
                                         Prev close:{" "}
                                         {fmt(
@@ -474,31 +447,28 @@ export function MarketIndices() {
                             </div>
 
                             {/* ===========================================
-                  CHART
-              =========================================== */}
+                                  CHART
+                            =========================================== */}
 
                             <div className="relative pt-1 pl-7 sm:pl-10">
-                                <MiniChart
+                                <InteractiveChart
                                     quote={selectedQuote}
+                                    timeRange={timeRange}
+                                    seriesData={seriesData}
                                 />
 
                                 {/* Time range buttons */}
 
                                 <div className="mt-8 flex justify-end">
-                                    <div className="flex items-center rounded-full border border-slate-200 bg-white p-0.5 shadow-sm">
-                                        {[
-                                            "1D",
-                                            "1W",
-                                            "1M",
-                                            "3M",
-                                            "1Y",
-                                        ].map((range, index) => (
+                                    <div className="flex items-center rounded-full border border-border bg-card p-0.5 shadow-sm">
+                                        {["1D", "1W", "1M", "3M", "1Y"].map((range) => (
                                             <button
                                                 key={range}
                                                 type="button"
-                                                className={`rounded-full px-3 py-1.5 text-[11px] font-medium transition ${index === 0
-                                                        ? "border border-slate-200 bg-white text-slate-900 shadow-sm"
-                                                        : "text-slate-500 hover:text-slate-900"
+                                                onClick={() => setTimeRange(range)}
+                                                className={`rounded-full px-3 py-1.5 text-[11px] font-medium transition ${timeRange === range
+                                                        ? "border border-border bg-card text-foreground shadow-sm"
+                                                        : "text-muted-foreground hover:text-foreground"
                                                     }`}
                                             >
                                                 {range}
@@ -510,17 +480,17 @@ export function MarketIndices() {
                         </div>
 
                         {/* =================================================
-                DIVIDER
-            ================================================= */}
+                            DIVIDER
+                        ================================================= */}
 
-                        <div className="mx-6 border-t border-dashed border-slate-200 sm:mx-7" />
+                        <div className="mx-6 border-t border-dashed border-border sm:mx-7" />
 
                         {/* =================================================
-                MARKET STATUS
-            ================================================= */}
+                            MARKET STATUS
+                        ================================================= */}
 
                         <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-5 sm:px-7">
-                            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1.5 text-[11px] text-slate-500">
+                            <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-[11px] text-muted-foreground">
                                 <Clock3 className="h-3.5 w-3.5" />
 
                                 <span>
@@ -530,7 +500,7 @@ export function MarketIndices() {
                                 </span>
                             </div>
 
-                            <div className="text-right text-[10px] text-slate-500">
+                            <div className="text-right text-[10px] text-muted-foreground">
                                 {marketClosed
                                     ? `Market closed. Last updated: ${dataUpdatedAt
                                         ? new Date(
@@ -552,28 +522,28 @@ export function MarketIndices() {
                         </div>
 
                         {/* =================================================
-                FII / DII
-            ================================================= */}
+                            FII / DII
+                        ================================================= */}
 
                         <div className="px-6 pb-7 sm:px-7">
                             {/* FII / DII tabs */}
 
-                            <div className="flex gap-7 border-b border-slate-200">
+                            <div className="flex gap-7 border-b border-border">
                                 <button
                                     type="button"
-                                    className="relative pb-3 text-xs font-semibold text-slate-900"
+                                    className="relative pb-3 text-xs font-semibold text-foreground"
                                 >
                                     FII Cash
 
-                                    <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-slate-900" />
+                                    <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-foreground" />
                                 </button>
 
-                                <button
+                                {/* <button
                                     type="button"
-                                    className="pb-3 text-xs font-medium text-slate-500 transition hover:text-slate-900"
+                                    className="pb-3 text-xs font-medium text-muted-foreground transition hover:text-foreground"
                                 >
                                     DII Cash
-                                </button>
+                                </button> */}
                             </div>
 
                             {/* FII value */}
@@ -583,7 +553,7 @@ export function MarketIndices() {
                                     -341.25 Cr.
                                 </div>
 
-                                <div className="mt-1 text-[11px] text-slate-500">
+                                <div className="mt-1 text-[11px] text-muted-foreground">
                                     05 Sept 2026
                                 </div>
 
@@ -596,22 +566,22 @@ export function MarketIndices() {
                        NO DATA
                     ================================================= */
 
-                    <div className="px-6 py-12 text-center text-sm text-slate-500">
+                    <div className="px-6 py-12 text-center text-sm text-muted-foreground">
                         Live prices are unavailable right now.
                         Please try again shortly.
                     </div>
                 )}
 
                 {/* =================================================
-            REFRESH
-        ================================================= */}
+                    REFRESH
+                ================================================= */}
 
-                <div className="border-t border-slate-100 px-6 py-3 text-right sm:px-7">
+                <div className="border-t border-border px-6 py-3 text-right sm:px-7">
                     <button
                         type="button"
                         onClick={() => void refetch()}
                         disabled={isFetching}
-                        className="inline-flex items-center gap-2 text-xs font-medium text-slate-500 transition hover:text-slate-900 disabled:opacity-50"
+                        className="inline-flex items-center gap-2 text-xs font-medium text-muted-foreground transition hover:text-foreground disabled:opacity-50"
                     >
                         <RefreshCw
                             className={`h-3.5 w-3.5 ${isFetching

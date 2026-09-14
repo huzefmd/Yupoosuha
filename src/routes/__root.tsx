@@ -12,6 +12,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
+import { LanguageProvider, useLanguage } from "@/lib/language-context";
+import { ThemeProvider } from "@/lib/theme-provider";
 
 
 function NotFoundComponent() {
@@ -127,11 +129,24 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-      <Toaster richColors position="top-center" />
-    </QueryClientProvider>
+    <ThemeProvider defaultTheme="system">
+      <LanguageProvider>
+        <QueryClientProvider client={queryClient}>
+          <LanguageLangAttribute />
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+          <Toaster richColors position="top-center" />
+        </QueryClientProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
+}
+
+function LanguageLangAttribute() {
+  const { language } = useLanguage();
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+  return null;
 }
 

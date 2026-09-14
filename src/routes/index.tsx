@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-
 import {
   GraduationCap,
   ShoppingBag,
@@ -14,6 +13,7 @@ import {
 
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/lib/language-context";
 
 import { learnTopics } from "@/lib/learn-topics";
 import angelOneLogo from "@/assets/angel-one.png";
@@ -26,6 +26,7 @@ import insuranceLogo from "@/assets/insurance.jpg";
 import { useContent, type Deal, type Video, type Insurance } from "@/lib/content";
 import { youtubeEmbed } from "@/lib/content";
 import { MarketIndices } from "@/components/MarketIndices";
+import TrendingNow from "@/components/TrendingNow";
 export const Route = createFileRoute("/")({
   head: () => ({
 
@@ -55,8 +56,8 @@ export const Route = createFileRoute("/")({
 const features = [
   {
     icon: GraduationCap,
-    title: "Free Learning",
-    text: "Short, practical videos on the stock market, investing basics and money habits.",
+    titleKey: "home.feature_1_title",
+    textKey: "home.feature_1_text",
     to: "/free-learning",
     image:
       "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=70",
@@ -66,8 +67,8 @@ const features = [
   },
   {
     icon: ShoppingBag,
-    title: "Shopping Deals",
-    text: "Hand-picked offers so your everyday spending stretches further.",
+    titleKey: "home.feature_2_title",
+    textKey: "home.feature_2_text",
     to: "/shopping",
     image:
       "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=70",
@@ -76,8 +77,8 @@ const features = [
   },
   {
     icon: ShieldCheck,
-    title: "Insurance Guidance",
-    text: "Term, life, health and general cover explained without the jargon.",
+    titleKey: "home.feature_3_title",
+    textKey: "home.feature_3_text",
     to: "/insurance",
     image:
       "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=70",
@@ -86,8 +87,8 @@ const features = [
   },
   {
     icon: LineChart,
-    title: "Finance & Demat",
-    text: "Open a free demat account, compare home loans and get account help.",
+    titleKey: "home.feature_4_title",
+    textKey: "home.feature_4_text",
     to: "/finance",
     image:
       "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=70",
@@ -96,8 +97,8 @@ const features = [
   },
   {
     icon: Briefcase,
-    title: "Jobs (coming soon)",
-    text: "Freelance and job opportunities are on the way — watch this space.",
+    titleKey: "home.feature_5_title",
+    textKey: "home.feature_5_text",
     to: "/jobs",
     image:
       "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=70",
@@ -110,37 +111,37 @@ const features = [
 const financialServices = [
   {
     name: "Angel One",
-    category: "Demat & Trading",
+    categoryKey: "home.service_category_demat",
     logo: angelOneLogo,
     href: "https://www.angelone.in/",
   },
   {
     name: "JM Financial",
-    category: "Investments & Finance",
+    categoryKey: "home.service_category_invest",
     logo: jmFinancialLogo,
     href: "https://www.jmfinancialservices.in/",
   },
   {
     name: "HJ Wealth",
-    category: "Wealth Management",
+    categoryKey: "home.service_category_wealth",
     logo: hjWealthLogo,
     href: "#",
   },
   {
     name: "Z Fund",
-    category: "Mutual Funds",
+    categoryKey: "home.service_category_mutual",
     logo: zFundLogo,
     href: "#",
   },
   {
     name: "Credit Cards",
-    category: "Cards & Offers",
+    categoryKey: "home.service_category_cards",
     logo: creditCardLogo,
     href: "/finance",
   },
   {
     name: "Insurance",
-    category: "Insurance Plans",
+    categoryKey: "home.service_category_insurance",
     logo: insuranceLogo,
     href: "/insurance",
   },
@@ -259,6 +260,7 @@ const eBankingApps = [
 ];
 
 function Home() {
+  const { t } = useLanguage();
 
   const { data: shoppingDeals, isLoading: shoppingDealsLoading } =
     useContent<Deal>("shopping_deals");
@@ -276,11 +278,11 @@ function Home() {
         <div className="mb-6 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Start Learning
+              {t("home.start_learning")}
             </h2>
 
             <p className="mt-2 text-sm text-muted-foreground sm:text-base">
-              Learn about money, investing and finance.
+              {t("home.start_learning_subtitle")}
             </p>
           </div>
 
@@ -288,7 +290,7 @@ function Home() {
             to="/free-learning"
             className="shrink-0 text-sm font-medium text-primary hover:underline"
           >
-            View All
+            {t("home.view_all")}
           </Link>
         </div>
 
@@ -447,11 +449,11 @@ function Home() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Financial Services
+              {t("home.financial_services")}
             </h2>
 
             <p className="mt-2 text-base text-muted-foreground sm:text-lg">
-              Explore trusted financial products and services.
+              {t("home.financial_services_subtitle")}
             </p>
           </div>
 
@@ -459,7 +461,7 @@ function Home() {
             to="/finance"
             className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
           >
-            View All
+            {t("home.view_all")}
           </Link>
         </div>
 
@@ -530,11 +532,11 @@ function Home() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Shopping Platforms
+              {t("home.shopping_platforms")}
             </h2>
 
             <p className="mt-2 text-base text-muted-foreground">
-              Explore popular online shopping platforms.
+              {t("home.shopping_platforms_subtitle")}
             </p>
           </div>
 
@@ -542,7 +544,7 @@ function Home() {
             to="/shopping"
             className="text-sm font-medium text-primary hover:underline"
           >
-            View All
+            {t("home.view_all")}
           </Link>
         </div>
 
@@ -666,16 +668,18 @@ function Home() {
         </div>
       </section>
 
+      <TrendingNow />
+
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
         {/* Header */}
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Shopping Products
+              {t("home.shopping_products")}
             </h2>
 
             <p className="mt-2 text-base text-muted-foreground">
-              Discover products and deals worth checking out.
+              {t("home.shopping_products_subtitle")}
             </p>
           </div>
 
@@ -683,7 +687,7 @@ function Home() {
             to="/shopping"
             className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
           >
-            View All
+            {t("home.view_all")}
           </Link>
         </div>
 
@@ -702,7 +706,7 @@ function Home() {
             <ShoppingBag className="mx-auto h-8 w-8 text-muted-foreground" />
 
             <p className="mt-3 text-sm text-muted-foreground">
-              No shopping products available right now.
+              {t("home.shopping_empty")}
             </p>
           </div>
         ) : (
@@ -758,7 +762,7 @@ function Home() {
                       target="_blank"
                       rel="noreferrer noopener sponsored"
                     >
-                      Shop Now
+                      {t("home.shop_now")}
                     </a>
                   </Button>
                 </div>
@@ -779,11 +783,11 @@ function Home() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Free Learning
+              {t("home.free_learning")}
             </h2>
 
             <p className="mt-2 text-base text-muted-foreground">
-              Watch our free videos on money, investing and smart shopping.
+              {t("home.free_learning_subtitle")}
             </p>
           </div>
 
@@ -791,7 +795,7 @@ function Home() {
             to="/free-learning"
             className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
           >
-            View All
+            {t("home.view_all")}
           </Link>
         </div>
 
@@ -810,7 +814,7 @@ function Home() {
             <PlayCircle className="mx-auto h-8 w-8 text-muted-foreground" />
 
             <p className="mt-3 text-sm text-muted-foreground">
-              No free learning videos published yet. Check back soon.
+              {t("home.free_learning_empty")}
             </p>
           </div>
         ) : (
@@ -866,7 +870,7 @@ function Home() {
                         className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                       >
                         <PlayCircle className="h-4 w-4" />
-                        Watch video
+                        {t("home.watch_video")}
                       </a>
                     )}
                   </div>
@@ -882,11 +886,11 @@ function Home() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Insurance
+              {t("home.insurance")}
             </h2>
 
             <p className="mt-2 text-base text-muted-foreground">
-              Pick the right cover without the jargon — term, life, health and more.
+              {t("home.insurance_subtitle")}
             </p>
           </div>
 
@@ -894,7 +898,7 @@ function Home() {
             to="/insurance"
             className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
           >
-            View All
+            {t("home.view_all")}
           </Link>
         </div>
 
@@ -913,7 +917,7 @@ function Home() {
             <ShieldCheck className="mx-auto h-8 w-8 text-muted-foreground" />
 
             <p className="mt-3 text-sm text-muted-foreground">
-              No insurance guides published yet. Check back soon.
+              {t("home.insurance_empty")}
             </p>
           </div>
         ) : (
@@ -962,7 +966,7 @@ function Home() {
                           rel="noreferrer noopener"
                           className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                         >
-                          Learn more
+                          {t("home.learn_more")}
                           <ArrowRight className="h-4 w-4" />
                         </a>
                       )}
@@ -1015,7 +1019,7 @@ function Home() {
                           rel="noreferrer noopener"
                           className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                         >
-                          Learn more
+                          {t("home.learn_more")}
                           <ArrowRight className="h-4 w-4" />
                         </a>
                       )}
@@ -1042,11 +1046,11 @@ function Home() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              E-Banking Apps
+              {t("home.e_banking_apps")}
             </h2>
 
             <p className="mt-2 text-base text-muted-foreground">
-              Quick access to the UPI apps and net banking portals you use most.
+              {t("home.e_banking_apps_subtitle")}
             </p>
           </div>
         </div>
@@ -1090,10 +1094,10 @@ function Home() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              Key features
+              {t("home.key_features")}
             </h2>
             <p className="mt-2 max-w-2xl text-muted-foreground">
-              Everything you need to build confidence with money, in one clean place.
+              {t("home.key_features_subtitle")}
             </p>
           </div>
         </div>
@@ -1131,7 +1135,7 @@ function Home() {
                 <h3 className="font-semibold">{f.title}</h3>
                 <p className="mt-1.5 text-sm text-muted-foreground">{f.text}</p>
                 <span className="mt-4 inline-flex items-center text-sm font-medium text-primary">
-                  Explore
+                  {t("home.explore")}
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </span>
               </div>
@@ -1146,16 +1150,15 @@ function Home() {
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
               <MessageCircle className="h-3.5 w-3.5" />
-              WhatsApp Channel
+              {t("home.whatsapp_channel_label")}
             </span>
 
             <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
-              Join our WhatsApp channel
+              {t("home.whatsapp_channel_title")}
             </h2>
 
             <p className="mt-2 max-w-xl text-sm text-muted-foreground sm:text-base">
-              Get free stock-market tips, learning videos and curated deals
-              straight on WhatsApp. Scan the QR with your phone, or tap the
+              {t("home.whatsapp_channel_subtitle")} Scan the QR with your phone, or tap the
               button below.
             </p>
 
@@ -1166,11 +1169,11 @@ function Home() {
               className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700"
             >
               <MessageCircle className="h-4 w-4" />
-              Open WhatsApp channel
+              {t("home.whatsapp_btn")}
             </a>
 
             <p className="mt-3 text-[11px] text-muted-foreground">
-              External link — opens the channel in WhatsApp.
+              {t("home.whatsapp_external_link")}
             </p>
           </div>
 
@@ -1197,7 +1200,7 @@ function Home() {
               className="h-48 w-48 rounded-xl border border-border bg-white p-2 transition-transform duration-300 group-hover:scale-105"
             />
             <span className="text-xs font-medium text-muted-foreground">
-              Scan with your phone camera
+              {t("home.whatsapp_qr_text")}
             </span>
           </a>
         </div>
@@ -1205,13 +1208,12 @@ function Home() {
 
       <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6">
         <div className="rounded-3xl bg-ink px-8 py-14 text-center text-ink-foreground">
-          <h2 className="text-2xl font-bold sm:text-3xl">Ready to get started?</h2>
+          <h2 className="text-2xl font-bold sm:text-3xl">{t("home.ready_to_start")}</h2>
           <p className="mx-auto mt-3 max-w-xl text-ink-foreground/70">
-            Sign in with just your email — no password needed — and explore every free resource on
-            Yupoosuha.
+            {t("home.ready_to_start_subtitle")}
           </p>
           <Button asChild size="lg" className="mt-7">
-            <Link to="/auth">Sign in / Explore</Link>
+            <Link to="/auth">{t("home.ready_to_start_btn")}</Link>
           </Button>
         </div>
       </section>

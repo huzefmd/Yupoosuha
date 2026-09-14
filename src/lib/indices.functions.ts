@@ -122,7 +122,7 @@ const RANGES: Record<string, { range: string; interval: string }> = {
 };
 
 export const getIndexSeries = createServerFn({ method: "GET" })
-  .inputValidator((data: { name: string; range: string }) => data)
+  .validator((data: { name: string; range: string }) => data)
   .handler(async ({ data }): Promise<IndexSeries | null> => {
     const symbol = YAHOO[data.name];
     const cfg = RANGES[data.range] ?? RANGES["1D"]!;
