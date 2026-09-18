@@ -7,7 +7,6 @@ import { getLearnTopic, type LearnTopic } from "@/lib/learn-topics";
 
 type LearnLink = { id: string; topic: string; label: string; description: string; url: string };
 
-
 export const Route = createFileRoute("/learn/$topic")({
   loader: ({ params }) => {
     const topic = getLearnTopic(params.topic);
@@ -58,7 +57,6 @@ function LearnTopicPage() {
   const { topic } = Route.useLoaderData() as { topic: LearnTopic };
   const { data: links } = useContent<LearnLink>("learn_links");
   const topicLinks = (links ?? []).filter((l) => l.topic === topic.slug);
-
 
   return (
     <SiteLayout>
@@ -143,7 +141,6 @@ function LearnTopicPage() {
           )}
         </div>
       </section>
-
     </SiteLayout>
   );
 }

@@ -64,10 +64,7 @@ export function Navbar() {
     <header className="sticky top-4 z-50 px-4">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between rounded-2xl border border-border/70 bg-card/90 px-6 shadow-lg backdrop-blur-xl">
         {/* Logo */}
-        <Link
-          to="/"
-          className="flex items-center gap-3 shrink-0"
-        >
+        <Link to="/" className="flex items-center gap-3 shrink-0">
           <Logo />
         </Link>
 
@@ -130,13 +127,8 @@ export function Navbar() {
               {t("nav.signout")}
             </Button>
           ) : (
-            <Button
-              asChild
-              size="sm"
-            >
-              <Link to="/auth">
-                {t("nav.signin")}
-              </Link>
+            <Button asChild size="sm">
+              <Link to="/auth">{t("nav.signin")}</Link>
             </Button>
           )}
         </div>
@@ -146,11 +138,7 @@ export function Navbar() {
           className="rounded-full p-2 text-foreground transition hover:bg-accent lg:hidden"
           onClick={() => setOpen(!open)}
         >
-          {open ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
+          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </nav>
 
@@ -164,7 +152,8 @@ export function Navbar() {
                 to={l.to}
                 onClick={() => setOpen(false)}
                 activeOptions={{ exact: l.to === "/" }}
-                className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-all duration-300 hover:bg-primary/10 hover:text-primary" activeProps={{
+                className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-all duration-300 hover:bg-primary/10 hover:text-primary"
+                activeProps={{
                   className:
                     "rounded-xl bg-primary text-primary-foreground font-semibold px-4 py-3 shadow",
                 }}
@@ -214,10 +203,7 @@ export function Navbar() {
                 asChild
                 className="w-full rounded-xl bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md"
               >
-                <Link
-                  to="/admin"
-                  onClick={() => setOpen(false)}
-                >
+                <Link to="/admin" onClick={() => setOpen(false)}>
                   <ShieldCheck className="mr-2 h-4 w-4" />
                   {t("nav.admin")}
                 </Link>
@@ -234,19 +220,12 @@ export function Navbar() {
                 {t("nav.signout")}
               </Button>
             ) : (
-              <Button
-                asChild
-                className="w-full rounded-xl bg-red-600 text-white hover:bg-red-700"
-              >
-                <Link
-                  to="/auth"
-                  onClick={() => setOpen(false)}
-                >
+              <Button asChild className="w-full rounded-xl bg-red-600 text-white hover:bg-red-700">
+                <Link to="/auth" onClick={() => setOpen(false)}>
                   {t("nav.signin")}
                 </Link>
               </Button>
             )}
-
           </div>
         </div>
       )}

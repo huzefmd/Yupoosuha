@@ -25,7 +25,8 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.signout": "Sign out",
     "nav.admin": "Admin",
     "home.hero_title": "Learn Money, Markets & Smart Shopping",
-    "home.hero_subtitle": "Yupoosuha teaches the stock market, insurance, personal finance and smart shopping in plain language.",
+    "home.hero_subtitle":
+      "Yupoosuha teaches the stock market, insurance, personal finance and smart shopping in plain language.",
     "home.start_learning": "Start Learning",
     "home.start_learning_subtitle": "Learn about money, investing and finance.",
     "home.view_all": "View All",
@@ -38,14 +39,18 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "home.free_learning": "Free Learning",
     "home.free_learning_subtitle": "Watch our free videos on money, investing and smart shopping.",
     "home.e_banking_apps": "E-Banking Apps",
-    "home.e_banking_apps_subtitle": "Quick access to the UPI apps and net banking portals you use most.",
+    "home.e_banking_apps_subtitle":
+      "Quick access to the UPI apps and net banking portals you use most.",
     "home.key_features": "Key features",
-    "home.key_features_subtitle": "Everything you need to build confidence with money, in one clean place.",
+    "home.key_features_subtitle":
+      "Everything you need to build confidence with money, in one clean place.",
     "home.whatsapp_channel_title": "Join our WhatsApp channel",
-    "home.whatsapp_channel_subtitle": "Get free stock-market tips, learning videos and curated deals straight on WhatsApp.",
+    "home.whatsapp_channel_subtitle":
+      "Get free stock-market tips, learning videos and curated deals straight on WhatsApp.",
     "home.whatsapp_btn": "Open WhatsApp channel",
     "home.ready_to_start": "Ready to get started?",
-    "home.ready_to_start_subtitle": "Sign in with just your email — no password needed — and explore every free resource on Yupoosuha.",
+    "home.ready_to_start_subtitle":
+      "Sign in with just your email — no password needed — and explore every free resource on Yupoosuha.",
     "home.ready_to_start_btn": "Sign in / Explore",
     "home.shop_now": "Shop Now",
     "home.watch_video": "Watch video",
@@ -65,7 +70,8 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "trending.error_empty": "No trending news found for this category.",
     "trending.read_article": "Read Article",
     "home.feature_1_title": "Free Learning",
-    "home.feature_1_text": "Short, practical videos on the stock market, investing basics and money habits.",
+    "home.feature_1_text":
+      "Short, practical videos on the stock market, investing basics and money habits.",
     "home.feature_2_title": "Shopping Deals",
     "home.feature_2_text": "Hand-picked offers so your everyday spending stretches further.",
     "home.feature_3_title": "Insurance Guidance",
@@ -101,7 +107,8 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.signout": "साइन आउट",
     "nav.admin": "एडमिन",
     "home.hero_title": "पैसा, बाजार और स्मार्ट शॉपिंग सीखें",
-    "home.hero_subtitle": "युपूसूहा सरल भाषा में शेयर बाजार, बीमा, व्यक्तिगत वित्त और स्मार्ट शॉपिंग सिखाता है।",
+    "home.hero_subtitle":
+      "युपूसूहा सरल भाषा में शेयर बाजार, बीमा, व्यक्तिगत वित्त और स्मार्ट शॉपिंग सिखाता है।",
     "home.start_learning": "सीखना शुरू करें",
     "home.start_learning_subtitle": "पैसे, निवेश और वित्त के बारे में जानें।",
     "home.view_all": "सभी देखें",
@@ -114,20 +121,25 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "home.free_learning": "मुफ्त शिक्षा",
     "home.free_learning_subtitle": "पैसे, निवेश और स्मार्ट शॉपिंग पर हमारे मुफ्त वीडियो देखें।",
     "home.e_banking_apps": "ई-बैंकिंग ऐप्स",
-    "home.e_banking_apps_subtitle": "उन UPI ऐप्स और नेट बैंकिंग पोर्टल्स तक त्वरित पहुंच जिनका आप सबसे अधिक उपयोग करते हैं।",
+    "home.e_banking_apps_subtitle":
+      "उन UPI ऐप्स और नेट बैंकिंग पोर्टल्स तक त्वरित पहुंच जिनका आप सबसे अधिक उपयोग करते हैं।",
     "home.key_features": "मुख्य विशेषताएं",
-    "home.key_features_subtitle": "पैसे के साथ आत्मविश्वास बनाने के लिए आपको जो कुछ भी चाहिए, वह एक साफ जगह पर।",
+    "home.key_features_subtitle":
+      "पैसे के साथ आत्मविश्वास बनाने के लिए आपको जो कुछ भी चाहिए, वह एक साफ जगह पर।",
     "home.whatsapp_channel_title": "हमारे व्हाट्सएप चैनल से जुड़ें",
-    "home.whatsapp_channel_subtitle": "व्हाट्सएप पर सीधे मुफ्त स्टॉक-मार्केट टिप्स, लर्निंग वीडियो और क्यूरेटेड डील्स प्राप्त करें।",
+    "home.whatsapp_channel_subtitle":
+      "व्हाट्सएप पर सीधे मुफ्त स्टॉक-मार्केट टिप्स, लर्निंग वीडियो और क्यूरेटेड डील्स प्राप्त करें।",
     "home.whatsapp_btn": "व्हाट्सएप चैनल खोलें",
     "home.ready_to_start": "शुरू करने के लिए तैयार हैं?",
-    "home.ready_to_start_subtitle": "केवल अपने ईमेल के साथ साइन इन करें — किसी पासवर्ड की आवश्यकता नहीं है — और युपूसूहा पर हर मुफ्त संसाधन का पता लगाएं।",
+    "home.ready_to_start_subtitle":
+      "केवल अपने ईमेल के साथ साइन इन करें — किसी पासवर्ड की आवश्यकता नहीं है — और युपूसूहा पर हर मुफ्त संसाधन का पता लगाएं।",
     "home.ready_to_start_btn": "साइन इन / एक्सप्लोर",
     "home.shop_now": "अभी खरीदें",
     "home.watch_video": "वीडियो देखें",
     "home.learn_more": "अधिक जानें",
     "home.shopping_empty": "अभी कोई शॉपिंग उत्पाद उपलब्ध नहीं हैं।",
-    "home.free_learning_empty": "अभी तक कोई मुफ्त लर्निंग वीडियो प्रकाशित नहीं हुए हैं। जल्द ही दोबारा जांच करें।",
+    "home.free_learning_empty":
+      "अभी तक कोई मुफ्त लर्निंग वीडियो प्रकाशित नहीं हुए हैं। जल्द ही दोबारा जांच करें।",
     "home.insurance_empty": "अभी तक कोई बीमा गाइड प्रकाशित नहीं हुए हैं। जल्द ही दोबारा जांच करें।",
     "home.whatsapp_channel_label": "व्हाट्सएप चैनल",
     "home.whatsapp_qr_text": "अपने फोन कैमरे से स्कैन करें",
@@ -153,7 +165,8 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.signout": "साइन आउट",
     "nav.admin": "ॲडमिन",
     "home.hero_title": "पैसा, बाजार आणि स्मार्ट शॉपिंग शिका",
-    "home.hero_subtitle": "युपूसूहा शेअर बाजार, विमा, वैयक्तिक वित्त आणि स्मार्ट शॉपिंग सोप्या भाषेत शिकवतो.",
+    "home.hero_subtitle":
+      "युपूसूहा शेअर बाजार, विमा, वैयक्तिक वित्त आणि स्मार्ट शॉपिंग सोप्या भाषेत शिकवतो.",
     "home.start_learning": "शिकायला सुरुवात करा",
     "home.start_learning_subtitle": "पैसा, गुंतवणूक आणि वित्त याबद्दल जाणून घ्या.",
     "home.view_all": "सर्व पहा",
@@ -166,21 +179,27 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "home.free_learning": "मोफत शिक्षण",
     "home.free_learning_subtitle": "पैसा, गुंतवणूक आणि स्मार्ट शॉपिंगवरील आमचे मोफत व्हिडिओ पहा.",
     "home.e_banking_apps": "ई-बँकिंग अॅप्स",
-    "home.e_banking_apps_subtitle": "तुम्ही सर्वाधिक वापरत असलेल्या UPI अॅप्स आणि नेट बँकिंग पोर्टल्सना त्वरित प्रवेश मिळवा.",
+    "home.e_banking_apps_subtitle":
+      "तुम्ही सर्वाधिक वापरत असलेल्या UPI अॅप्स आणि नेट बँकिंग पोर्टल्सना त्वरित प्रवेश मिळवा.",
     "home.key_features": "मुख्य वैशिष्ट्ये",
-    "home.key_features_subtitle": "पैशांबाबत आत्मविश्वास वाढवण्यासाठी तुम्हाला हवे असलेले सर्व काही एकाच ठिकाणी.",
+    "home.key_features_subtitle":
+      "पैशांबाबत आत्मविश्वास वाढवण्यासाठी तुम्हाला हवे असलेले सर्व काही एकाच ठिकाणी.",
     "home.whatsapp_channel_title": "आमच्या व्हॉट्सॲप चॅनेलमध्ये सामील व्हा",
-    "home.whatsapp_channel_subtitle": "व्हॉट्सॲपवर थेट मोफत स्टॉक-मार्केट टिप्स, लर्निंग व्हिडिओ आणि क्यूरेटेड डील्स मिळवा.",
+    "home.whatsapp_channel_subtitle":
+      "व्हॉट्सॲपवर थेट मोफत स्टॉक-मार्केट टिप्स, लर्निंग व्हिडिओ आणि क्यूरेटेड डील्स मिळवा.",
     "home.whatsapp_btn": "व्हॉट्सॲप चॅनेल उघडा",
     "home.ready_to_start": "सुरुवात करण्यास तयार आहात?",
-    "home.ready_to_start_subtitle": "फक्त तुमच्या ईमेलद्वारे साइन इन करा — पासवर्डची गरज नाही — आणि युपूसूहावरील प्रत्येक मोफत संसाधनाचा लाभ घ्या.",
+    "home.ready_to_start_subtitle":
+      "फक्त तुमच्या ईमेलद्वारे साइन इन करा — पासवर्डची गरज नाही — आणि युपूसूहावरील प्रत्येक मोफत संसाधनाचा लाभ घ्या.",
     "home.ready_to_start_btn": "साइन इन / एक्सप्लोर",
     "home.shop_now": "आता खरेदी करा",
     "home.watch_video": "व्हिडिओ पहा",
     "home.learn_more": "अधिक जाणून घ्या",
     "home.shopping_empty": "सध्या कोणतेही शॉपिंग उत्पादने उपलब्ध नाहीत.",
-    "home.free_learning_empty": "सध्या कोणतेही मोफत लर्निंग व्हिडिओ प्रकाशित झालेले नाहीत. कृपया पुन्हा तपासा.",
-    "home.insurance_empty": "सध्या कोणतेही विमा मार्गदर्शक प्रकाशित झालेले नाहीत. कृपया पुन्हा तपासा.",
+    "home.free_learning_empty":
+      "सध्या कोणतेही मोफत लर्निंग व्हिडिओ प्रकाशित झालेले नाहीत. कृपया पुन्हा तपासा.",
+    "home.insurance_empty":
+      "सध्या कोणतेही विमा मार्गदर्शक प्रकाशित झालेले नाहीत. कृपया पुन्हा तपासा.",
     "home.whatsapp_channel_label": "व्हॉट्सॲप चॅनेल",
     "home.whatsapp_qr_text": "तुमच्या फोन कॅमेऱ्याने स्कॅन करा",
     "home.whatsapp_external_link": "बाह्य लिंक — व्हॉट्सॲपमध्ये चॅनेल उघडते.",
@@ -205,7 +224,8 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.signout": "સાઇન આઉટ",
     "nav.admin": "એડમિન",
     "home.hero_title": "નાણાં, બજાર અને સ્માર્ટ શોપિંગ શીખો",
-    "home.hero_subtitle": "યુપૂસુહા શેરબજાર, વીમો, વ્યક્તિગત નાણાં અને સ્માર્ટ શોપિંગ સરળ ભાષામાં શીખવે છે.",
+    "home.hero_subtitle":
+      "યુપૂસુહા શેરબજાર, વીમો, વ્યક્તિગત નાણાં અને સ્માર્ટ શોપિંગ સરળ ભાષામાં શીખવે છે.",
     "home.start_learning": "શીખવાનું શરૂ કરો",
     "home.start_learning_subtitle": "નાણાં, રોકાણ અને ફાઇનાન્સ વિશે જાણો.",
     "home.view_all": "બધા જુઓ",
@@ -218,14 +238,18 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "home.free_learning": "મફત શિક્ષણ",
     "home.free_learning_subtitle": "નાણાં, રોકાણ અને સ્માર્ટ શોપિંગ પરના અમારા મફત વીડિયો જુઓ.",
     "home.e_banking_apps": "ઈ-બેંકિંગ એપ્સ",
-    "home.e_banking_apps_subtitle": "તમે સૌથી વધુ ઉપયોગ කරන UPI એપ્સ અને નેટ બેંકિંગ પોર્ટલ સુધી ઝડપી ઍક્સેસ.",
+    "home.e_banking_apps_subtitle":
+      "તમે સૌથી વધુ ઉપયોગ කරන UPI એપ્સ અને નેટ બેંકિંગ પોર્ટલ સુધી ઝડપી ઍક્સેસ.",
     "home.key_features": "મુખ્ય લાક્ષણિકતાઓ",
-    "home.key_features_subtitle": "નાણાં સાથે આત્મવિશ્વાસ કેળવવા માટે તમને જે કંઈ પણ જોઈએ તે એક જ જગ્યાએ.",
+    "home.key_features_subtitle":
+      "નાણાં સાથે આત્મવિશ્વાસ કેળવવા માટે તમને જે કંઈ પણ જોઈએ તે એક જ જગ્યાએ.",
     "home.whatsapp_channel_title": "અમારા વોટ્સએપ ચેનલમાં જોડાઓ",
-    "home.whatsapp_channel_subtitle": "વોટ્સએપ પર સીધા મફત સ્ટોક-માર્કેટ ટિપ્સ, લર્નિંગ વીડિયો અને ક્યુરેટેડ ડીલ્સ મેળવો.",
+    "home.whatsapp_channel_subtitle":
+      "વોટ્સએપ પર સીધા મફત સ્ટોક-માર્કેટ ટિપ્સ, લર્નિંગ વીડિયો અને ક્યુરેટેડ ડીલ્સ મેળવો.",
     "home.whatsapp_btn": "વોટ્સએપ ચેનલ ખોલો",
     "home.ready_to_start": "શરૂ કરવા તૈયાર છો?",
-    "home.ready_to_start_subtitle": "માત્ર તમારા ઈમેલ દ્વારા સાઈન ઈન કરો — પાસવર્ડની જરૂર નથી — અને યુપૂસુહા પરના દરેક મફત રિસોર્સિસને એક્સપ્લોર કરો.",
+    "home.ready_to_start_subtitle":
+      "માત્ર તમારા ઈમેલ દ્વારા સાઈન ઈન કરો — પાસવર્ડની જરૂર નથી — અને યુપૂસુહા પરના દરેક મફત રિસોર્સિસને એક્સપ્લોર કરો.",
     "home.ready_to_start_btn": "સાઈન ઈન / એક્સપ્લોર",
     "home.shop_now": "હમણાં ખરીદો",
     "home.watch_video": "વીડિયો જુઓ",
@@ -257,7 +281,8 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.signout": "ಸೈನ್ ಔಟ್",
     "nav.admin": "ಅಡ್ಮಿನ್",
     "home.hero_title": "ಹಣ, ಮಾರುಕಟ್ಟೆ ಮತ್ತು ಸ್ಮಾರ್ಟ್ ಶಾಪಿಂಗ್ ಕಲಿಯಿರಿ",
-    "home.hero_subtitle": "ಯುಪೂಸುಹಾ ಷೇರು ಮಾರುಕಟ್ಟೆ, ವಿಮೆ, ವೈಯಕ್ತಿಕ ಹಣಕಾಸು ಮತ್ತು ಸ್ಮಾರ್ಟ್ ಶಾಪಿಂಗ್ ಅನ್ನು ಸರಳ ಭಾಷೆಯಲ್ಲಿ ಕಲಿಸುತ್ತದೆ.",
+    "home.hero_subtitle":
+      "ಯುಪೂಸುಹಾ ಷೇರು ಮಾರುಕಟ್ಟೆ, ವಿಮೆ, ವೈಯಕ್ತಿಕ ಹಣಕಾಸು ಮತ್ತು ಸ್ಮಾರ್ಟ್ ಶಾಪಿಂಗ್ ಅನ್ನು ಸರಳ ಭಾಷೆಯಲ್ಲಿ ಕಲಿಸುತ್ತದೆ.",
     "home.start_learning": "ಕಲಿಯಲು ಪ್ರಾರಂಭಿಸಿ",
     "home.start_learning_subtitle": "ಹಣ, ಹೂಡಿಕೆ ಮತ್ತು ಹಣಕಾಸಿನ ಬಗ್ಗೆ ತಿಳಿಯಿರಿ.",
     "home.view_all": "ಎಲ್ಲವನ್ನೂ দেখুন",
@@ -268,23 +293,30 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "home.shopping_products": "ಶಾಪಿಂಗ್ ಉತ್ಪನ್ನಗಳು",
     "home.shopping_products_subtitle": "ನೋಡಬೇಕಾದ ಉತ್ಪನ್ನಗಳು ಮತ್ತು ಡೀಲ್‌ಗಳನ್ನು ಹುಡುಕಿ.",
     "home.free_learning": "ಉಚಿತ ಕಲಿಕೆ",
-    "home.free_learning_subtitle": "ಹಣ, ಹೂಡಿಕೆ ಮತ್ತು ಸ್ಮಾರ್ಟ್ ಶಾಪಿಂಗ್ ಕುರಿತ ನಮ್ಮ ಉಚಿತ ವೀಡಿಯೊಗಳನ್ನು ನೋಡಿ.",
+    "home.free_learning_subtitle":
+      "ಹಣ, ಹೂಡಿಕೆ ಮತ್ತು ಸ್ಮಾರ್ಟ್ ಶಾಪಿಂಗ್ ಕುರಿತ ನಮ್ಮ ಉಚಿತ ವೀಡಿಯೊಗಳನ್ನು ನೋಡಿ.",
     "home.e_banking_apps": "ಇ-ಬ್ಯಾಂಕಿಂಗ್ ಆಪ್‌ಗಳು",
-    "home.e_banking_apps_subtitle": "ನೀವು ಹೆಚ್ಚಾಗಿ ಬಳಸುವ UPI ಆಪ್‌ಗಳು ಮತ್ತು ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಪೋರ್ಟಲ್‌ಗಳಿಗೆ त्वरित ಪ್ರವೇಶ.",
+    "home.e_banking_apps_subtitle":
+      "ನೀವು ಹೆಚ್ಚಾಗಿ ಬಳಸುವ UPI ಆಪ್‌ಗಳು ಮತ್ತು ನೆಟ್ ಬ್ಯಾಂಕಿಂಗ್ ಪೋರ್ಟಲ್‌ಗಳಿಗೆ त्वरित ಪ್ರವೇಶ.",
     "home.key_features": "ಪ್ರಮುಖ ವೈಶಿಷ್ಟ್ಯಗಳು",
-    "home.key_features_subtitle": "ಹಣದೊಂದಿಗೆ ಆತ್ಮವಿಶ್ವಾಸವನ್ನು ಬೆಳೆಸಿಕೊಳ್ಳಲು ನಿಮಗೆ ಬೇಕಾದ್ದೆಲ್ಲವೂ ಒಂದೇ ಸ್ಥಳದಲ್ಲಿ.",
+    "home.key_features_subtitle":
+      "ಹಣದೊಂದಿಗೆ ಆತ್ಮವಿಶ್ವಾಸವನ್ನು ಬೆಳೆಸಿಕೊಳ್ಳಲು ನಿಮಗೆ ಬೇಕಾದ್ದೆಲ್ಲವೂ ಒಂದೇ ಸ್ಥಳದಲ್ಲಿ.",
     "home.whatsapp_channel_title": "ನಮ್ಮ ವಾಟ್ಸಾಪ್ ಚಾನಲ್‌ಗೆ ಸೇರಿ",
-    "home.whatsapp_channel_subtitle": "ವಾಟ್ಸಾಪ್‌ನಲ್ಲಿ ನೇರವಾಗಿ ಉಚಿತ ಸ್ಟಾಕ್-ಮಾರ್ಕೆಟ್ ಟಿಪ್ಸ್, ಲರ್ನಿಂಗ್ ವೀಡಿಯೊಗಳು ಮತ್ತು ಕ್ಯೂರೇಟೆಡ್ ಡೀಲ್‌ಗಳನ್ನು ಪಡೆಯಿರಿ.",
+    "home.whatsapp_channel_subtitle":
+      "ವಾಟ್ಸಾಪ್‌ನಲ್ಲಿ ನೇರವಾಗಿ ಉಚಿತ ಸ್ಟಾಕ್-ಮಾರ್ಕೆಟ್ ಟಿಪ್ಸ್, ಲರ್ನಿಂಗ್ ವೀಡಿಯೊಗಳು ಮತ್ತು ಕ್ಯೂರೇಟೆಡ್ ಡೀಲ್‌ಗಳನ್ನು ಪಡೆಯಿರಿ.",
     "home.whatsapp_btn": "ವಾಟ್ಸಾಪ್ ಚಾನಲ್ ತೆರೆಯಿರಿ",
     "home.ready_to_start": "ಪ್ರಾರಂಭಿಸಲು ಸಿದ್ಧರಿದ್ದೀರಾ?",
-    "home.ready_to_start_subtitle": "ಕೇವಲ ನಿಮ್ಮ ಇಮೇಲ್ ಮೂಲಕ ಸೈನ್ ಇನ್ ಮಾಡಿ — ಪಾಸ್‌ವರ್ಡ್ ಅಗತ್ಯವಿಲ್ಲ — ಮತ್ತು ಯುಪೂಸುಹಾದಲ್ಲಿನ ಪ್ರತಿಯೊಂದು ಉಚಿತ ಸಂಪನ್ಮೂಲವನ್ನು ಅನ್ವೇಷಿಸಿ.",
+    "home.ready_to_start_subtitle":
+      "ಕೇವಲ ನಿಮ್ಮ ಇಮೇಲ್ ಮೂಲಕ ಸೈನ್ ಇನ್ ಮಾಡಿ — ಪಾಸ್‌ವರ್ಡ್ ಅಗತ್ಯವಿಲ್ಲ — ಮತ್ತು ಯುಪೂಸುಹಾದಲ್ಲಿನ ಪ್ರತಿಯೊಂದು ಉಚಿತ ಸಂಪನ್ಮೂಲವನ್ನು ಅನ್ವೇಷಿಸಿ.",
     "home.ready_to_start_btn": "ಸೈನ್ ಇನ್ / ಅನ್ವೇಷಿಸಿ",
     "home.shop_now": "ಈಗಲೇ ಶಾಪಿಂಗ್ ಮಾಡಿ",
     "home.watch_video": "ವೀಡಿಯೊ ನೋಡಿ",
     "home.learn_more": "ಹೆಚ್ಚше ತಿಳಿಯಿರಿ",
     "home.shopping_empty": "ಸದ್ಯಕ್ಕೆ ಯಾವುದೇ ಶಾಪಿಂಗ್ ಉತ್ಪನ್ನಗಳು ಲಭ್ಯವಿಲ್ಲ.",
-    "home.free_learning_empty": "ಇನ್ನೂ ಯಾವುದೇ ಉಚಿತ ಕಲಿಕಾ ವೀಡಿಯೊಗಳು ಪ್ರಕಟವಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪರಿಶೀಲಿಸಿ.",
-    "home.insurance_empty": "ಇನ್ನೂ ಯಾವುದೇ ವಿಮಾ ಮಾರ್ಗದರ್ಶಿಗಳು ಪ್ರಕಟವಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪರಿಶೀಲಿಸಿ.",
+    "home.free_learning_empty":
+      "ಇನ್ನೂ ಯಾವುದೇ ಉಚಿತ ಕಲಿಕಾ ವೀಡಿಯೊಗಳು ಪ್ರಕಟವಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪರಿಶೀಲಿಸಿ.",
+    "home.insurance_empty":
+      "ಇನ್ನೂ ಯಾವುದೇ ವಿಮಾ ಮಾರ್ಗದರ್ಶಿಗಳು ಪ್ರಕಟವಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪರಿಶೀಲಿಸಿ.",
     "home.whatsapp_channel_label": "ವಾಟ್ಸಾಪ್ ಚಾನಲ್",
     "home.whatsapp_qr_text": "ನಿಮ್ಮ ಫೋನ್ ಕ್ಯಾಮೆರಾದಿಂದ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ",
     "home.whatsapp_external_link": "ಬಾಹ್ಯ ಲಿಂಕ್ — ವಾಟ್ಸಾಪ್‌ನಲ್ಲಿ ಚಾನಲ್ ತೆರೆಯುತ್ತದೆ.",
@@ -309,7 +341,8 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.signout": "సైన్ అవుట్",
     "nav.admin": "అడ్మిన్",
     "home.hero_title": "డబ్బు, మార్కెట్లు మరియు స్మార్ట్ షాపింగ్ నేర్చుకోండి",
-    "home.hero_subtitle": "యుపూసుహ స్టాక్ మార్కెట్, ఇన్సూరెన్స్, పర్సనల్ ఫైనాన్స్ మరియు స్మార్ట్ షాపింగ్‌ను సరళమైన భాషలో బోధిస్తుంది.",
+    "home.hero_subtitle":
+      "యుపూసుహ స్టాక్ మార్కెట్, ఇన్సూరెన్స్, పర్సనల్ ఫైనాన్స్ మరియు స్మార్ట్ షాపింగ్‌ను సరళమైన భాషలో బోధిస్తుంది.",
     "home.start_learning": "నేర్చుకోవడం ప్రారంభించండి",
     "home.start_learning_subtitle": "డబ్బు, పెట్టుబడి మరియు ఆర్థిక విషయాల గురించి తెలుసుకోండి.",
     "home.view_all": "అన్నీ చూడండి",
@@ -320,23 +353,30 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "home.shopping_products": "షాపింగ్ ఉత్పత్తులు",
     "home.shopping_products_subtitle": "చూడదగ్గ ఉత్పత్తులు మరియు డీల్స్ కోసం వెతకండి.",
     "home.free_learning": "ఉచిత ಕಲಿಕೆ",
-    "home.free_learning_subtitle": "డబ్బు, పెట్టుబడి మరియు స్మార్ట్ షాపింగ్ పై మా ఉచిత వీడియోలను చూడండి.",
+    "home.free_learning_subtitle":
+      "డబ్బు, పెట్టుబడి మరియు స్మార్ట్ షాపింగ్ పై మా ఉచిత వీడియోలను చూడండి.",
     "home.e_banking_apps": "ఈ-బ్యాంకింగ్ యాప్‌లు",
-    "home.e_banking_apps_subtitle": "మీరు ఎక్కువగా ఉపయోగించే UPI యాప్‌లు మరియు నెట్ బ్యాంకింగ్ పోర్టల్‌లకు ઝડપી యాక్సెస్.",
+    "home.e_banking_apps_subtitle":
+      "మీరు ఎక్కువగా ఉపయోగించే UPI యాప్‌లు మరియు నెట్ బ్యాంకింగ్ పోర్టల్‌లకు ઝડપી యాక్సెస్.",
     "home.key_features": "ముఖ్య లక్షణాలు",
-    "home.key_features_subtitle": "డబ్బు విషయంలో ఆత్మవిశ్వాసాన్ని పెంచుకోవడానికి మీకు కావాల్సినవన్నీ ఒకే చోట.",
+    "home.key_features_subtitle":
+      "డబ్బు విషయంలో ఆత్మవిశ్వాసాన్ని పెంచుకోవడానికి మీకు కావాల్సినవన్నీ ఒకే చోట.",
     "home.whatsapp_channel_title": "మా వాట్సాప్ ఛానెల్‌లో చేరండి",
-    "home.whatsapp_channel_subtitle": "వాట్సాప్‌లో నేరుగా ఉచిత స్టాక్-మార్కెట్ చిట్కాలు, లెర్నింగ్ వీడియోలు మరియు క్యూరేటెడ్ డీల్స్ పొందండి.",
+    "home.whatsapp_channel_subtitle":
+      "వాట్సాప్‌లో నేరుగా ఉచిత స్టాక్-మార్కెట్ చిట్కాలు, లెర్నింగ్ వీడియోలు మరియు క్యూరేటెడ్ డీల్స్ పొందండి.",
     "home.whatsapp_btn": "వాట్సాప్ ఛానెల్‌ను తెరవండి",
     "home.ready_to_start": "ప్రారంభించడానికి సిద్ధంగా ఉన్నారా?",
-    "home.ready_to_start_subtitle": "కేవలం మీ ఇమెయిల్ ద్వారా సైన్ ఇన్ చేయండి — పాస్‌వర్డ్ అవసరం లేదు — మరియు యుపూసుహలోని ప్రతి ఉచిత వనరును అన్వేషించండి.",
+    "home.ready_to_start_subtitle":
+      "కేవలం మీ ఇమెయిల్ ద్వారా సైన్ ఇన్ చేయండి — పాస్‌వర్డ్ అవసరం లేదు — మరియు యుపూసుహలోని ప్రతి ఉచిత వనరును అన్వేషించండి.",
     "home.ready_to_start_btn": "సైన్ ఇన్ / అన్వేషించండి",
     "home.shop_now": "ఇప్పుడే షాపింగ్ చేయండి",
     "home.watch_video": "వీడియో చూడండి",
     "home.learn_more": "మరింత తెలుసుకోండి",
     "home.shopping_empty": "ప్రస్తుతానికి షాపింగ్ ఉత్పత్తులు ఏవీ అందుబాటులో లేవు.",
-    "home.free_learning_empty": "ఇంకా ఎటువంటి ఉచిత లెర్నింగ్ వీడియోలు ప్రచురించబడలేదు. దయచేసి మళ్ళీ ప్రయత్నించండి.",
-    "home.insurance_empty": "ఇంకా ఎటువంటి ఇన్సూరెన్స్ గైడ్లు ప్రచురించబడలేదు. దయచేసి మళ్ళీ ప్రయత్నించండి.",
+    "home.free_learning_empty":
+      "ఇంకా ఎటువంటి ఉచిత లెర్నింగ్ వీడియోలు ప్రచురించబడలేదు. దయచేసి మళ్ళీ ప్రయత్నించండి.",
+    "home.insurance_empty":
+      "ఇంకా ఎటువంటి ఇన్సూరెన్స్ గైడ్లు ప్రచురించబడలేదు. దయచేసి మళ్ళీ ప్రయత్నించండి.",
     "home.whatsapp_channel_label": "వాట్సాప్ ఛానెల్",
     "home.whatsapp_qr_text": "మీ ఫోన్ కెమెరాతో స్కాన్ చేయండి",
     "home.whatsapp_external_link": "ఎక్స్‌టర్నల్ లింక్ — వాట్సాప్‌లో ఛానెల్‌ను తెరుస్తుంది.",
@@ -361,34 +401,43 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.signout": "സൈൻ ഔട്ട്",
     "nav.admin": "അഡ്മിൻ",
     "home.hero_title": "പണം, വിപണികൾ, സ്മാർട്ട് ഷോപ്പിംഗ് എന്നിവ പഠിക്കൂ",
-    "home.hero_subtitle": "യുപ്പൂസുഹ ഓഹരി വിപണി, ഇൻഷുറൻസ്, വ്യക്തിഗത ധനകാര്യം, സ്മാർട്ട് ഷോപ്പിംഗ് എന്നിവ ലളിതമായ ഭാഷയിൽ പഠിപ്പിക്കുന്നു.",
+    "home.hero_subtitle":
+      "യുപ്പൂസുഹ ഓഹരി വിപണി, ഇൻഷുറൻസ്, വ്യക്തിഗത ധനകാര്യം, സ്മാർട്ട് ഷോപ്പിംഗ് എന്നിവ ലളിതമായ ഭാഷയിൽ പഠിപ്പിക്കുന്നു.",
     "home.start_learning": "പഠനം ആരംഭിക്കൂ",
     "home.start_learning_subtitle": "പണം, നിക്ഷേപം, ധനകാര്യം എന്നിവയെക്കുറിച്ച് తెలుരൂ.",
     "home.view_all": "എല്ലാം കാണുക",
     "home.financial_services": "സാമ്പത്തിക സേവനങ്ങൾ",
-    "home.financial_services_subtitle": "വിശ്വസനീയമായ സാമ്പത്തിക ഉൽപ്പന്നങ്ങളും സേവനങ്ങളും അൻവേഷിക്കൂ.",
+    "home.financial_services_subtitle":
+      "വിശ്വസനീയമായ സാമ്പത്തിക ഉൽപ്പന്നങ്ങളും സേവനങ്ങളും അൻവേഷിക്കൂ.",
     "home.shopping_platforms": "ഷോപ്പിംഗ് പ്ലാറ്റ്‌ഫോമുകൾ",
     "home.shopping_platforms_subtitle": "പ്രമുഖ ഓൺലൈൻ ഷോപ്പിംഗ് പ്ലാറ്റ്‌ഫോമുകൾ അൻവേഷിക്കൂ.",
     "home.shopping_products": "ഷോപ്പിംഗ് ഉൽപ്പന്നങ്ങൾ",
     "home.shopping_products_subtitle": "ശ്രദ്ധിക്കേണ്ട ഉൽപ്പന്നങ്ങളും ഡീലുകളും കണ്ടെത്തൂ.",
     "home.free_learning": "സൗജന്യ പഠനം",
-    "home.free_learning_subtitle": "പണം, നിക്ഷേപം, സ്മാർട്ട് ഷോപ്പിംഗ് എന്നിവയെക്കുറിച്ചുള്ള ഞങ്ങളുടെ സൗജന്യ വീഡിയോകൾ കാണൂ.",
+    "home.free_learning_subtitle":
+      "പണം, നിക്ഷേപം, സ്മാർട്ട് ഷോപ്പിംഗ് എന്നിവയെക്കുറിച്ചുള്ള ഞങ്ങളുടെ സൗജന്യ വീഡിയോകൾ കാണൂ.",
     "home.e_banking_apps": "ഇ-ബ್ಯಾങ്കിംഗ് ആപ്പുകൾ",
-    "home.e_banking_apps_subtitle": "നിങ്ങൾ ഏറ്റവും കൂടുതൽ ഉപയോഗിക്കുന്ന UPI ആപ്പുകളിലേക്കും നെറ്റ് ബാങ്കിംഗ് പോർട്ടലുകളിലേക്കും त्वरित പ്രവേശനം.",
+    "home.e_banking_apps_subtitle":
+      "നിങ്ങൾ ഏറ്റവും കൂടുതൽ ഉപയോഗിക്കുന്ന UPI ആപ്പുകളിലേക്കും നെറ്റ് ബാങ്കിംഗ് പോർട്ടലുകളിലേക്കും त्वरित പ്രവേശനം.",
     "home.key_features": "പ്രധാന സവിശേഷതകൾ",
-    "home.key_features_subtitle": "പണവുമായി ആത്മവിശ്വാസം വളർത്താൻ നിങ്ങൾക്ക് ആവശ്യമുള്ളതെല്ലാം ഒരു വൃത്തിയുള്ള സ്ഥലത്ത്.",
+    "home.key_features_subtitle":
+      "പണവുമായി ആത്മവിശ്വാസം വളർത്താൻ നിങ്ങൾക്ക് ആവശ്യമുള്ളതെല്ലാം ഒരു വൃത്തിയുള്ള സ്ഥലത്ത്.",
     "home.whatsapp_channel_title": "ഞങ്ങളുടെ വാട്ട്‌സ്‌ആപ്പ് ചാനലിൽ ചേരൂ",
-    "home.whatsapp_channel_subtitle": "സൗജന്യ സ്റ്റോക്ക്-മാർക്കറ്റ് ടിപ്പുകൾ, ലേണിംഗ് വീഡിയോകൾ, ക്യുറേറ്റഡ് ഡീലുകൾ എന്നിവ വാട്ട്‌സ്‌ആപ്പിൽ നേരിട്ട് పొందൂ.",
+    "home.whatsapp_channel_subtitle":
+      "സൗജന്യ സ്റ്റോക്ക്-മാർക്കറ്റ് ടിപ്പുകൾ, ലേണിംഗ് വീഡിയോകൾ, ക്യുറേറ്റഡ് ഡീലുകൾ എന്നിവ വാട്ട്‌സ്‌ആപ്പിൽ നേരിട്ട് పొందൂ.",
     "home.whatsapp_btn": "വാട്ട്‌സ്‌ആപ്പ് ചാനൽ തുറക്കൂ",
     "home.ready_to_start": "തുടങ്ങാൻ തയ്യാറാണോ?",
-    "home.ready_to_start_subtitle": "നിങ്ങളുടെ ഇമെയിൽ മാത്രം ഉപയോഗിച്ച് സൈൻ ഇൻ ചെയ്യൂ — പാസ്‌വേഡ് ആവശ്യമില്ല — യുപ്പൂസുഹയിലെ ഓരോ സൗജന്യ വിഭവവും അൻവേഷിക്കൂ.",
+    "home.ready_to_start_subtitle":
+      "നിങ്ങളുടെ ഇമെയിൽ മാത്രം ഉപയോഗിച്ച് സൈൻ ഇൻ ചെയ്യൂ — പാസ്‌വേഡ് ആവശ്യമില്ല — യുപ്പൂസുഹയിലെ ഓരോ സൗജന്യ വിഭവവും അൻവേഷിക്കൂ.",
     "home.ready_to_start_btn": "സൈൻ ഇൻ / അన్വേഷിക്കൂ",
     "home.shop_now": "ഇപ്പോൾ ഷോപ്പ് ചെയ്യൂ",
     "home.watch_video": "വീഡിയോ കാണൂ",
     "home.learn_more": "കൂടുതൽ അറിയൂ",
     "home.shopping_empty": "ഷോപ്പിംഗ് ഉൽപ്പന്നങ്ങളൊന്നും ഇപ്പോൾ ലഭ്യമായതില്ല.",
-    "home.free_learning_empty": "സൗജന്യ ലേണിംഗ് വീഡിയോകളൊന്നും ഇതുവരെ പ്രസിദ്ധീകരിച്ചിട്ടില്ല. ദയവായി വീണ്ടും പരിശോധിക്കുക.",
-    "home.insurance_empty": "ഇൻഷുറൻസ് ഗൈഡുകളൊന്നും ഇതുവരെ പ്രസിദ്ധീകരിച്ചിട്ടില്ല. ദയവായി വീണ്ടും പരിശോധിക്കുക.",
+    "home.free_learning_empty":
+      "സൗജന്യ ലേണിംഗ് വീഡിയോകളൊന്നും ഇതുവരെ പ്രസിദ്ധീകരിച്ചിട്ടില്ല. ദയവായി വീണ്ടും പരിശോധിക്കുക.",
+    "home.insurance_empty":
+      "ഇൻഷുറൻസ് ഗൈഡുകളൊന്നും ഇതുവരെ പ്രസിദ്ധീകരിച്ചിട്ടില്ല. ദയവായി വീണ്ടും പരിശോധിക്കുക.",
     "home.whatsapp_channel_label": "വാട്ട്‌സ്‌ആപ്പ് ചാനൽ",
     "home.whatsapp_qr_text": "നിങ്ങളുടെ ഫോൺ ക്യാമറ ഉപയോഗിച്ച് സ്കാൻ ചെയ്യുക",
     "home.whatsapp_external_link": "എക്സ്റ്റേണൽ ലിങ്ക് — വാട്ട്‌സ്‌ആപ്പിൽ ചാനൽ തുറക്കുന്നു.",
@@ -413,7 +462,8 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.signout": "சાઇન அவுட்",
     "nav.admin": "நிர்வாகி",
     "home.hero_title": "பணம், சந்தைகள் மற்றும் ஸ்மார்ட் ஷாப்பிங் பற்றி கற்றுக்கொள்ளுங்கள்",
-    "home.hero_subtitle": "பங்குச் சந்தை, காப்பீடு, தனிப்பட்ட நிதி மற்றும் ஸ்மார்ட் ஷாப்பிங் ஆகியவற்றை எளிமையான மொழியில் யுப்பூசுஹா கற்பிக்கிறது.",
+    "home.hero_subtitle":
+      "பங்குச் சந்தை, காப்பீடு, தனிப்பட்ட நிதி மற்றும் ஸ்மார்ட் ஷாப்பிங் ஆகியவற்றை எளிமையான மொழியில் யுப்பூசுஹா கற்பிக்கிறது.",
     "home.start_learning": "கற்றலைத் தொடங்குங்கள்",
     "home.start_learning_subtitle": "பணம், முதலீடு மற்றும் நிதி பற்றி அறிந்து கொள்ளுங்கள்.",
     "home.view_all": "அனைத்தையும் பார்க்க",
@@ -422,25 +472,33 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "home.shopping_platforms": "ஷாப்பிங் தளங்கள்",
     "home.shopping_platforms_subtitle": "பிரபலமான ஆன்லைன் ஷாப்பிங் தளங்களை ஆராயுங்கள்.",
     "home.shopping_products": "ஷாப்பிங் தயாரிப்புகள்",
-    "home.shopping_products_subtitle": "பார்க்க வேண்டிய தயாரிப்புகள் மற்றும் டீல்களைக் கண்டறியுங்கள்.",
+    "home.shopping_products_subtitle":
+      "பார்க்க வேண்டிய தயாரிப்புகள் மற்றும் டீல்களைக் கண்டறியுங்கள்.",
     "home.free_learning": "இலவச கற்றல்",
-    "home.free_learning_subtitle": "பணம், முதலீடு மற்றும் ஸ்மார்ட் ஷாப்பிங் பற்றிய எங்களது இலவச வீடியோக்களைப் பாருங்கள்.",
+    "home.free_learning_subtitle":
+      "பணம், முதலீடு மற்றும் ஸ்மார்ட் ஷாப்பிங் பற்றிய எங்களது இலவச வீடியோக்களைப் பாருங்கள்.",
     "home.e_banking_apps": "இ-பேங்கிங் ஆப்ஸ்கள்",
-    "home.e_banking_apps_subtitle": "நீங்கள் அதிகம் பயன்படுத்தும் UPI ஆப்ஸ்கள் மற்றும் நெட் பேங்கிங் போர்டல்களுக்கான விரைவான அணுகல்.",
+    "home.e_banking_apps_subtitle":
+      "நீங்கள் அதிகம் பயன்படுத்தும் UPI ஆப்ஸ்கள் மற்றும் நெட் பேங்கிங் போர்டல்களுக்கான விரைவான அணுகல்.",
     "home.key_features": "முக்கிய அம்சங்கள்",
-    "home.key_features_subtitle": "பணத்துடன் நம்பிக்கையை வளர்த்துக்கொள்ள உங்களுக்குத் தேவையான அனைத்தும் ஒரே இடத்தில்.",
+    "home.key_features_subtitle":
+      "பணத்துடன் நம்பிக்கையை வளர்த்துக்கொள்ள உங்களுக்குத் தேவையான அனைத்தும் ஒரே இடத்தில்.",
     "home.whatsapp_channel_title": "எங்கள் வாட்ஸ்அப் சேனலில் இணையுங்கள்",
-    "home.whatsapp_channel_subtitle": "இலவச பங்குச்சந்தை குறிப்புகள், கற்றல் வீடியோக்கள் மற்றும் க்யூரேட்டட் டீல்களை வாட்ஸ்அப்பில் நேரடியாகப் பெறுங்கள்.",
+    "home.whatsapp_channel_subtitle":
+      "இலவச பங்குச்சந்தை குறிப்புகள், கற்றல் வீடியோக்கள் மற்றும் க்யூரேட்டட் டீல்களை வாட்ஸ்அப்பில் நேரடியாகப் பெறுங்கள்.",
     "home.whatsapp_btn": "வாட்ஸ்அப் சேனையைத் திறக்கவும்",
     "home.ready_to_start": "தொடங்கத் தயாரா?",
-    "home.ready_to_start_subtitle": "உங்கள் மின்னஞ்சல் மூலம் மட்டும் சைன் ഇൻ செய்யுங்கள் — கடவுச்சொல் தேவையில்லை — யுப்பூசுஹாவில் உள்ள ஒவ்வொரு இலவச வளத்தையும் ஆராயுங்கள்.",
+    "home.ready_to_start_subtitle":
+      "உங்கள் மின்னஞ்சல் மூலம் மட்டும் சைன் ഇൻ செய்யுங்கள் — கடவுச்சொல் தேவையில்லை — யுப்பூசுஹாவில் உள்ள ஒவ்வொரு இலவச வளத்தையும் ஆராயுங்கள்.",
     "home.ready_to_start_btn": "சાઇન ഇൻ / ஆராயுங்கள்",
     "home.shop_now": "இப்போதே ஷாப்பிங் செய்யுங்கள்",
     "home.watch_video": "வீடியோவைப் பார்க்கவும்",
     "home.learn_more": "மேலும் அறியவும்",
     "home.shopping_empty": "தற்போது ஷாப்பிங் தயாரிப்புகள் எதுவும் கிடைக்கவில்லை.",
-    "home.free_learning_empty": "இலவச கற்றல் வீடியோக்கள் எதுவும் இன்னும் வெளியிடப்படவில்லை. மீண்டும் சரிபார்க்கவும்.",
-    "home.insurance_empty": "காப்பீட்டு வழிகாட்டிகள் எதுவும் இன்னும் வெளியிடப்படவில்லை. மீண்டும் சரிபார்க்கவும்.",
+    "home.free_learning_empty":
+      "இலவச கற்றல் வீடியோக்கள் எதுவும் இன்னும் வெளியிடப்படவில்லை. மீண்டும் சரிபார்க்கவும்.",
+    "home.insurance_empty":
+      "காப்பீட்டு வழிகாட்டிகள் எதுவும் இன்னும் வெளியிடப்படவில்லை. மீண்டும் சரிபார்க்கவும்.",
     "home.whatsapp_channel_label": "வாட்ஸ்அப் சேனல்",
     "home.whatsapp_qr_text": "உங்கள் போன் கேமராவைப் பயன்படுத்தி ஸ்கேன் செய்யவும்",
     "home.whatsapp_external_link": "வெளிப்புற இணைப்பு — வாட்ஸ்அப்பில் சேனலைத் திறக்கிறது.",
@@ -465,7 +523,8 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.signout": "سائن آؤٹ",
     "nav.admin": "ایڈمن",
     "home.hero_title": "پیسہ، مارکیٹ اور اسمارٹ شاپنگ سیکھیں",
-    "home.hero_subtitle": "یوپوسوہا اسٹاک مارکیٹ، انشورنس، ذاتی مالیات اور اسمارٹ شاپنگ کو سادہ زبان میں سکھاتا ہے۔",
+    "home.hero_subtitle":
+      "یوپوسوہا اسٹاک مارکیٹ، انشورنس، ذاتی مالیات اور اسمارٹ شاپنگ کو سادہ زبان میں سکھاتا ہے۔",
     "home.start_learning": "سیکھنا شروع کریں",
     "home.start_learning_subtitle": "پیسے، سرمایہ کاری اور مالیات کے بارے میں جانیں۔",
     "home.view_all": "سب دیکھیں",
@@ -478,21 +537,27 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "home.free_learning": "مفت سیکھنا",
     "home.free_learning_subtitle": "پیسے، سرمایہ کاری اور اسمارٹ شاپنگ پر ہماری مفت ویڈیوز دیکھیں۔",
     "home.e_banking_apps": "ای-بینکنگ ایپس",
-    "home.e_banking_apps_subtitle": "ان UPI ایپس اور نیٹ بینکنگ پورٹلز تک فوری رسائی جنہیں آپ سب سے زیادہ استعمال کرتے ہیں۔",
+    "home.e_banking_apps_subtitle":
+      "ان UPI ایپس اور نیٹ بینکنگ پورٹلز تک فوری رسائی جنہیں آپ سب سے زیادہ استعمال کرتے ہیں۔",
     "home.key_features": "اہم خصوصیات",
-    "home.key_features_subtitle": "پیسے کے ساتھ اعتماد پیدا کرنے کے لیے آپ کو جس چیز کی ضرورت ہے وہ ایک صاف جگہ پر।",
+    "home.key_features_subtitle":
+      "پیسے کے ساتھ اعتماد پیدا کرنے کے لیے آپ کو جس چیز کی ضرورت ہے وہ ایک صاف جگہ پر।",
     "home.whatsapp_channel_title": "ہمارے واٹس ایپ چینل میں شامل ہوں",
-    "home.whatsapp_channel_subtitle": "واٹس ایپ پر براہ راست مفت اسٹاک-مارکیٹ ٹپس، لرننگ ویڈیوز اور کیوریٹڈ ڈیلز حاصل کریں۔",
+    "home.whatsapp_channel_subtitle":
+      "واٹس ایپ پر براہ راست مفت اسٹاک-مارکیٹ ٹپس، لرننگ ویڈیوز اور کیوریٹڈ ڈیلز حاصل کریں۔",
     "home.whatsapp_btn": "واٹس ایپ چینل کھولیں",
     "home.ready_to_start": "شروع کرنے کے لیے تیار ہیں؟",
-    "home.ready_to_start_subtitle": "صرف اپنے ای میل کے ساتھ سائن ان کریں — کسی پاس ورڈ کی ضرورت نہیں ہے — اور یوپوسوہا پر ہر مفت وسائل کو ایکسپلور کریں۔",
+    "home.ready_to_start_subtitle":
+      "صرف اپنے ای میل کے ساتھ سائن ان کریں — کسی پاس ورڈ کی ضرورت نہیں ہے — اور یوپوسوہا پر ہر مفت وسائل کو ایکسپلور کریں۔",
     "home.ready_to_start_btn": "سائن ان / ایکسپلور",
     "home.shop_now": "ابھی خریداری کریں",
     "home.watch_video": "ویڈیو دیکھیں",
     "home.learn_more": "مزید جانیں",
     "home.shopping_empty": "اس وقت کوئی شاپنگ مصنوعات دستیاب نہیں ہیں۔",
-    "home.free_learning_empty": "ابھی تک کوئی مفت لرننگ ویڈیوز شائع نہیں ہوئیں۔ براہ کرم دوبارہ چیک کریں۔",
-    "home.insurance_empty": "ابھی تک کوئی انشورنس گائیڈز شائع نہیں ہوئیں۔ براہ کرم دوبارہ چیک کریں۔",
+    "home.free_learning_empty":
+      "ابھی تک کوئی مفت لرننگ ویڈیوز شائع نہیں ہوئیں۔ براہ کرم دوبارہ چیک کریں۔",
+    "home.insurance_empty":
+      "ابھی تک کوئی انشورنس گائیڈز شائع نہیں ہوئیں۔ براہ کرم دوبارہ چیک کریں۔",
     "home.whatsapp_channel_label": "واٹس ایپ چینل",
     "home.whatsapp_qr_text": "اپنے فون کیمرے سے اسکین کریں",
     "home.whatsapp_external_link": "بیرونی لنک — واٹس ایپ میں چینل کھولتا ہے۔",

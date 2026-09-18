@@ -89,9 +89,7 @@ async function fromNse(): Promise<Record<string, IndexQuote>> {
 export const getMarketIndices = createServerFn({ method: "GET" }).handler(async () => {
   const names = ["NIFTY 50", "SENSEX", "BANK NIFTY"];
   const nse = await fromNse();
-  const quotes = await Promise.all(
-    names.map(async (n) => nse[n] ?? (await fromYahoo(n))),
-  );
+  const quotes = await Promise.all(names.map(async (n) => nse[n] ?? (await fromYahoo(n))));
   return {
     quotes: quotes.filter((q): q is IndexQuote => q !== null),
     fetchedAt: new Date().toISOString(),
@@ -156,9 +154,14 @@ export const getIndexSeries = createServerFn({ method: "GET" })
           ? (meta["regularMarketPrice"] as number)
           : (points[points.length - 1]?.v ?? 0);
       const prev =
-        (typeof meta["chartPreviousClose"] === "number" ? (meta["chartPreviousClose"] as number) : undefined) ??
-        (typeof meta["previousClose"] === "number" ? (meta["previousClose"] as number) : undefined) ??
-        (points[0]?.v ?? last);
+        (typeof meta["chartPreviousClose"] === "number"
+          ? (meta["chartPreviousClose"] as number)
+          : undefined) ??
+        (typeof meta["previousClose"] === "number"
+          ? (meta["previousClose"] as number)
+          : undefined) ??
+        points[0]?.v ??
+        last;
       return {
         name: data.name,
         range: data.range,

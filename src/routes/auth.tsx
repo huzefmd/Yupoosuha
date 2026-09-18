@@ -35,7 +35,7 @@ function AuthPage() {
     if (user) navigate({ to: "/" });
   }, [user, navigate]);
 
-  // 
+  //
   const signInWithGoogle = async () => {
     setBusy(true);
 

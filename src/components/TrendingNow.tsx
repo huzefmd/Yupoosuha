@@ -35,13 +35,18 @@ export default function TrendingNow() {
   const { language, setLanguage, t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<Category>("stocks");
 
-  const { data: news, isLoading, isError, error } = useQuery({
+  const {
+    data: news,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["trending-news", activeCategory],
     queryFn: async () => {
       try {
         // Fetch stock-specific news for the symbols
-        const stockNewsPromises = INDIAN_STOCK_SYMBOLS.map(symbol =>
-          getStockNews({ symbol }).then(res => res.map(art => ({ ...art, symbol }))),
+        const stockNewsPromises = INDIAN_STOCK_SYMBOLS.map((symbol) =>
+          getStockNews({ symbol }).then((res) => res.map((art) => ({ ...art, symbol }))),
         );
         const stockNewsResults = await Promise.all(stockNewsPromises);
         const flattenedStockNews = stockNewsResults.flat();
@@ -89,7 +94,7 @@ export default function TrendingNow() {
               size="sm"
               className={cn(
                 "gap-1 px-2 py-0.5 text-[11px] h-6 transition-all",
-                activeCategory === cat.value ? "shadow-sm" : ""
+                activeCategory === cat.value ? "shadow-sm" : "",
               )}
               onClick={() => setActiveCategory(cat.value)}
             >
@@ -120,10 +125,7 @@ export default function TrendingNow() {
       ) : isError ? (
         <div className="text-center py-12 bg-muted/50 rounded-2xl border-2 border-dashed">
           <p className="text-muted-foreground mb-4">{t("trending.error_title")}</p>
-          <Button
-            variant="outline"
-            onClick={() => (window as any).location.reload()}
-          >
+          <Button variant="outline" onClick={() => (window as any).location.reload()}>
             {t("trending.error_retry")}
           </Button>
           <p className="text-xs text-muted-foreground mt-2">
@@ -134,14 +136,21 @@ export default function TrendingNow() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {news && news.length > 0 ? (
             news.slice(0, 6).map((article) => (
-              <Card key={article.id} className="group overflow-hidden border-none shadow-md bg-card hover:shadow-xl transition-all duration-300 flex flex-col">
+              <Card
+                key={article.id}
+                className="group overflow-hidden border-none shadow-md bg-card hover:shadow-xl transition-all duration-300 flex flex-col"
+              >
                 <div className="relative aspect-video overflow-hidden">
                   <img
-                    src={article.image || "https://images.unsplash.com/photo-1611974717482-98257667755b?q=80&w=800&auto=format&fit=crop"}
+                    src={
+                      article.image ||
+                      "https://images.unsplash.com/photo-1611974717482-98257667755b?q=80&w=800&auto=format&fit=crop"
+                    }
                     alt={article.headline}
                     className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1611974717482-98257667755b?q=80&w=800&auto=format&fit=crop";
+                      (e.target as HTMLImageElement).src =
+                        "https://images.unsplash.com/photo-1611974717482-98257667755b?q=80&w=800&auto=format&fit=crop";
                     }}
                   />
                   {(article.related || article.symbol) && (

@@ -162,7 +162,7 @@ function InteractiveChart({
    FII / DII DATA
 ========================================================= */
 
-const flowData = [
+const fiiFlowData = [
     { day: "27", value: -820 },
     { day: "28", value: 1120 },
     { day: "29", value: 640 },
@@ -175,18 +175,48 @@ const flowData = [
     { day: "05", value: -540 },
 ];
 
+const diiFlowData = [
+    { day: "27", value: 640 },
+    { day: "28", value: 380 },
+    { day: "29", value: -260 },
+    { day: "30", value: 910 },
+    { day: "31", value: 1050 },
+    { day: "01", value: 720 },
+    { day: "02", value: -140 },
+    { day: "03", value: 860 },
+    { day: "04", value: 990 },
+    { day: "05", value: 512 },
+];
+
+const FLOW_META = {
+    FII: {
+        label: "FII Cash",
+        latestValue: fiiFlowData[fiiFlowData.length - 1].value,
+        date: "05 Sept 2026",
+        data: fiiFlowData,
+    },
+    DII: {
+        label: "DII Cash",
+        latestValue: diiFlowData[diiFlowData.length - 1].value,
+        date: "05 Sept 2026",
+        data: diiFlowData,
+    },
+} as const;
+
+type FlowKind = keyof typeof FLOW_META;
+
 /* =========================================================
    FII / DII BAR CHART
 ========================================================= */
 
-function FlowBars() {
+function FlowBars({ data }: { data: { day: string; value: number }[] }) {
     const max = Math.max(
-        ...flowData.map((item) => Math.abs(item.value))
+        ...data.map((item) => Math.abs(item.value))
     );
 
     return (
         <div className="mt-5 flex h-[120px] items-end justify-between gap-3">
-            {flowData.map((item) => {
+            {data.map((item) => {
                 const positive = item.value >= 0;
 
                 const height = Math.max(
@@ -201,8 +231,8 @@ function FlowBars() {
                     >
                         <div
                             className={`w-full max-w-[27px] rounded-t-md ${positive
-                                    ? "bg-emerald-500"
-                                    : "bg-red-500"
+                                ? "bg-emerald-500"
+                                : "bg-red-500"
                                 }`}
                             style={{
                                 height: `${height}px`,
@@ -237,8 +267,8 @@ function IndexTab({
             type="button"
             onClick={onClick}
             className={`relative pb-3 text-base font-medium transition ${active
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground"
                 }`}
         >
             {label}
@@ -257,6 +287,7 @@ function IndexTab({
 export function MarketIndices() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [timeRange, setTimeRange] = useState("1D");
+    const [flowTab, setFlowTab] = useState<FlowKind>("FII");
 
     const {
         data,
@@ -312,6 +343,8 @@ export function MarketIndices() {
 
     const marketClosed = true;
 
+    const activeFlow = FLOW_META[flowTab];
+
     return (
         <section className="mx-auto max-w-7xl px-4 pt-10 pb-10 sm:px-6">
             {/* ===================================================
@@ -323,7 +356,7 @@ export function MarketIndices() {
                     Indices
                 </h2>
 
-               
+
             </div>
 
             {/* ===================================================
@@ -387,8 +420,8 @@ export function MarketIndices() {
 
                                     <span
                                         className={`text-sm font-medium ${selectedQuote.change >= 0
-                                                ? "text-emerald-600"
-                                                : "text-red-500"
+                                            ? "text-emerald-600"
+                                            : "text-red-500"
                                             }`}
                                     >
                                         {selectedQuote.change >= 0
@@ -400,9 +433,9 @@ export function MarketIndices() {
 
                                 <div
                                     className={`mt-1 text-sm font-medium ${selectedQuote.percentChange >=
-                                            0
-                                            ? "text-emerald-600"
-                                            : "text-red-500"
+                                        0
+                                        ? "text-emerald-600"
+                                        : "text-red-500"
                                         }`}
                                 >
                                     {selectedQuote.percentChange >= 0
@@ -467,8 +500,8 @@ export function MarketIndices() {
                                                 type="button"
                                                 onClick={() => setTimeRange(range)}
                                                 className={`rounded-full px-3 py-1.5 text-[11px] font-medium transition ${timeRange === range
-                                                        ? "border border-border bg-card text-foreground shadow-sm"
-                                                        : "text-muted-foreground hover:text-foreground"
+                                                    ? "border border-border bg-card text-foreground shadow-sm"
+                                                    : "text-muted-foreground hover:text-foreground"
                                                     }`}
                                             >
                                                 {range}
@@ -531,33 +564,53 @@ export function MarketIndices() {
                             <div className="flex gap-7 border-b border-border">
                                 <button
                                     type="button"
-                                    className="relative pb-3 text-xs font-semibold text-foreground"
+                                    onClick={() => setFlowTab("FII")}
+                                    className={`relative pb-3 text-xs font-semibold transition ${flowTab === "FII"
+                                        ? "text-foreground"
+                                        : "text-muted-foreground hover:text-foreground"
+                                        }`}
                                 >
                                     FII Cash
 
-                                    <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-foreground" />
+                                    {flowTab === "FII" && (
+                                        <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-foreground" />
+                                    )}
                                 </button>
 
-                                {/* <button
+                                <button
                                     type="button"
-                                    className="pb-3 text-xs font-medium text-muted-foreground transition hover:text-foreground"
+                                    onClick={() => setFlowTab("DII")}
+                                    className={`relative pb-3 text-xs font-semibold transition ${flowTab === "DII"
+                                        ? "text-foreground"
+                                        : "text-muted-foreground hover:text-foreground"
+                                        }`}
                                 >
                                     DII Cash
-                                </button> */}
+
+                                    {flowTab === "DII" && (
+                                        <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-foreground" />
+                                    )}
+                                </button>
                             </div>
 
-                            {/* FII value */}
+                            {/* FII / DII value */}
 
                             <div className="mt-4">
-                                <div className="text-[21px] font-medium text-red-500">
-                                    -341.25 Cr.
+                                <div
+                                    className={`text-[21px] font-medium ${activeFlow.latestValue >= 0
+                                        ? "text-emerald-600"
+                                        : "text-red-500"
+                                        }`}
+                                >
+                                    {activeFlow.latestValue >= 0 ? "+" : ""}
+                                    {activeFlow.latestValue.toFixed(2)} Cr.
                                 </div>
 
                                 <div className="mt-1 text-[11px] text-muted-foreground">
-                                    05 Sept 2026
+                                    {activeFlow.date}
                                 </div>
 
-                                <FlowBars />
+                                <FlowBars data={activeFlow.data} />
                             </div>
                         </div>
                     </>
@@ -585,8 +638,8 @@ export function MarketIndices() {
                     >
                         <RefreshCw
                             className={`h-3.5 w-3.5 ${isFetching
-                                    ? "animate-spin"
-                                    : ""
+                                ? "animate-spin"
+                                : ""
                                 }`}
                         />
 

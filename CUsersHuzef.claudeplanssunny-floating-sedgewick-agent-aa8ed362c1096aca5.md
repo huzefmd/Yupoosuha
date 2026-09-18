@@ -1,6 +1,7 @@
 # Implementation Plan: Interactive Market Indices and FII/DII Toggle
 
 ## Goals
+
 1. Replace the static SVG `MiniChart` with an interactive `Recharts` `AreaChart`.
 2. Implement working time range selection ('1D', '1W', '1M', '3M', '1Y').
 3. Implement a working toggle between 'FII Cash' and 'DII Cash' with dynamic data updates.
@@ -9,12 +10,16 @@
 ## Technical Approach
 
 ### 1. State Management
+
 In `MarketIndices` component, add:
+
 - `const [timeRange, setTimeRange] = useState('1D');`
 - `const [institutionalType, setInstitutionalType] = useState<'FII' | 'DII'>('FII');`
 
 ### 2. Mock Data Structure
+
 Create constants outside the component to simulate historical data:
+
 - `MOCK_INDICES_DATA`:
   ```ts
   const MOCK_INDICES_DATA = {
@@ -44,10 +49,12 @@ Create constants outside the component to simulate historical data:
 ### 3. Component Refactorings
 
 #### A. `FlowBars` Component
+
 - Update `FlowBars` to accept `data` prop: `function FlowBars({ data }: { data: { day: string, value: number }[] })`.
 - Remove hardcoded `flowData`.
 
 #### B. `InteractiveChart` Component (Replacing `MiniChart`)
+
 - Use `ChartContainer` from `@/components/ui/chart`.
 - Define `chartConfig` for colors.
 - Use `ResponsiveContainer` $\rightarrow$ `AreaChart`.
@@ -57,18 +64,21 @@ Create constants outside the component to simulate historical data:
 - Logic to switch data based on `timeRange`.
 
 #### C. `MarketIndices` Main Component
+
 - **Time Range Buttons**: Update `onClick` to call `setTimeRange(range)` and update the active class based on `timeRange === range`.
 - **FII/DII Tabs**: Update `onClick` to call `setInstitutionalType(type)` and update active styles.
 - **Value Display**: Update the cash flow value and date based on `MOCK_CASH_FLOW_DATA[institutionalType]`.
 - **Chart integration**: Pass `timeRange` and `selectedQuote` to `InteractiveChart`.
 
 ### 4. Dataviz & Aesthetic Guidelines
+
 - **Colors**: Use `#ef4444` (red) for indices as in the original, or a professional brand color. Use emerald/red for cash flows.
 - **Marks**: Thin lines for the area chart.
 - **Grid**: Use the recessive grid provided by `ChartContainer`.
 - **Tooltips**: Use `ChartTooltipContent` for a professional look.
 
 ## Implementation Steps
+
 1. [ ] Define `MOCK_INDICES_DATA` and `MOCK_CASH_FLOW_DATA`.
 2. [ ] Refactor `FlowBars` to be a presentational component.
 3. [ ] Create `InteractiveChart` component.
@@ -78,5 +88,6 @@ Create constants outside the component to simulate historical data:
 7. [ ] Final polish on layout and colors.
 
 ## Critical Files
+
 - `src/components/MarketIndices.tsx`
 - `src/components/ui/chart.tsx`

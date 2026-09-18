@@ -18,7 +18,10 @@ export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
       { title: "Admin Dashboard | Yupoosuha" },
-      { name: "description", content: "Manage Yupoosuha learning, shopping, insurance and finance content." },
+      {
+        name: "description",
+        content: "Manage Yupoosuha learning, shopping, insurance and finance content.",
+      },
       { property: "og:title", content: "Admin Dashboard | Yupoosuha" },
       { property: "og:description", content: "Manage Yupoosuha content." },
       { property: "og:type", content: "website" },
@@ -38,7 +41,12 @@ const sections: { table: string; label: string; fields: Field[] }[] = [
     fields: [
       { key: "title", label: "Title", type: "text", required: true },
       { key: "description", label: "Description", type: "textarea" },
-      { key: "video_url", label: "Video URL (YouTube or direct link)", type: "text", required: true },
+      {
+        key: "video_url",
+        label: "Video URL (YouTube or direct link)",
+        type: "text",
+        required: true,
+      },
       { key: "thumbnail_url", label: "Thumbnail image URL", type: "text" },
     ],
   },
@@ -102,7 +110,6 @@ const sections: { table: string; label: string; fields: Field[] }[] = [
     ],
   },
 ];
-
 
 function Admin() {
   const { isAdmin, loading, user } = useIsAdmin();
@@ -196,7 +203,10 @@ function CrudSection({ table, fields }: { table: string; fields: Field[] }) {
 
   const remove = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from(table as never).delete().eq("id", id);
+      const { error } = await supabase
+        .from(table as never)
+        .delete()
+        .eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -217,7 +227,12 @@ function CrudSection({ table, fields }: { table: string; fields: Field[] }) {
         return;
       }
       if (f.type === "list") {
-        values[f.key] = raw ? raw.split("\n").map((l) => l.trim()).filter(Boolean) : [];
+        values[f.key] = raw
+          ? raw
+              .split("\n")
+              .map((l) => l.trim())
+              .filter(Boolean)
+          : [];
       } else {
         values[f.key] = raw || (f.required ? raw : null);
       }
@@ -259,7 +274,12 @@ function CrudSection({ table, fields }: { table: string; fields: Field[] }) {
             <div key={f.key} className="space-y-1.5">
               <Label htmlFor={`${table}-${f.key}`}>{f.label}</Label>
               {f.type === "text" ? (
-                <Input id={`${table}-${f.key}`} name={f.key} defaultValue={initial(f)} maxLength={500} />
+                <Input
+                  id={`${table}-${f.key}`}
+                  name={f.key}
+                  defaultValue={initial(f)}
+                  maxLength={500}
+                />
               ) : (
                 <Textarea
                   id={`${table}-${f.key}`}

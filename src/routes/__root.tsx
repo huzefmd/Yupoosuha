@@ -15,7 +15,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { LanguageProvider, useLanguage } from "@/lib/language-context";
 import { ThemeProvider } from "@/lib/theme-provider";
 
-
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -149,4 +148,3 @@ function LanguageLangAttribute() {
   }, [language]);
   return null;
 }
-
