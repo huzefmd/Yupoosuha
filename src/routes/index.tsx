@@ -337,6 +337,85 @@ function Home() {
     <SiteLayout>
       <MarketIndices />
 
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
+        {/* Section Header */}
+        <div className="mb-7 flex items-end justify-between">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              {t("home2.financial_services")}
+            </h2>
+
+            <p className="mt-2 text-base text-muted-foreground sm:text-lg">
+              {t("home.financial_services_subtitle")}
+            </p>
+          </div>
+
+          <Link
+            to="/finance"
+            className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
+          >
+            {t("home.view_all")}
+          </Link>
+        </div>
+
+        {/* Services */}
+        <div className="flex gap-5 overflow-x-auto pb-5 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          {" "}
+          {financialServices.map((service) => {
+            const external = service.href.startsWith("http");
+
+            const cardContent = (
+              <>
+                {/* Original Logo */}
+                <div className="flex h-[120px] w-full items-center justify-center bg-white p-6">
+                  <img
+                    src={service.logo}
+                    alt={`${service.name} logo`}
+                    loading="lazy"
+                    width={160}
+                    height={80}
+                    className="max-h-[65px] max-w-[130px] object-contain transition-transform duration-300 group-hover:scale-110"
+                  />
+                </div>
+
+                {/* Name + Category */}
+                <div className="flex flex-1 flex-col justify-center px-4 py-3">
+                  <h3 className="text-base font-semibold leading-tight">{service.name}</h3>
+
+                  <p className="mt-1.5 line-clamp-1 text-xs text-muted-foreground">
+                    {service.category}
+                  </p>
+                </div>
+              </>
+            );
+
+            if (external) {
+              return (
+                <a
+                  key={service.name}
+                  href={service.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-[190px] w-[190px] min-w-[190px] snap-start flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                >
+                  {cardContent}
+                </a>
+              );
+            }
+
+            return (
+              <Link
+                key={service.name}
+                to={service.href as any}
+                className="group flex h-[190px] w-[190px] min-w-[190px] snap-start flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              >
+                {cardContent}
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:py-10">
         {/* Section Header */}
         <div className="mb-6 flex items-end justify-between">

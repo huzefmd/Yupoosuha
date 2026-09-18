@@ -30,6 +30,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "home.start_learning": "Start Learning",
     "home.start_learning_subtitle": "Learn about money, investing and finance.",
     "home.view_all": "View All",
+    "home2.financial_services": "To Open a Free Demat Account ",
     "home.financial_services": "Financial Services",
     "home.financial_services_subtitle": "Explore trusted financial products and services.",
     "home.shopping_platforms": "Shopping Platforms",
