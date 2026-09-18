@@ -192,13 +192,21 @@ const FLOW_META = {
     FII: {
         label: "FII Cash",
         latestValue: fiiFlowData[fiiFlowData.length - 1].value,
-        date: "05 Sept 2026",
+        date: new Date().toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        }),
         data: fiiFlowData,
     },
     DII: {
         label: "DII Cash",
         latestValue: diiFlowData[diiFlowData.length - 1].value,
-        date: "05 Sept 2026",
+        date: new Date().toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        }),
         data: diiFlowData,
     },
 } as const;

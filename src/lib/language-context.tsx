@@ -45,8 +45,11 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "home.key_features_subtitle":
       "Everything you need to build confidence with money, in one clean place.",
     "home.whatsapp_channel_title": "Join our WhatsApp channel",
+    "home2.whatsapp_channel_title": "Join our Discount Offers Yupoosuha  WhatsApp channel",
     "home.whatsapp_channel_subtitle":
       "Get free stock-market tips, learning videos and curated deals straight on WhatsApp.",
+    "home2.whatsapp_channel_subtitle":
+      "Yupoosuha Discount Offers — Your place for curated shopping deals, discounts, and special offers from brands and online shopping platforms. Discover offers and shop smarter.",
     "home.whatsapp_btn": "Open WhatsApp channel",
     "home.ready_to_start": "Ready to get started?",
     "home.ready_to_start_subtitle":

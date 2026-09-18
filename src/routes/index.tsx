@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   GraduationCap,
   ShoppingBag,
@@ -9,7 +9,10 @@ import {
   PlayCircle,
   Wallet,
   MessageCircle,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
+import { useRef, useEffect } from "react";
 
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
@@ -146,8 +149,7 @@ const shoppingPlatforms = [
   {
     name: "Flipkart",
     category: "Online Shopping",
-    image:
-      "https://img.logo.dev/brand/flipkart.com/YZbOI1N57Jf810M5gWB6mExEnufspV9T7UMutIJjpPI-y3m7ctcgkENiD0-KEFq4ymCbtAHUdqjgNuf3_LftQJYGj8qYqmDG8v73DK6zOpChhbpH6I8SmxfwcNqJUibRwryIozxTkowt4GhaCfWjJna_el-gLd8V9anLLJqBxrx_rscO2KuUTyf8NWcYm2Aa2wH-ND1WCISXm1FCPYz7MgXDKWIQoMNShYJN?token=live_6a1a28fd-6420-4492-aeb0-b297461d9de2&size=256&retina=true&format=png&theme=dark",
+    image:"data:image/png;base64,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",
     href: "https://www.flipkart.com/",
   },
   {
@@ -262,6 +264,68 @@ const eBankingApps = [
 
 function Home() {
   const { t } = useLanguage();
+
+  const shoppingPlatformsRef = useRef<HTMLDivElement>(null);
+  const insuranceRef = useRef<HTMLDivElement>(null);
+
+  const scrollPlatformsLeft = () => {
+    shoppingPlatformsRef.current?.scrollBy({
+      left: -325,
+      behavior: "smooth",
+    });
+  };
+
+  const scrollPlatformsRight = () => {
+    const el = shoppingPlatformsRef.current;
+    if (!el) return;
+
+    if (el.scrollLeft >= el.scrollWidth / 2) {
+      el.scrollLeft = 0;
+    } else {
+      el.scrollBy({
+        left: 325,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const scrollLeft = () => {
+    const el = insuranceRef.current;
+    if (!el) return;
+
+    if (el.scrollLeft <= 0) {
+      el.scrollLeft = el.scrollWidth / 2;
+    } else {
+      el.scrollBy({
+        left: -360,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const scrollRight = () => {
+    const el = insuranceRef.current;
+    if (!el) return;
+
+    if (el.scrollLeft >= el.scrollWidth / 2) {
+      el.scrollLeft = 0;
+    } else {
+      el.scrollBy({
+        left: 360,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // Auto-scroll logic
+  useEffect(() => {
+    const interval = setInterval(() => {
+      scrollPlatformsRight();
+      scrollRight();
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const { data: shoppingDeals, isLoading: shoppingDealsLoading } =
     useContent<Deal>("shopping_deals");
@@ -508,14 +572,35 @@ function Home() {
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         {/* Header */}
         <div className="mb-7 flex items-end justify-between">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {t("home.shopping_platforms")}
-            </h2>
+          <div className="flex items-end gap-4">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                {t("home.shopping_platforms")}
+              </h2>
 
-            <p className="mt-2 text-base text-muted-foreground">
-              {t("home.shopping_platforms_subtitle")}
-            </p>
+              <p className="mt-2 text-base text-muted-foreground">
+                {t("home.shopping_platforms_subtitle")}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 pb-1">
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8 rounded-full"
+                onClick={scrollPlatformsLeft}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8 rounded-full"
+                onClick={scrollPlatformsRight}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
 
           <Link to="/shopping" className="text-sm font-medium text-primary hover:underline">
@@ -524,15 +609,33 @@ function Home() {
         </div>
 
         {/* Carousel */}
-        <div className="relative w-full overflow-hidden">
-          {/* Left fade */}
-          <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-background to-transparent" />
+        <div className="group relative w-full">
+          {/* Left Button */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="absolute -left-4 top-1/2 z-20 h-10 w-10 -translate-y-1/2 rounded-full border-border bg-background shadow-md transition-all hover:bg-accent hover:scale-105 active:scale-95"
+            onClick={scrollPlatformsLeft}
+            aria-label="Scroll left"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
 
-          {/* Right fade */}
-          <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-16 bg-gradient-to-l from-background to-transparent" />
+          {/* Right Button */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="absolute -right-4 top-1/2 z-20 h-10 w-10 -translate-y-1/2 rounded-full border-border bg-background shadow-md transition-all hover:bg-accent hover:scale-105 active:scale-95"
+            onClick={scrollPlatformsRight}
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Button>
 
-          <div className="shopping-track flex w-max gap-5">
-            {/* First set */}
+          <div
+            ref={shoppingPlatformsRef}
+            className="flex w-full gap-5 overflow-x-auto scroll-smooth scrollbar-hide"
+          >
             {shoppingPlatforms.map((platform) => (
               <a
                 key={`first-${platform.name}`}
@@ -543,8 +646,10 @@ function Home() {
             group
             flex
             h-[210px]
-            w-[245px]
-            min-w-[245px]
+            w-[280px]
+            min-w-[280px]
+            sm:w-[305px]
+            sm:min-w-[305px]
             flex-col
             overflow-hidden
             rounded-2xl
@@ -582,8 +687,6 @@ function Home() {
                 </div>
               </a>
             ))}
-
-            {/* Duplicate set */}
             {shoppingPlatforms.map((platform) => (
               <a
                 key={`second-${platform.name}`}
@@ -594,8 +697,10 @@ function Home() {
             group
             flex
             h-[210px]
-            w-[245px]
-            min-w-[245px]
+            w-[280px]
+            min-w-[280px]
+            sm:w-[305px]
+            sm:min-w-[305px]
             flex-col
             overflow-hidden
             rounded-2xl
@@ -608,6 +713,7 @@ function Home() {
             hover:shadow-xl
           "
               >
+                {/* Image */}
                 <div className="flex h-[140px] items-center justify-center overflow-hidden bg-white p-7">
                   <img
                     src={platform.image}
@@ -624,6 +730,7 @@ function Home() {
                   />
                 </div>
 
+                {/* Details */}
                 <div className="flex flex-1 flex-col justify-center border-t border-border px-5">
                   <h3 className="text-base font-semibold">{platform.name}</h3>
 
@@ -822,9 +929,9 @@ function Home() {
         {/* Header */}
         <div className="mb-7 flex items-end justify-between">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t("home.insurance")}</h2>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t("insurance")}</h2>
 
-            <p className="mt-2 text-base text-muted-foreground">{t("home.insurance_subtitle")}</p>
+            <p className="mt-2 text-base text-muted-foreground">{t("Cover that actually fits your life")}</p>
           </div>
 
           <Link
@@ -852,15 +959,35 @@ function Home() {
             <p className="mt-3 text-sm text-muted-foreground">{t("home.insurance_empty")}</p>
           </div>
         ) : (
-          <div className="relative w-full overflow-hidden">
+              <div className="relative w-full overflow-hidden">
+                
+                {/* Left Button */}
+                <button
+                  type="button"
+                  onClick={scrollLeft}
+                  aria-label="Scroll left"
+                  className="absolute left-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 shadow-lg backdrop-blur transition hover:scale-105"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+
+                {/* Right Button */}
+                <button
+                  type="button"
+                  onClick={scrollRight}
+                  aria-label="Scroll right"
+                  className="absolute right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 shadow-lg backdrop-blur transition hover:scale-105"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
             {/* Left fade */}
             <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-background to-transparent" />
 
             {/* Right fade */}
             <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-background to-transparent" />
 
-            <div className="shopping-track flex w-max gap-6">
-              {/* First set */}
+            <div ref={insuranceRef} className="shopping-track flex w-max gap-6">
+                {/* First set */}
               {insuranceItems.map((item) => {
                 const cardContent = (
                   <>
@@ -1127,6 +1254,68 @@ function Home() {
         </div>
       </section>
 
+
+      <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
+        <div className="grid items-center gap-8 rounded-3xl border border-border bg-card p-6 shadow-card sm:p-10 lg:grid-cols-[1fr_auto]">
+          {/* Copy + link */}
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+              <MessageCircle className="h-3.5 w-3.5" />
+              {t("home.whatsapp_channel_label")}
+            </span>
+
+            <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
+              {t("home2.whatsapp_channel_title")}
+            </h2>
+
+            <p className="mt-2 max-w-xl text-sm text-muted-foreground sm:text-base">
+              {t("home2.whatsapp_channel_subtitle")} Scan the QR with your phone, or tap the button
+              below.
+            </p>
+
+            <a
+              href="https://whatsapp.com/channel/0029Vb3uBAZHgZWZnidqEF26"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700"
+            >
+              <MessageCircle className="h-4 w-4" />
+              {t("home.whatsapp_btn")}
+            </a>
+
+            <p className="mt-3 text-[11px] text-muted-foreground">
+              {t("home.whatsapp_external_link")}
+            </p>
+          </div>
+
+          {/* QR card — clicking the image opens the same link */}
+          <a
+            href="https://whatsapp.com/channel/0029Vb3uBAZHgZWZnidqEF26"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Scan or click to open our WhatsApp channel"
+            className="group mx-auto flex w-full max-w-xs flex-col items-center gap-3 rounded-2xl border border-border bg-background p-5 transition-shadow hover:shadow-lg sm:mx-0"
+          >
+            <img
+              src={
+                "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
+                encodeURIComponent("https://www.whatsapp.com/channel/0029VaTSXv865yDLKWr6f80L") +
+                "&color=22c55e"
+              }
+              alt="WhatsApp channel QR code"
+              width={200}
+              height={200}
+              loading="lazy"
+              className="h-48 w-48 rounded-xl border border-border bg-white p-2 transition-transform duration-300 group-hover:scale-105"
+            />
+            <span className="text-xs font-medium text-muted-foreground">
+              {t("home.whatsapp_qr_text")}
+            </span>
+          </a>
+        </div>
+      </section>
+
+
       <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6">
         <div className="rounded-3xl bg-ink px-8 py-14 text-center text-ink-foreground">
           <h2 className="text-2xl font-bold sm:text-3xl">{t("home.ready_to_start")}</h2>
@@ -1141,3 +1330,4 @@ function Home() {
     </SiteLayout>
   );
 }
+
