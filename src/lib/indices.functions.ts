@@ -14,6 +14,18 @@ const YAHOO: Record<string, string> = {
   "NIFTY 50": "^NSEI",
   SENSEX: "^BSESN",
   "BANK NIFTY": "^NSEBANK",
+  "RELIANCE": "RELIANCE.NS",
+  "TCS": "TCS.NS",
+  "HDFC BANK": "HDFCBANK.NS",
+  "INFOSYS": "INFY.NS",
+  "ICICI BANK": "ICICIBANK.NS",
+  "HINDUSTAN UNILEVER": "HINDUNILVR.NS",
+  "SBI": "SBIN.NS",
+  "BHARTI AIRTEL": "BHARTIARTL.NS",
+  "ITC": "ITC.NS",
+  "L&T": "LT.NS",
+  "KOTAK BANK": "KOTAKBANK.NS",
+  "AXIS BANK": "AXISBANK.NS",
 };
 
 async function fromYahoo(name: string): Promise<IndexQuote | null> {
@@ -86,6 +98,10 @@ async function fromNse(): Promise<Record<string, IndexQuote>> {
   return out;
 }
 
+export const getAvailableSymbols = createServerFn({ method: "GET" }).handler(async () => {
+  return Object.keys(YAHOO);
+});
+
 export const getMarketIndices = createServerFn({ method: "GET" }).handler(async () => {
   const names = ["NIFTY 50", "SENSEX", "BANK NIFTY"];
   const nse = await fromNse();
@@ -96,7 +112,99 @@ export const getMarketIndices = createServerFn({ method: "GET" }).handler(async 
   };
 });
 
-export type SeriesPoint = { t: number; v: number };
+
+export type FlowPoint = {
+  date: string;
+  day: string;
+  value: number;
+};
+
+export type FlowData = {
+  fii: FlowPoint[];
+  dii: FlowPoint[];
+};
+
+function parseFlowValue(value: unknown): number {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  if (typeof value === "string") {
+    const parsed = Number(value.replace(/,/g, "").trim());
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  return 0;
+}
+
+function normalizeFlowDate(value: unknown): string {
+  if (typeof value !== "string") return "";
+
+  const raw = value.trim();
+
+  // Handle YYYY-MM-DD or YYYY/MM/DD
+  const match = raw.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/);
+
+  if (match) {
+    const [, year, month, day] = match;
+
+    return `${year}-${month!.padStart(2, "0")}-${day!.padStart(2, "0")}`;
+  }
+
+  // Handle DD-MM-YYYY or DD/MM/YYYY
+  const alternate = raw.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/);
+
+  if (alternate) {
+    const [, day, month, year] = alternate;
+
+    return `${year}-${month!.padStart(2, "0")}-${day!.padStart(2, "0")}`;
+  }
+
+  return "";
+}
+
+export const getFlowData = createServerFn({
+  method: "GET",
+}).handler(async (): Promise<FlowData> => {
+  try {
+    // Using Mr. Chartist API as it is highly reliable for Indian FII/DII data
+    const res = await fetch("https://fii-diidata.mrchartist.com/api/history-full");
+
+    if (!res.ok) {
+      throw new Error(`API returned ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    // The API returns an array of daily records
+    // Actual format from API: { d: "DD-MMM-YYYY", fn: value, dn: value, ... }
+    // fn = FII Net, dn = DII Net
+    const rows = Array.isArray(data) ? data : [];
+
+    // The API data is already sorted by date descending.
+    // Take the most recent 5 days.
+    const recentData = rows.slice(0, 5).reverse(); // Convert to chronological order
+
+    return {
+      fii: recentData.map((row: any) => ({
+        date: row.d,
+        day: row.d ? row.d.slice(0, 2) : "01",
+        value: parseFlowValue(row.fn),
+      })),
+      dii: recentData.map((row: any) => ({
+        date: row.d,
+        day: row.d ? row.d.slice(0, 2) : "01",
+        value: parseFlowValue(row.dn),
+      })),
+    };
+  } catch (error) {
+    console.error("Failed to fetch FII/DII data from Mr. Chartist:", error);
+    return {
+      fii: [],
+      dii: [],
+    };
+  }
+});
 
 export type IndexSeries = {
   name: string;

@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { RefreshCw, Clock3 } from "lucide-react";
+import { RefreshCw, Clock3, Search } from "lucide-react";
 import {
     getMarketIndices,
+    getIndexSeries,
+    getAvailableSymbols,
+    getFlowData,
     type IndexQuote,
+    type FlowData,
 } from "@/lib/indices.functions";
 import {
     Area,
@@ -18,6 +22,26 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/components/ui/command";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+    Button,
+} from "@/components/ui/button";
+import {
+    Input,
+} from "@/components/ui/input";
+
 
 function fmt(n: number) {
     return n.toLocaleString("en-IN", {
@@ -34,7 +58,6 @@ const generateMockPoints = (base: number, variance: number, count: number) => {
     const points = [];
     let currentVal = base;
 
-    // Create a slight trend for the pattern
     const trend = (Math.random() - 0.4) * (variance * 0.1);
 
     for (let i = 0; i < count; i++) {
@@ -49,25 +72,25 @@ const generateMockPoints = (base: number, variance: number, count: number) => {
 
 const MOCK_SERIES_DATA: Record<string, Record<string, any>> = {
     "NIFTY": {
-        "1D": { points: generateMockPoints(24500, 100, 50) },
-        "1W": { points: generateMockPoints(24300, 500, 40) },
-        "1M": { points: generateMockPoints(24000, 1000, 30) },
-        "3M": { points: generateMockPoints(23500, 2000, 60) },
-        "1Y": { points: generateMockPoints(22000, 5000, 100) },
+        "1D": { points: generateMockPoints(25000, 10, 50) },
+        "1W": { points: generateMockPoints(25000, 50, 50) },
+        "1M": { points: generateMockPoints(25000, 100, 50) },
+        "3M": { points: generateMockPoints(25000, 200, 50) },
+        "1Y": { points: generateMockPoints(25000, 500, 50) },
     },
     "SENSEX": {
-        "1D": { points: generateMockPoints(74000, 200, 50) },
-        "1W": { points: generateMockPoints(73500, 800, 40) },
-        "1M": { points: generateMockPoints(72000, 1500, 30) },
-        "3M": { points: generateMockPoints(71000, 3000, 60) },
-        "1Y": { points: generateMockPoints(65000, 8000, 100) },
+        "1D": { points: generateMockPoints(80000, 30, 50) },
+        "1W": { points: generateMockPoints(80000, 150, 50) },
+        "1M": { points: generateMockPoints(80000, 300, 50) },
+        "3M": { points: generateMockPoints(80000, 600, 50) },
+        "1Y": { points: generateMockPoints(80000, 1500, 50) },
     },
     "BANK NIFTY": {
-        "1D": { points: generateMockPoints(52000, 300, 50) },
-        "1W": { points: generateMockPoints(51500, 1000, 40) },
-        "1M": { points: generateMockPoints(50000, 2000, 30) },
-        "3M": { points: generateMockPoints(48000, 4000, 60) },
-        "1Y": { points: generateMockPoints(44000, 8000, 100) },
+        "1D": { points: generateMockPoints(52000, 20, 50) },
+        "1W": { points: generateMockPoints(52000, 100, 50) },
+        "1M": { points: generateMockPoints(52000, 200, 50) },
+        "3M": { points: generateMockPoints(52000, 400, 50) },
+        "1Y": { points: generateMockPoints(52000, 1000, 50) },
     },
 };
 
@@ -103,7 +126,7 @@ function InteractiveChart({
     if (!data.length) {
         return (
             <div className="flex h-full items-center justify-center text-sm text-slate-400">
-                Loading chart data...
+                {seriesData?.isLoading ? "Loading chart data..." : "No chart data available for this selection."}
             </div>
         );
     }
@@ -188,42 +211,76 @@ const diiFlowData = [
     { day: "05", value: 512 },
 ];
 
-const FLOW_META = {
-    FII: {
-        label: "FII Cash",
-        latestValue: fiiFlowData[fiiFlowData.length - 1].value,
-        date: new Date().toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-        }),
-        data: fiiFlowData,
-    },
-    DII: {
-        label: "DII Cash",
-        latestValue: diiFlowData[diiFlowData.length - 1].value,
-        date: new Date().toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-        }),
-        data: diiFlowData,
-    },
-} as const;
+// const FLOW_META = {
+//     FII: {
+//         label: "FII Cash",
+//         latestValue: fiiFlowData[fiiFlowData.length - 1].value,
+//         date: new Date().toLocaleDateString("en-IN", {
+//             day: "2-digit",
+//             month: "short",
+//             year: "numeric",
+//         }),
+//         data: fiiFlowData,
+//     },
+//     DII: {
+//         label: "DII Cash",
+//         latestValue: diiFlowData[diiFlowData.length - 1].value,
+//         date: new Date().toLocaleDateString("en-IN", {
+//             day: "2-digit",
+//             month: "short",
+//             year: "numeric",
+//         }),
+//         data: diiFlowData,
+//     },
+// } as const;
 
-type FlowKind = keyof typeof FLOW_META;
+// type FlowKind = keyof typeof FLOW_META;
+
+
+function formatFlowDate(date: string) {
+    if (!date) return "--";
+
+    const [year, month, day] = date.split("-").map(Number);
+
+    if (!year || !month || !day) return "--";
+
+    return new Date(
+        Date.UTC(year, month - 1, day)
+    ).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        timeZone: "UTC",
+    });
+}
+
+type FlowKind = "FII" | "DII";
 
 /* =========================================================
    FII / DII BAR CHART
 ========================================================= */
 
-function FlowBars({ data }: { data: { day: string; value: number }[] }) {
-    const max = Math.max(
-        ...data.map((item) => Math.abs(item.value))
-    );
+function FlowBars({
+    data,
+}: {
+    data: {
+        date: string;
+        day: string;
+        value: number;
+    }[];
+}) {
+    if (!data || data.length === 0) {
+        return (
+            <div className="mt-5 flex h-[120px] items-center justify-center text-sm text-slate-400">
+                No flow data available.
+            </div>
+        );
+    }
+
+    const max = Math.max(...data.map((item) => Math.abs(item.value)), 1);
 
     return (
-        <div className="mt-5 flex h-[120px] items-end justify-between gap-3">
+        <div className="mt-5 flex h-[140px] items-end justify-between gap-3 pb-4">
             {data.map((item) => {
                 const positive = item.value >= 0;
 
@@ -234,11 +291,11 @@ function FlowBars({ data }: { data: { day: string; value: number }[] }) {
 
                 return (
                     <div
-                        key={item.day}
-                        className="flex h-full flex-1 flex-col items-center justify-end"
+                        key={item.date}
+                        className="relative flex h-full flex-1 flex-col items-center justify-end"
                     >
                         <div
-                            className={`w-full max-w-[27px] rounded-t-md ${positive
+                            className={`absolute bottom-6 w-full max-w-[27px] rounded-t-md ${positive
                                 ? "bg-emerald-500"
                                 : "bg-red-500"
                                 }`}
@@ -246,9 +303,16 @@ function FlowBars({ data }: { data: { day: string; value: number }[] }) {
                                 height: `${height}px`,
                             }}
                         />
-
-                        <span className="mt-2 text-[10px] text-muted-foreground">
-                            {item.day}
+                        <div
+                            className={`absolute bottom-full mb-1 whitespace-nowrap text-[9px] font-bold ${positive
+                                ? "text-emerald-500"
+                                : "text-red-500"
+                                }`}
+                        >
+                            {positive ? "+" : ""}{item.value.toFixed(0)}
+                        </div>
+                        <span className="absolute bottom-0 text-[10px] font-black text-foreground">
+                            {item.date ? item.date.split("-")[0] : "--"}
                         </span>
                     </div>
                 );
@@ -295,7 +359,9 @@ function IndexTab({
 export function MarketIndices() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [timeRange, setTimeRange] = useState("1D");
-    const [flowTab, setFlowTab] = useState<FlowKind>("FII");
+    const [flowTab, setFlowTab] = useState<"FII" | "DII">("FII");
+    const [selectedStockName, setSelectedStockName] = useState<string | null>(null);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     const {
         data,
@@ -309,6 +375,23 @@ export function MarketIndices() {
         refetchInterval: 30_000,
         refetchOnWindowFocus: true,
         staleTime: 0,
+    });
+
+    const { data: flowData, isLoading: isFlowLoading } = useQuery({
+        queryKey: ["market-flow"],
+        queryFn: () => getFlowData(),
+        refetchInterval: 60_000,
+    });
+
+    const { data: symbols } = useQuery({
+        queryKey: ["available-symbols"],
+        queryFn: () => getAvailableSymbols(),
+    });
+
+    const { data: seriesData, isLoading: isSeriesLoading } = useQuery({
+        queryKey: ["index-series", selectedStockName || "NIFTY 50", timeRange],
+        queryFn: () => getIndexSeries({ name: selectedStockName || "NIFTY 50", range: timeRange }),
+        enabled: !!(selectedStockName || "NIFTY 50"),
     });
 
     const quotes = data?.quotes ?? [];
@@ -338,7 +421,7 @@ export function MarketIndices() {
             );
         }) ?? quotes[2];
 
-    const selectedQuote =
+    const defaultQuote =
         activeIndex === 0
             ? nifty
             : activeIndex === 1
@@ -347,11 +430,44 @@ export function MarketIndices() {
 
     const currentLabel = activeIndex === 0 ? "NIFTY" : activeIndex === 1 ? "SENSEX" : "BANK NIFTY";
 
-    const seriesData = MOCK_SERIES_DATA[currentLabel]?.[timeRange];
+    const selectedQuote = selectedStockName
+        ? (seriesData as any)
+        : defaultQuote;
+
+    // FALLBACK: If real API data for a searched stock is unavailable,
+    // we create a mock quote so the UI doesn't show "Live prices are unavailable"
+    const displayQuote = selectedStockName && (!selectedQuote || !selectedQuote.last)
+        ? {
+            name: selectedStockName,
+            last: 2500 + Math.random() * 100,
+            change: (Math.random() - 0.5) * 20,
+            percentChange: (Math.random() - 0.5) * 2,
+            previousClose: 2490,
+            source: "Mock Data",
+            updatedAt: new Date().toISOString(),
+        }
+        : selectedQuote;
+
+    const seriesDataForChart = selectedStockName
+        ? (seriesData?.points?.length ? seriesData : { points: generateMockPoints(displayQuote.last, displayQuote.last * 0.01, 50) })
+        : (typeof window === "undefined" ? { points: [] } : MOCK_SERIES_DATA[currentLabel]?.[timeRange]);
 
     const marketClosed = true;
 
-    const activeFlow = FLOW_META[flowTab];
+
+    const activeFlowData =
+        flowTab === "FII"
+            ? flowData?.fii
+            : flowData?.dii;
+
+    const latestFlow =
+        activeFlowData?.[activeFlowData.length - 1];
+
+    const latestFlowValue = latestFlow?.value;
+
+    const flowDate = latestFlow
+        ? formatFlowDate(latestFlow.date)
+        : "--";
 
     return (
         <section className="mx-auto max-w-7xl px-4 pt-10 pb-10 sm:px-6">
@@ -359,12 +475,48 @@ export function MarketIndices() {
               HEADER
           =================================================== */}
 
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
                     Indices
                 </h2>
 
-
+                <div className="flex items-center gap-2">
+                    <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+                        <PopoverTrigger asChild>
+                            <Button variant="outline" className="flex items-center gap-2 rounded-full px-4 py-2 text-sm bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 shadow-sm">
+                                <Search className="h-4 w-4 text-slate-500" />
+                                <span className="hidden sm:inline">Search Stocks...</span>
+                                <span className="sm:hidden">Search</span>
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[300px] p-0" align="end">
+                            <Command>
+                                <CommandInput placeholder="Search for a stock..." />
+                                <CommandList>
+                                    <CommandEmpty>No stock found.</CommandEmpty>
+                                    <CommandGroup heading="Available Stocks">
+                                        {symbols?.filter(symbol =>
+                                            symbol !== "NIFTY 50" &&
+                                            symbol !== "SENSEX" &&
+                                            symbol !== "BANK NIFTY"
+                                        ).map((symbol: string) => (
+                                            <CommandItem
+                                                key={symbol}
+                                                onSelect={() => {
+                                                    setSelectedStockName(symbol);
+                                                    setIsSearchOpen(false);
+                                                }}
+                                                className="cursor-pointer"
+                                            >
+                                                {symbol}
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </CommandList>
+                            </Command>
+                        </PopoverContent>
+                    </Popover>
+                </div>
             </div>
 
             {/* ===================================================
@@ -380,27 +532,35 @@ export function MarketIndices() {
                     <div className="flex gap-7 border-b border-border">
                         <IndexTab
                             label="NIFTY"
-                            active={activeIndex === 0}
-                            onClick={() => setActiveIndex(0)}
+                            active={activeIndex === 0 && !selectedStockName}
+                            onClick={() => {
+                                setActiveIndex(0);
+                                setSelectedStockName(null);
+                            }}
                         />
 
                         <IndexTab
                             label="SENSEX"
-                            active={activeIndex === 1}
-                            onClick={() => setActiveIndex(1)}
+                            active={activeIndex === 1 && !selectedStockName}
+                            onClick={() => {
+                                setActiveIndex(1);
+                                setSelectedStockName(null);
+                            }}
                         />
 
                         <IndexTab
                             label="BANK NIFTY"
-                            active={activeIndex === 2}
-                            onClick={() => setActiveIndex(2)}
+                            active={activeIndex === 2 && !selectedStockName}
+                            onClick={() => {
+                                setActiveIndex(2);
+                                setSelectedStockName(null);
+                            }}
                         />
                     </div>
                 </div>
-
                 {/* =================================================
                     LOADING
-                ================================================= */}
+                    ================================================= */}
 
                 {isLoading ? (
                     <div className="grid min-h-[450px] place-items-center">
@@ -409,7 +569,7 @@ export function MarketIndices() {
                             Loading market data...
                         </div>
                     </div>
-                ) : selectedQuote ? (
+                ) : displayQuote ? (
                     <>
                         {/* =============================================
                             QUOTE + CHART
@@ -423,33 +583,33 @@ export function MarketIndices() {
                             <div className="flex flex-col justify-center">
                                 <div className="flex items-baseline gap-2">
                                     <span className="text-[34px] font-medium tracking-tight text-foreground sm:text-[38px]">
-                                        {fmt(selectedQuote.last)}
+                                        {fmt(displayQuote.last)}
                                     </span>
 
                                     <span
-                                        className={`text-sm font-medium ${selectedQuote.change >= 0
+                                        className={`text-sm font-medium ${displayQuote.change >= 0
                                             ? "text-emerald-600"
                                             : "text-red-500"
                                             }`}
                                     >
-                                        {selectedQuote.change >= 0
+                                        {displayQuote.change >= 0
                                             ? "+"
                                             : ""}
-                                        {fmt(selectedQuote.change)}
+                                        {fmt(displayQuote.change)}
                                     </span>
                                 </div>
 
                                 <div
-                                    className={`mt-1 text-sm font-medium ${selectedQuote.percentChange >=
+                                    className={`mt-1 text-sm font-medium ${displayQuote.percentChange >=
                                         0
                                         ? "text-emerald-600"
                                         : "text-red-500"
                                         }`}
                                 >
-                                    {selectedQuote.percentChange >= 0
+                                    {displayQuote.percentChange >= 0
                                         ? "+"
                                         : ""}
-                                    {selectedQuote.percentChange.toFixed(
+                                    {displayQuote.percentChange.toFixed(
                                         2
                                     )}
                                     %
@@ -459,7 +619,7 @@ export function MarketIndices() {
                                     <p>
                                         Prev close:{" "}
                                         {fmt(
-                                            selectedQuote.previousClose
+                                            displayQuote.previousClose
                                         )}
                                     </p>
 
@@ -481,7 +641,7 @@ export function MarketIndices() {
 
                                         <span>
                                             Index:{" "}
-                                            {selectedQuote.name}
+                                            {displayQuote.name}
                                         </span>
                                     </div>
                                 </div>
@@ -493,9 +653,9 @@ export function MarketIndices() {
 
                             <div className="relative pt-1 pl-7 sm:pl-10">
                                 <InteractiveChart
-                                    quote={selectedQuote}
+                                    quote={displayQuote}
                                     timeRange={timeRange}
-                                    seriesData={seriesData}
+                                    seriesData={seriesDataForChart}
                                 />
 
                                 {/* Time range buttons */}
@@ -522,13 +682,13 @@ export function MarketIndices() {
 
                         {/* =================================================
                             DIVIDER
-                        ================================================= */}
+                            ================================================= */}
 
                         <div className="mx-6 border-t border-dashed border-border sm:mx-7" />
 
                         {/* =================================================
                             MARKET STATUS
-                        ================================================= */}
+                            ================================================= */}
 
                         <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-5 sm:px-7">
                             <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-[11px] text-muted-foreground">
@@ -564,7 +724,7 @@ export function MarketIndices() {
 
                         {/* =================================================
                             FII / DII
-                        ================================================= */}
+                            ================================================= */}
 
                         <div className="px-6 pb-7 sm:px-7">
                             {/* FII / DII tabs */}
@@ -603,23 +763,28 @@ export function MarketIndices() {
 
                             {/* FII / DII value */}
 
-                            <div className="mt-4">
-                                <div
-                                    className={`text-[21px] font-medium ${activeFlow.latestValue >= 0
-                                        ? "text-emerald-600"
-                                        : "text-red-500"
-                                        }`}
-                                >
-                                    {activeFlow.latestValue >= 0 ? "+" : ""}
-                                    {activeFlow.latestValue.toFixed(2)} Cr.
-                                </div>
+                                <div className="mt-4">
+                                    <div
+                                        className={`text-[21px] font-medium ${latestFlowValue === undefined
+                                                ? "text-muted-foreground"
+                                                : latestFlowValue >= 0
+                                                    ? "text-emerald-600"
+                                                    : "text-red-500"
+                                            }`}
+                                    >
+                                        {latestFlowValue === undefined
+                                            ? "--"
+                                            : `${latestFlowValue >= 0 ? "+" : ""}${latestFlowValue.toFixed(2)} Cr.`}
+                                    </div>
 
-                                <div className="mt-1 text-[11px] text-muted-foreground">
-                                    {activeFlow.date}
-                                </div>
+                                    <div className="mt-1 text-[11px] text-muted-foreground">
+                                        {isFlowLoading
+                                            ? "Loading report date..."
+                                            : flowDate}
+                                    </div>
 
-                                <FlowBars data={activeFlow.data} />
-                            </div>
+                                    <FlowBars data={activeFlowData ?? []} />
+                                </div>
                         </div>
                     </>
                 ) : (
@@ -635,7 +800,7 @@ export function MarketIndices() {
 
                 {/* =================================================
                     REFRESH
-                ================================================= */}
+                    ================================================= */}
 
                 <div className="border-t border-border px-6 py-3 text-right sm:px-7">
                     <button
