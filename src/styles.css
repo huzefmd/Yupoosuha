@@ -139,6 +139,14 @@
   animation-play-state: paused;
 }
 
+.credit-cards-track {
+  animation: credit-cards-scroll-left 40s linear infinite;
+}
+
+.credit-cards-track:hover {
+  animation-play-state: paused;
+}
+
 @keyframes shopping-scroll-right {
   0% {
     transform: translateX(-50%);
@@ -146,6 +154,16 @@
 
   100% {
     transform: translateX(0);
+  }
+}
+
+@keyframes credit-cards-scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
   }
 }
 

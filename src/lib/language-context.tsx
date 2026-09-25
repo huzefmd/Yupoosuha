@@ -34,6 +34,8 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "home.financial_services": "Financial Services",
     "home.financial_services_subtitle": "Explore trusted financial products and services.",
     "home.shopping_platforms": "Shopping Platforms",
+    "home.shopping_platforms2": "Credit Cards",
+
     "home.shopping_platforms_subtitle": "Explore popular online shopping platforms.",
     "home.shopping_products": "Shopping Products",
     "home.shopping_products_subtitle": "Discover products and deals worth checking out.",

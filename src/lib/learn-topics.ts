@@ -169,7 +169,7 @@ export const learnTopics: LearnTopic[] = [
         heading: "1. The billing cycle",
         body: "You spend during a cycle, get a statement, then have roughly 15-20 days to pay. Pay the total due — not the 'minimum due' — and you pay zero interest.",
         points: [
-          "Minimum due keeps the account healthy, not your wallet",
+          "Minimum due keeps the account healthy, not your wallet — it's a debt trap",
           "Interest on carried balances runs ~36-45% per year",
           "Cash withdrawals on a card charge interest from day one",
         ],
@@ -180,7 +180,7 @@ export const learnTopics: LearnTopic[] = [
         points: [
           "Check annual fee vs. what you realistically earn back",
           "Fuel, groceries and travel cards suit different lives",
-          "Never spend extra to 'unlock' a reward",
+          "Never spend extra to 'unlock' a reward or a milestone",
         ],
       },
       {
@@ -189,6 +189,7 @@ export const learnTopics: LearnTopic[] = [
         points: [
           "Set an auto-debit for the full statement amount",
           "Keep your oldest card open — history matters",
+          "Avoid applying for too many cards at once (hard inquiries)",
           "Check your credit report once a year for errors",
         ],
       },

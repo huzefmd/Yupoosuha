@@ -13,11 +13,9 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useRef, useEffect } from "react";
-
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/lib/language-context";
-
 import { learnTopics } from "@/lib/learn-topics";
 import angelOneLogo from "@/assets/angel-one.png";
 import jmFinancialLogo from "@/assets/jm-financial.jpg";
@@ -25,11 +23,32 @@ import hjWealthLogo from "@/assets/hj-wealth.png";
 import zFundLogo from "@/assets/z-fund.png";
 import creditCardLogo from "@/assets/credit-card.png";
 import insuranceLogo from "@/assets/insurance.jpg";
-
 import { useContent, type Deal, type Video, type Insurance } from "@/lib/content";
 import { youtubeEmbed } from "@/lib/content";
 import { MarketIndices } from "@/components/MarketIndices";
 import TrendingNow from "@/components/TrendingNow";
+// CREDITS CARD
+import hsbcImage from "@/assets/HSBC.jpeg";
+import axisFlipkartLogo from "@/assets/AXIS FLIPART.jpeg";
+import axisPrivilegeCardsLogo from "@/assets/AXIS PREVELAGE CARDS.jpeg";
+import axisLogo from "@/assets/AXIS.jpeg";
+import axisMyZoneLogo from "@/assets/AXISMYZONE.jpeg";
+import bobLogo from "@/assets/BOB.jpeg";
+import hdfcRupayLogo from "@/assets/HDFC RUPAY.jpeg";
+import hdfcPixelLogo from "@/assets/HDFX PIXEL.jpeg";
+import hsbcLogo from "@/assets/HSBC.jpeg";
+import hsbcPlatinumLogo from "@/assets/HSBS PLATINUM CARD.jpeg";
+import idfcFirstCreditCardLogo from "@/assets/IDFC FIRST CREDIT CARD.jpeg";
+import idfcLogo from "@/assets/IDFC.jpeg";
+import indusIndLogo from "@/assets/INDUSNAD.jpeg";
+import jobsIngLogo from "@/assets/jobsIng.jpg";
+import kotakLeagueLogo from "@/assets/KOTAK LEAGUE.jpeg";
+import mutualFundsLogo from "@/assets/mutual_funds.jpg";
+import sbiCardLogo from "@/assets/SBICARD.jpeg";
+import sbmNovoLogo from "@/assets/SBM NOVIO.jpeg";
+import sbmZetLogo from "@/assets/SBM ZET.jpeg";
+import scapiaLogo from "@/assets/SCAPIA.jpeg";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -149,7 +168,8 @@ const shoppingPlatforms = [
   {
     name: "Flipkart",
     category: "Online Shopping",
-    image:"data:image/png;base64,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",
+    image:
+      "data:image/png;base64,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",
     href: "https://www.flipkart.com/",
   },
   {
@@ -186,6 +206,81 @@ const shoppingPlatforms = [
     image:
       "data:image/png;base64,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",
     href: "https://www.nykaa.com/",
+  },
+];
+
+const creditCards = [
+  {
+    name: "HSBC Platinum Credit Card",
+    category: "Credit Card",
+    image: hsbcPlatinumLogo,
+    href: "https://bitli.in/27tu4rz",
+  },
+  {
+    name: "SBI Simply Click Card",
+    category: "Credit Card",
+    image: sbiCardLogo,
+    href: "https://bitli.in/hU5dUkj",
+  },
+  {
+    name: "Axis Flipkart Card",
+    category: "Credit Card",
+    image: axisFlipkartLogo,
+    href: "#",
+  },
+  {
+    name: "Axis Privilege Card",
+    category: "Credit Card",
+    image: axisPrivilegeCardsLogo,
+    href: "#",
+  },
+  {
+    name: "Axis MyZone Card",
+    category: "Credit Card",
+    image: axisMyZoneLogo,
+    href: "#",
+  },
+  {
+    name: "HDFC Rupay Card",
+    category: "Credit Card",
+    image: hdfcRupayLogo,
+    href: "#",
+  },
+  {
+    name: "HDFC Pixel Card",
+    category: "Credit Card",
+    image: hdfcPixelLogo,
+    href: "#",
+  },
+  {
+    name: "IDFC First Card",
+    category: "Credit Card",
+    image: idfcFirstCreditCardLogo,
+    href: "#",
+  },
+  {
+    name: "Kotak League Card",
+    category: "Credit Card",
+    image: kotakLeagueLogo,
+    href: "#",
+  },
+  {
+    name: "SBM Novo Card",
+    category: "Credit Card",
+    image: sbmNovoLogo,
+    href: "#",
+  },
+  {
+    name: "SBM Zet Card",
+    category: "Credit Card",
+    image: sbmZetLogo,
+    href: "#",
+  },
+  {
+    name: "Scapia Card",
+    category: "Credit Card",
+    image: scapiaLogo,
+    href: "#",
   },
 ];
 
@@ -266,13 +361,34 @@ function Home() {
   const { t } = useLanguage();
 
   const shoppingPlatformsRef = useRef<HTMLDivElement>(null);
+  const creditCardsRef = useRef<HTMLDivElement>(null);
   const insuranceRef = useRef<HTMLDivElement>(null);
 
   const scrollPlatformsLeft = () => {
-    shoppingPlatformsRef.current?.scrollBy({
-      left: -325,
-      behavior: "smooth",
-    });
+    const el = shoppingPlatformsRef.current;
+    if (!el) return;
+
+    if (el.scrollLeft <= 0) {
+      el.scrollLeft = el.scrollWidth / 2;
+    } else {
+      el.scrollBy({
+        left: -325,
+        behavior: "smooth",
+      });
+    }
+
+    // Sync credit cards
+    const cardsEl = creditCardsRef.current;
+    if (cardsEl) {
+      if (cardsEl.scrollLeft <= 0) {
+        cardsEl.scrollLeft = cardsEl.scrollWidth / 2;
+      } else {
+        cardsEl.scrollBy({
+          left: -325,
+          behavior: "smooth",
+        });
+      }
+    }
   };
 
   const scrollPlatformsRight = () => {
@@ -286,6 +402,19 @@ function Home() {
         left: 325,
         behavior: "smooth",
       });
+    }
+
+    // Sync credit cards
+    const cardsEl = creditCardsRef.current;
+    if (cardsEl) {
+      if (cardsEl.scrollLeft >= cardsEl.scrollWidth / 2) {
+        cardsEl.scrollLeft = 0;
+      } else {
+        cardsEl.scrollBy({
+          left: 325,
+          behavior: "smooth",
+        });
+      }
     }
   };
 
@@ -333,10 +462,13 @@ function Home() {
     useContent<Video>("free_learning_videos");
   const { data: insuranceItems, isLoading: insuranceLoading } =
     useContent<Insurance>("insurance_types");
+
   return (
     <SiteLayout>
+      {/* Indices */}
       <MarketIndices />
 
+      {/* To Open a Free Demat Account */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
         {/* Section Header */}
         <div className="mb-7 flex items-end justify-between">
@@ -416,6 +548,7 @@ function Home() {
         </div>
       </section>
 
+      {/* START LEARNING  */}
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:py-10">
         {/* Section Header */}
         <div className="mb-6 flex items-end justify-between">
@@ -569,6 +702,7 @@ function Home() {
         </div>
       </section>
 
+      {/* FINANCIAL SERVICES  */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
         {/* Section Header */}
         <div className="mb-7 flex items-end justify-between">
@@ -648,6 +782,7 @@ function Home() {
         </div>
       </section>
 
+      {/* SHOOPPOING PRODUCTS  */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         {/* Header */}
         <div className="mb-7 flex items-end justify-between">
@@ -742,14 +877,14 @@ function Home() {
           "
               >
                 {/* Image */}
-                <div className="flex h-[140px] items-center justify-center overflow-hidden bg-white p-7">
+                <div className="flex h-[140px] items-center justify-center overflow-hidden p-6">
                   <img
                     src={platform.image}
                     alt={`${platform.name} logo`}
                     loading="lazy"
                     className="
-                max-h-[85px]
-                max-w-[160px]
+                max-h-full
+                max-w-full
                 object-contain
                 transition-transform
                 duration-300
@@ -793,14 +928,14 @@ function Home() {
           "
               >
                 {/* Image */}
-                <div className="flex h-[140px] items-center justify-center overflow-hidden bg-white p-7">
+                <div className="flex h-[140px] items-center justify-center overflow-hidden p-6">
                   <img
                     src={platform.image}
                     alt={`${platform.name} logo`}
                     loading="lazy"
                     className="
-                max-h-[85px]
-                max-w-[160px]
+                max-h-full
+                max-w-full
                 object-contain
                 transition-transform
                 duration-300
@@ -821,8 +956,291 @@ function Home() {
         </div>
       </section>
 
+      {/* credit cards  */}
+
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
+        {/* Header */}
+        <div className="mb-7 flex items-end justify-between">
+          <div className="flex items-end gap-4">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                {t("home.shopping_platforms2")}
+              </h2>
+
+              <p className="mt-2 text-base text-muted-foreground">
+                {t("home.shopping_platforms_subtitle")}
+              </p>
+            </div>
+
+            {/* Header navigation */}
+            <div className="flex items-center gap-2 pb-1">
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8 rounded-full"
+                onClick={scrollPlatformsLeft}
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8 rounded-full"
+                onClick={scrollPlatformsRight}
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          <Link
+            to="/shopping"
+            className="text-sm font-medium text-primary hover:underline"
+          >
+            {t("home.view_all")}
+          </Link>
+        </div>
+
+        {/* Carousel */}
+        <div className="group relative w-full overflow-hidden">
+          {/* Left Arrow */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="
+        absolute
+        -left-4
+        top-1/2
+        z-20
+        h-10
+        w-10
+        -translate-y-1/2
+        rounded-full
+        border-border
+        bg-background
+        shadow-md
+        transition-all
+        hover:scale-105
+        hover:bg-accent
+        active:scale-95
+      "
+            onClick={scrollPlatformsLeft}
+            aria-label="Scroll left"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
+
+          {/* Right Arrow */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="
+        absolute
+        -right-4
+        top-1/2
+        z-20
+        h-10
+        w-10
+        -translate-y-1/2
+        rounded-full
+        border-border
+        bg-background
+        shadow-md
+        transition-all
+        hover:scale-105
+        hover:bg-accent
+        active:scale-95
+      "
+            onClick={scrollPlatformsRight}
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </Button>
+
+          {/* Cards Track */}
+          <div
+            ref={creditCardsRef}
+            className="
+        credit-cards-track
+        relative
+        flex
+        w-max
+        gap-6
+        overflow-x-auto
+        scroll-smooth
+        scrollbar-hide
+        py-2
+      "
+          >
+            {/* First set */}
+            {creditCards.map((platform) => (
+              <a
+                key={`first-${platform.name}`}
+                href={platform.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="
+            group
+            flex
+            h-[360px]
+            w-[360px]
+            min-w-[360px]
+            flex-col
+            overflow-hidden
+            rounded-2xl
+            border
+            border-border
+            bg-card
+            transition-all
+            duration-300
+            hover:-translate-y-1
+            hover:shadow-xl
+            sm:h-[400px]
+            sm:w-[400px]
+            sm:min-w-[400px]
+          "
+              >
+                {/* Large Image */}
+                <div
+                  className="
+              flex
+              h-[280px]
+              w-full
+              items-center
+              justify-center
+              overflow-hidden
+              p-3
+              sm:h-[310px]
+            "
+                >
+                  <img
+                    src={platform.image}
+                    alt={`${platform.name} logo`}
+                    loading="lazy"
+                    className="
+                h-full
+                w-full
+                object-contain
+                transition-transform
+                duration-300
+                group-hover:scale-105
+              "
+                  />
+                </div>
+
+                {/* Details */}
+                <div
+                  className="
+              flex
+              flex-1
+              flex-col
+              justify-center
+              border-t
+              border-border
+              px-5
+              py-3
+            "
+                >
+                  <h3 className="text-base font-semibold">
+                    {platform.name}
+                  </h3>
+
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {platform.category}
+                  </p>
+                </div>
+              </a>
+            ))}
+
+            {/* Duplicate set for continuous carousel */}
+            {creditCards.map((platform) => (
+              <a
+                key={`second-${platform.name}`}
+                href={platform.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="
+            group
+            flex
+            h-[360px]
+            w-[360px]
+            min-w-[360px]
+            flex-col
+            overflow-hidden
+            rounded-2xl
+            border
+            border-border
+            bg-card
+            transition-all
+            duration-300
+            hover:-translate-y-1
+            hover:shadow-xl
+            sm:h-[400px]
+            sm:w-[400px]
+            sm:min-w-[400px]
+          "
+              >
+                {/* Large Image */}
+                <div
+                  className="
+              flex
+              h-[280px]
+              w-full
+              items-center
+              justify-center
+              overflow-hidden
+              p-3
+              sm:h-[310px]
+            "
+                >
+                  <img
+                    src={platform.image}
+                    alt={`${platform.name} logo`}
+                    loading="lazy"
+                    className="
+                h-full
+                w-full
+                object-contain
+                transition-transform
+                duration-300
+                group-hover:scale-105
+              "
+                  />
+                </div>
+
+                {/* Details */}
+                <div
+                  className="
+              flex
+              flex-1
+              flex-col
+              justify-center
+              border-t
+              border-border
+              px-5
+              py-3
+            "
+                >
+                  <h3 className="text-base font-semibold">
+                    {platform.name}
+                  </h3>
+
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {platform.category}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* TRENDING NEWS  */}
       <TrendingNow />
 
+      {/* SHOPING PRODUCTS  */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
         {/* Header */}
         <div className="mb-7 flex items-end justify-between">
@@ -906,6 +1324,7 @@ function Home() {
         )}
       </section>
 
+      {/* FREEE LEARNING  */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
         {/* Header */}
         <div className="mb-7 flex items-end justify-between">
@@ -1004,13 +1423,16 @@ function Home() {
         )}
       </section>
 
+      {/* INSURANCE */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
         {/* Header */}
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t("insurance")}</h2>
 
-            <p className="mt-2 text-base text-muted-foreground">{t("Cover that actually fits your life")}</p>
+            <p className="mt-2 text-base text-muted-foreground">
+              {t("Cover that actually fits your life")}
+            </p>
           </div>
 
           <Link
@@ -1038,27 +1460,26 @@ function Home() {
             <p className="mt-3 text-sm text-muted-foreground">{t("home.insurance_empty")}</p>
           </div>
         ) : (
-              <div className="relative w-full overflow-hidden">
-                
-                {/* Left Button */}
-                <button
-                  type="button"
-                  onClick={scrollLeft}
-                  aria-label="Scroll left"
-                  className="absolute left-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 shadow-lg backdrop-blur transition hover:scale-105"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
+          <div className="relative w-full overflow-hidden">
+            {/* Left Button */}
+            <button
+              type="button"
+              onClick={scrollLeft}
+              aria-label="Scroll left"
+              className="absolute left-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 shadow-lg backdrop-blur transition hover:scale-105"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
 
-                {/* Right Button */}
-                <button
-                  type="button"
-                  onClick={scrollRight}
-                  aria-label="Scroll right"
-                  className="absolute right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 shadow-lg backdrop-blur transition hover:scale-105"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </button>
+            {/* Right Button */}
+            <button
+              type="button"
+              onClick={scrollRight}
+              aria-label="Scroll right"
+              className="absolute right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 shadow-lg backdrop-blur transition hover:scale-105"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
             {/* Left fade */}
             <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-background to-transparent" />
 
@@ -1066,7 +1487,7 @@ function Home() {
             <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-background to-transparent" />
 
             <div ref={insuranceRef} className="shopping-track flex w-max gap-6">
-                {/* First set */}
+              {/* First set */}
               {insuranceItems.map((item) => {
                 const cardContent = (
                   <>
@@ -1178,6 +1599,7 @@ function Home() {
         )}
       </section>
 
+      {/* E BANKING APPS */}
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
         {/* Header */}
         <div className="mb-7 flex items-end justify-between">
@@ -1223,6 +1645,7 @@ function Home() {
         </div>
       </section>
 
+      {/* KEY FEATURES SECTION */}
       <section className="mx-auto max-w-7xl px-4 pb-4 sm:px-6">
         <div className="mb-7 flex items-end justify-between">
           <div>
@@ -1273,6 +1696,7 @@ function Home() {
         </div>
       </section>
 
+      {/* whatsapp section 1*/}
       <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
         <div className="grid items-center gap-8 rounded-3xl border border-border bg-card p-6 shadow-card sm:p-10 lg:grid-cols-[1fr_auto]">
           {/* Copy + link */}
@@ -1333,7 +1757,7 @@ function Home() {
         </div>
       </section>
 
-
+      {/* whatsapp section 2*/}
       <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
         <div className="grid items-center gap-8 rounded-3xl border border-border bg-card p-6 shadow-card sm:p-10 lg:grid-cols-[1fr_auto]">
           {/* Copy + link */}
@@ -1394,7 +1818,7 @@ function Home() {
         </div>
       </section>
 
-
+      {/* Ready to get started? */}
       <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6">
         <div className="rounded-3xl bg-ink px-8 py-14 text-center text-ink-foreground">
           <h2 className="text-2xl font-bold sm:text-3xl">{t("home.ready_to_start")}</h2>
@@ -1409,4 +1833,3 @@ function Home() {
     </SiteLayout>
   );
 }
-
