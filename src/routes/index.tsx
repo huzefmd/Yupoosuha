@@ -877,7 +877,7 @@ function Home() {
           "
               >
                 {/* Image */}
-                <div className="flex h-[140px] items-center justify-center overflow-hidden p-6">
+                <div className="flex h-[140px] items-center justify-center overflow-hidden bg-white p-6">
                   <img
                     src={platform.image}
                     alt={`${platform.name} logo`}
@@ -928,7 +928,7 @@ function Home() {
           "
               >
                 {/* Image */}
-                <div className="flex h-[140px] items-center justify-center overflow-hidden p-6">
+                <div className="flex h-[140px] items-center justify-center overflow-hidden bg-white p-6">
                   <img
                     src={platform.image}
                     alt={`${platform.name} logo`}
