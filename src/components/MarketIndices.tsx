@@ -312,7 +312,7 @@ function FlowBars({
                             {positive ? "+" : ""}{item.value.toFixed(0)}
                         </div>
                         <span className="absolute bottom-0 text-[10px] font-black text-foreground">
-                            {item.date ? item.date.split("-")[0] : "--"}
+                            {item.date ? item.date.split("-")[2] : "--"}
                         </span>
                     </div>
                 );
@@ -480,7 +480,7 @@ export function MarketIndices() {
                     Indices
                 </h2>
 
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                     <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>
                         <PopoverTrigger asChild>
                             <Button variant="outline" className="flex items-center gap-2 rounded-full px-4 py-2 text-sm bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 shadow-sm">
@@ -516,7 +516,7 @@ export function MarketIndices() {
                             </Command>
                         </PopoverContent>
                     </Popover>
-                </div>
+                </div> */}
             </div>
 
             {/* ===================================================
@@ -684,13 +684,13 @@ export function MarketIndices() {
                             DIVIDER
                             ================================================= */}
 
-                        <div className="mx-6 border-t border-dashed border-border sm:mx-7" />
+                      
 
                         {/* =================================================
                             MARKET STATUS
                             ================================================= */}
 
-                        <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-5 sm:px-7">
+                        {/* <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-5 sm:px-7">
                             <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-[11px] text-muted-foreground">
                                 <Clock3 className="h-3.5 w-3.5" />
 
@@ -720,7 +720,7 @@ export function MarketIndices() {
                                     }.`
                                     : "Market is currently open."}
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* =================================================
                             FII / DII

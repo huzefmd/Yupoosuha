@@ -391,6 +391,35 @@ function Home() {
     }
   };
 
+  const scrollcreditPlatformsLeft = () => {
+    const el = creditCardsRef.current;
+    if (!el) return;
+
+    if (el.scrollLeft <= 0) {
+      el.scrollLeft = el.scrollWidth / 2;
+    } else {
+      el.scrollBy({
+        left: -325,
+        behavior: "smooth",
+      });
+    }
+
+  };
+
+  const scrollcreditPlatformsRight = () => {
+    const el = creditCardsRef.current;
+    if (!el) return;
+
+    if (el.scrollLeft >= el.scrollWidth / 2) {
+      el.scrollLeft = 0;
+    } else {
+      el.scrollBy({
+        left: 325,
+        behavior: "smooth",
+      });
+    }
+  };
+
   const scrollPlatformsRight = () => {
     const el = shoppingPlatformsRef.current;
     if (!el) return;
@@ -978,7 +1007,7 @@ function Home() {
                 variant="outline"
                 size="icon"
                 className="h-8 w-8 rounded-full"
-                onClick={scrollPlatformsLeft}
+                onClick={scrollcreditPlatformsLeft}
                 aria-label="Scroll left"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -988,7 +1017,7 @@ function Home() {
                 variant="outline"
                 size="icon"
                 className="h-8 w-8 rounded-full"
-                onClick={scrollPlatformsRight}
+                onClick={scrollcreditPlatformsRight}
                 aria-label="Scroll right"
               >
                 <ChevronRight className="h-4 w-4" />
@@ -1027,7 +1056,7 @@ function Home() {
         hover:bg-accent
         active:scale-95
       "
-            onClick={scrollPlatformsLeft}
+            onClick={scrollcreditPlatformsLeft}
             aria-label="Scroll left"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -1054,7 +1083,7 @@ function Home() {
         hover:bg-accent
         active:scale-95
       "
-            onClick={scrollPlatformsRight}
+            onClick={scrollcreditPlatformsRight}
             aria-label="Scroll right"
           >
             <ChevronRight className="h-5 w-5" />

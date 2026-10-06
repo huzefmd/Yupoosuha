@@ -127,7 +127,7 @@ export function Navbar() {
           </Button>
 
           {/* Language Selector */}
-          <div className="flex items-center gap-2 px-2">
+          {/* <div className="flex items-center gap-2 px-2">
             <Languages className="h-4 w-4 text-muted-foreground" />
 
             <Select
@@ -146,7 +146,7 @@ export function Navbar() {
                 ))}
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
 
           {/* Admin Button */}
           {isAdmin && (
