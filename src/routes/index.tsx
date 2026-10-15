@@ -130,37 +130,37 @@ const financialServices = [
     name: "Angel One",
     categoryKey: "home.service_category_demat",
     logo: angelOneLogo,
-    href: "https://www.angelone.in/",
+    href: "https://www.angelone.in/signup/register?rne_source=B2B_NXT&btype=T0xE&referrer=PSIO%3A%3Arne_source%3DB2B_NXT%3A%3Abtype%3DT0xE&source_caller=api&pid=NXT&SbTag=UFNJTw%3D%3D&deep_link_value=referrer%3DPSIO%3A%3Arne_source%3DB2B_NXT%3A%3Abtype%3DT0xE&c=nxt_campaign",
   },
   {
     name: "JM Financial",
     categoryKey: "home.service_category_invest",
     logo: jmFinancialLogo,
-    href: "https://www.jmfinancialservices.in/",
+    href: "https://instakyc.jmfonline.in/signup?TransId=W7XmeuvmV%2Beq6llmj8PitZaPxGs0tvfGpcOXh%2F03GZDlZJTy1T9JG%2BsezfROGAh%2BfamcklbUaOa%2Bs2uM4bcuBy6oYm%2By4uPG0zpNBqCbGr5klsC7kGL2n%2FK5WwNl6SSmVCK%2FRntmIF92of0HmsyF3kaFSEFj3Rm2%2FlAFjob2Ytz2jX%2Bh4vjqJX9PviZkJUjTSNJub0PSP2i%2FFei%2BRWYe%2BLqGeJGDdW00x6dOEZXvqzCKeLgakfPHRo3NtIJvF%2FLZ69ftqBMmFDo4ulRca4psNZp0dGT54HUA6QDRyVa%2BZSSW92RJvPpsLnBQmarbdHMeVp4CkyzWv%2FK1xfnCtR%2BLTQ%3D%3D",
   },
   {
     name: "HJ Wealth",
     categoryKey: "home.service_category_wealth",
     logo: hjWealthLogo,
-    href: "#",
+    href: "https://eonboard.njindiaonline.com/partner-tiny-url?njBrcode=106780",
   },
   {
     name: "Z Fund",
     categoryKey: "home.service_category_mutual",
     logo: zFundLogo,
-    href: "#",
+    href: "https://zfunds.in/resources/0a56dad0-c5bf-4d46-9c05-1d53a18c87ec/0b9ff213-6bf5-45c6-8d55-f7cf0728ee5a",
   },
   {
     name: "Credit Cards",
     categoryKey: "home.service_category_cards",
     logo: creditCardLogo,
-    href: "/finance",
+    href: "#credit-cards",
   },
   {
     name: "Insurance",
     categoryKey: "home.service_category_insurance",
     logo: insuranceLogo,
-    href: "/insurance",
+    href: "#insurance",
   },
 ];
 
@@ -987,7 +987,7 @@ function Home() {
 
       {/* credit cards  */}
 
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12" id="credit-cards">
         {/* Header */}
         <div className="mb-7 flex items-end justify-between">
           <div className="flex items-end gap-4">
@@ -1453,7 +1453,7 @@ function Home() {
       </section>
 
       {/* INSURANCE */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12" id="insurance">
         {/* Header */}
         <div className="mb-7 flex items-end justify-between">
           <div>

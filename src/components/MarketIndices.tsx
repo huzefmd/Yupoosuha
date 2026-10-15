@@ -165,7 +165,7 @@ function InteractiveChart({
                     />
                     <Tooltip
                         content={<ChartTooltipContent />}
-                    />
+                    />  
                     <Area
                         type="linear"
                         dataKey="value"
@@ -211,30 +211,6 @@ const diiFlowData = [
     { day: "05", value: 512 },
 ];
 
-// const FLOW_META = {
-//     FII: {
-//         label: "FII Cash",
-//         latestValue: fiiFlowData[fiiFlowData.length - 1].value,
-//         date: new Date().toLocaleDateString("en-IN", {
-//             day: "2-digit",
-//             month: "short",
-//             year: "numeric",
-//         }),
-//         data: fiiFlowData,
-//     },
-//     DII: {
-//         label: "DII Cash",
-//         latestValue: diiFlowData[diiFlowData.length - 1].value,
-//         date: new Date().toLocaleDateString("en-IN", {
-//             day: "2-digit",
-//             month: "short",
-//             year: "numeric",
-//         }),
-//         data: diiFlowData,
-//     },
-// } as const;
-
-// type FlowKind = keyof typeof FLOW_META;
 
 
 function formatFlowDate(date: string) {
@@ -480,44 +456,7 @@ export function MarketIndices() {
                     Indices
                 </h2>
 
-                {/* <div className="flex items-center gap-2">
-                    <Popover open={isSearchOpen} onOpenChange={setIsSearchOpen}>
-                        <PopoverTrigger asChild>
-                            <Button variant="outline" className="flex items-center gap-2 rounded-full px-4 py-2 text-sm bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 shadow-sm">
-                                <Search className="h-4 w-4 text-slate-500" />
-                                <span className="hidden sm:inline">Search Stocks...</span>
-                                <span className="sm:hidden">Search</span>
-                            </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-[300px] p-0" align="end">
-                            <Command>
-                                <CommandInput placeholder="Search for a stock..." />
-                                <CommandList>
-                                    <CommandEmpty>No stock found.</CommandEmpty>
-                                    <CommandGroup heading="Available Stocks">
-                                        {symbols?.filter(symbol =>
-                                            symbol !== "NIFTY 50" &&
-                                            symbol !== "SENSEX" &&
-                                            symbol !== "BANK NIFTY"
-                                        ).map((symbol: string) => (
-                                            <CommandItem
-                                                key={symbol}
-                                                onSelect={() => {
-                                                    setSelectedStockName(symbol);
-                                                    setIsSearchOpen(false);
-                                                }}
-                                                className="cursor-pointer"
-                                            >
-                                                {symbol}
-                                            </CommandItem>
-                                        ))}
-                                    </CommandGroup>
-                                </CommandList>
-                            </Command>
-                        </PopoverContent>
-                    </Popover>
-                </div> */}
-            </div>
+               </div>
 
             {/* ===================================================
               MAIN CARD
