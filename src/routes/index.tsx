@@ -48,6 +48,7 @@ import sbiCardLogo from "@/assets/SBICARD.jpeg";
 import sbmNovoLogo from "@/assets/SBM NOVIO.jpeg";
 import sbmZetLogo from "@/assets/SBM ZET.jpeg";
 import scapiaLogo from "@/assets/SCAPIA.jpeg";
+import nj from "@/assets/nj.jpg"
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -139,9 +140,9 @@ const financialServices = [
     href: "https://instakyc.jmfonline.in/signup?TransId=W7XmeuvmV%2Beq6llmj8PitZaPxGs0tvfGpcOXh%2F03GZDlZJTy1T9JG%2BsezfROGAh%2BfamcklbUaOa%2Bs2uM4bcuBy6oYm%2By4uPG0zpNBqCbGr5klsC7kGL2n%2FK5WwNl6SSmVCK%2FRntmIF92of0HmsyF3kaFSEFj3Rm2%2FlAFjob2Ytz2jX%2Bh4vjqJX9PviZkJUjTSNJub0PSP2i%2FFei%2BRWYe%2BLqGeJGDdW00x6dOEZXvqzCKeLgakfPHRo3NtIJvF%2FLZ69ftqBMmFDo4ulRca4psNZp0dGT54HUA6QDRyVa%2BZSSW92RJvPpsLnBQmarbdHMeVp4CkyzWv%2FK1xfnCtR%2BLTQ%3D%3D",
   },
   {
-    name: "HJ Wealth",
+    name: "NJ Wealth",
     categoryKey: "home.service_category_wealth",
-    logo: hjWealthLogo,
+    logo: nj,
     href: "https://eonboard.njindiaonline.com/partner-tiny-url?njBrcode=106780",
   },
   {
