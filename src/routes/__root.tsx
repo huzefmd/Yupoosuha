@@ -14,6 +14,8 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { LanguageProvider, useLanguage } from "@/lib/language-context";
 import { ThemeProvider } from "@/lib/theme-provider";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
 function NotFoundComponent() {
   return (
@@ -116,7 +118,7 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="min-h-screen bg-background font-sans antialiased">
         {children}
         <Scripts />
       </body>
@@ -132,8 +134,13 @@ function RootComponent() {
       <LanguageProvider>
         <QueryClientProvider client={queryClient}>
           <LanguageLangAttribute />
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
+          <div className="flex min-h-screen flex-col">
+            <Navbar />
+            <main className="flex-1">
+              <Outlet />
+            </main>
+            <Footer />
+          </div>
           <Toaster richColors position="top-center" />
         </QueryClientProvider>
       </LanguageProvider>

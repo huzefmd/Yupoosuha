@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PlayCircle } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/SiteLayout";
 import { useContent, youtubeEmbed, type Video } from "@/lib/content";
@@ -36,6 +36,19 @@ function FreeLearning() {
         subtitle="Short videos covering stock market pitching, investing fundamentals and everyday money decisions."
       />
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+        {/* Disclaimer Banner */}
+        <div className="mb-12 rounded-2xl bg-secondary/50 border border-border p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <div className="mt-1 h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+              <span className="text-primary text-xs font-bold">!</span>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              All content here is for educational purposes only and not financial advice.
+              Please read our <Link to="/disclaimer" className="text-primary font-medium hover:underline">Investment Disclaimer</Link>.
+            </p>
+          </div>
+        </div>
+
         {isLoading ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[0, 1, 2].map((i) => (

@@ -494,7 +494,8 @@ function Home() {
     useContent<Insurance>("insurance_types");
 
   return (
-    <SiteLayout>
+    // <SiteLayout>
+    <>
       {/* Indices */}
       <MarketIndices />
 
@@ -1860,6 +1861,9 @@ function Home() {
           </Button>
         </div>
       </section>
-    </SiteLayout>
+
+    </>
+      // </SiteLayout >
+        
   );
 }

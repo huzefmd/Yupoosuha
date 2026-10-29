@@ -13,11 +13,13 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as FinanceRouteImport } from './routes/finance'
 import { Route as FreeLearningRouteImport } from './routes/free-learning'
 import { Route as InsuranceRouteImport } from './routes/insurance'
 import { Route as JobsRouteImport } from './routes/jobs'
 import { Route as ShoppingRouteImport } from './routes/shopping'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as LearnTopicRouteImport } from './routes/learn.$topic'
 
 const IndexRoute = IndexRouteImport.update({
@@ -38,6 +40,11 @@ const AuthRoute = AuthRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DisclaimerRoute = DisclaimerRouteImport.update({
+  id: '/disclaimer',
+  path: '/disclaimer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FinanceRoute = FinanceRouteImport.update({
@@ -65,6 +72,11 @@ const ShoppingRoute = ShoppingRouteImport.update({
   path: '/shopping',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LearnTopicRoute = LearnTopicRouteImport.update({
   id: '/learn/$topic',
   path: '/learn/$topic',
@@ -76,11 +88,13 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/disclaimer': typeof DisclaimerRoute
   '/finance': typeof FinanceRoute
   '/free-learning': typeof FreeLearningRoute
   '/insurance': typeof InsuranceRoute
   '/jobs': typeof JobsRoute
   '/shopping': typeof ShoppingRoute
+  '/terms': typeof TermsRoute
   '/learn/$topic': typeof LearnTopicRoute
 }
 export interface FileRoutesByTo {
@@ -88,11 +102,13 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/disclaimer': typeof DisclaimerRoute
   '/finance': typeof FinanceRoute
   '/free-learning': typeof FreeLearningRoute
   '/insurance': typeof InsuranceRoute
   '/jobs': typeof JobsRoute
   '/shopping': typeof ShoppingRoute
+  '/terms': typeof TermsRoute
   '/learn/$topic': typeof LearnTopicRoute
 }
 export interface FileRoutesById {
@@ -101,11 +117,13 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/disclaimer': typeof DisclaimerRoute
   '/finance': typeof FinanceRoute
   '/free-learning': typeof FreeLearningRoute
   '/insurance': typeof InsuranceRoute
   '/jobs': typeof JobsRoute
   '/shopping': typeof ShoppingRoute
+  '/terms': typeof TermsRoute
   '/learn/$topic': typeof LearnTopicRoute
 }
 export interface FileRouteTypes {
@@ -115,11 +133,13 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/contact'
+    | '/disclaimer'
     | '/finance'
     | '/free-learning'
     | '/insurance'
     | '/jobs'
     | '/shopping'
+    | '/terms'
     | '/learn/$topic'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -127,11 +147,13 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/contact'
+    | '/disclaimer'
     | '/finance'
     | '/free-learning'
     | '/insurance'
     | '/jobs'
     | '/shopping'
+    | '/terms'
     | '/learn/$topic'
   id:
     | '__root__'
@@ -139,11 +161,13 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/contact'
+    | '/disclaimer'
     | '/finance'
     | '/free-learning'
     | '/insurance'
     | '/jobs'
     | '/shopping'
+    | '/terms'
     | '/learn/$topic'
   fileRoutesById: FileRoutesById
 }
@@ -152,11 +176,13 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
+  DisclaimerRoute: typeof DisclaimerRoute
   FinanceRoute: typeof FinanceRoute
   FreeLearningRoute: typeof FreeLearningRoute
   InsuranceRoute: typeof InsuranceRoute
   JobsRoute: typeof JobsRoute
   ShoppingRoute: typeof ShoppingRoute
+  TermsRoute: typeof TermsRoute
   LearnTopicRoute: typeof LearnTopicRoute
 }
 
@@ -188,6 +214,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/disclaimer': {
+      id: '/disclaimer'
+      path: '/disclaimer'
+      fullPath: '/disclaimer'
+      preLoaderRoute: typeof DisclaimerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/finance': {
@@ -225,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShoppingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/learn/$topic': {
       id: '/learn/$topic'
       path: '/learn/$topic'
@@ -240,11 +280,13 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
+  DisclaimerRoute: DisclaimerRoute,
   FinanceRoute: FinanceRoute,
   FreeLearningRoute: FreeLearningRoute,
   InsuranceRoute: InsuranceRoute,
   JobsRoute: JobsRoute,
   ShoppingRoute: ShoppingRoute,
+  TermsRoute: TermsRoute,
   LearnTopicRoute: LearnTopicRoute,
 }
 export const routeTree = rootRouteImport
