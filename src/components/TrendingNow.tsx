@@ -8,7 +8,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getTrendingNews, getStockNews, type NewsArticle } from "@/lib/news.functions";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { useLanguage } from "@/lib/language-context";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -16,8 +15,8 @@ function cn(...inputs: ClassValue[]) {
 
 type Category = "all" | "market" | "stocks";
 
-const CATEGORIES: { labelKey: string; value: Category; icon: React.ReactNode }[] = [
-  { labelKey: "trending.stocks", value: "stocks", icon: <Briefcase className="w-4 h-4" /> },
+const CATEGORIES: { label: string; value: Category; icon: React.ReactNode }[] = [
+  { label: "Stocks", value: "stocks", icon: <Briefcase className="w-4 h-4" /> },
 ];
 
 const INDIAN_STOCK_SYMBOLS = [
@@ -32,7 +31,6 @@ const INDIAN_STOCK_SYMBOLS = [
 ];
 
 export default function TrendingNow() {
-  const { language, setLanguage, t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<Category>("stocks");
 
   const {
@@ -65,7 +63,7 @@ export default function TrendingNow() {
 
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp * 1000);
-    return date.toLocaleDateString(language, {
+    return date.toLocaleDateString("en-US", {
       day: "numeric",
       month: "short",
       hour: "2-digit",
@@ -81,8 +79,8 @@ export default function TrendingNow() {
             <TrendingUp className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-3xl font-bold tracking-tight">{t("trending.title")}</h2>
-            <p className="text-muted-foreground">{t("trending.subtitle")}</p>
+            <h2 className="text-3xl font-bold tracking-tight">Trending Now</h2>
+            <p className="text-muted-foreground">Latest updates from the market</p>
           </div>
         </div>
 
@@ -99,7 +97,7 @@ export default function TrendingNow() {
               onClick={() => setActiveCategory(cat.value)}
             >
               {cat.icon}
-              {t(cat.labelKey)}
+              {cat.label}
             </Button>
           ))}
         </div>
@@ -124,9 +122,9 @@ export default function TrendingNow() {
         </div>
       ) : isError ? (
         <div className="text-center py-12 bg-muted/50 rounded-2xl border-2 border-dashed">
-          <p className="text-muted-foreground mb-4">{t("trending.error_title")}</p>
+          <p className="text-muted-foreground mb-4">Oops! Something went wrong</p>
           <Button variant="outline" onClick={() => (window as any).location.reload()}>
-            {t("trending.error_retry")}
+            Retry
           </Button>
           <p className="text-xs text-muted-foreground mt-2">
             {error instanceof Error ? error.message : "An unexpected error occurred"}
@@ -185,7 +183,7 @@ export default function TrendingNow() {
                       rel="noopener noreferrer"
                       className="text-sm font-medium text-blue-600 hover:text-blue-700 flex items-center gap-1 group/btn"
                     >
-                      {t("trending.read_article")}
+                      Read Article
                       <ExternalLink className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" />
                     </a>
                   </div>
@@ -194,7 +192,7 @@ export default function TrendingNow() {
             ))
           ) : (
             <div className="col-span-full text-center py-12 bg-muted/50 rounded-2xl border-2 border-dashed">
-              <p className="text-muted-foreground">{t("trending.error_empty")}</p>
+              <p className="text-muted-foreground">No trending news available right now</p>
             </div>
           )}
         </div>

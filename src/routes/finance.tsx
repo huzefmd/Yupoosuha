@@ -52,7 +52,7 @@ function Finance() {
                 key={f.id}
                 className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card"
               >
-                <div className="aspect-[16/9] bg-secondary">
+                <div className="aspect-video bg-secondary">
                   {f.image_url ? (
                     <img
                       src={f.image_url}

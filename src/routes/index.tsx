@@ -15,7 +15,7 @@ import {
 import { useRef, useEffect } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/lib/language-context";
+// import { useLanguage } from "@/lib/language-context";
 import { learnTopics } from "@/lib/learn-topics";
 import angelOneLogo from "@/assets/angel-one.png";
 import jmFinancialLogo from "@/assets/jm-financial.jpg";
@@ -75,8 +75,8 @@ export const Route = createFileRoute("/")({
 const features = [
   {
     icon: GraduationCap,
-    titleKey: "home.feature_1_title",
-    textKey: "home.feature_1_text",
+    title: "Free Learning",
+    text: "Master the basics of money and investing with our curated free video series.",
     to: "/free-learning",
     image:
       "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=70",
@@ -86,8 +86,8 @@ const features = [
   },
   {
     icon: ShoppingBag,
-    titleKey: "home.feature_2_title",
-    textKey: "home.feature_2_text",
+    title: "Smart Shopping",
+    text: "Find the best deals and platforms for your everyday needs and luxury wants.",
     to: "/shopping",
     image:
       "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=70",
@@ -96,8 +96,8 @@ const features = [
   },
   {
     icon: ShieldCheck,
-    titleKey: "home.feature_3_title",
-    textKey: "home.feature_3_text",
+    title: "Insurance Help",
+    text: "Understand the fine print and find coverage that actually protects your future.",
     to: "/insurance",
     image:
       "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=70",
@@ -106,8 +106,8 @@ const features = [
   },
   {
     icon: LineChart,
-    titleKey: "home.feature_4_title",
-    textKey: "home.feature_4_text",
+    title: "Finance Guidance",
+    text: "From Demat accounts to Loans, get straightforward help with your finances.",
     to: "/finance",
     image:
       "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=70",
@@ -116,8 +116,8 @@ const features = [
   },
   {
     icon: Briefcase,
-    titleKey: "home.feature_5_title",
-    textKey: "home.feature_5_text",
+    title: "Job Opportunities",
+    text: "Discover the best paths to grow your career and find the right opportunities.",
     to: "/jobs",
     image:
       "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=70",
@@ -359,7 +359,6 @@ const eBankingApps = [
 ];
 
 function Home() {
-  const { t } = useLanguage();
 
   const shoppingPlatformsRef = useRef<HTMLDivElement>(null);
   const creditCardsRef = useRef<HTMLDivElement>(null);
@@ -505,11 +504,11 @@ function Home() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {t("home2.financial_services")}
+              Financial Services
             </h2>
 
             <p className="mt-2 text-base text-muted-foreground sm:text-lg">
-              {t("home.financial_services_subtitle")}
+              Get set up with the right accounts for your future.
             </p>
           </div>
 
@@ -517,7 +516,7 @@ function Home() {
             to="/finance"
             className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
           >
-            {t("home.view_all")}
+            View All
           </Link>
         </div>
 
@@ -585,11 +584,11 @@ function Home() {
         <div className="mb-6 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {t("home.start_learning")}
+              Start Learning
             </h2>
 
             <p className="mt-2 text-sm text-muted-foreground sm:text-base">
-              {t("home.start_learning_subtitle")}
+              Learn the basics of money and investing for free.
             </p>
           </div>
 
@@ -597,7 +596,7 @@ function Home() {
             to="/free-learning"
             className="shrink-0 text-sm font-medium text-primary hover:underline"
           >
-            {t("home.view_all")}
+            View All
           </Link>
         </div>
 
@@ -739,11 +738,11 @@ function Home() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {t("home.financial_services")}
+              Financial Services
             </h2>
 
             <p className="mt-2 text-base text-muted-foreground sm:text-lg">
-              {t("home.financial_services_subtitle")}
+              Get set up with the right accounts for your future.
             </p>
           </div>
 
@@ -751,7 +750,7 @@ function Home() {
             to="/finance"
             className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
           >
-            {t("home.view_all")}
+            View All
           </Link>
         </div>
 
@@ -820,11 +819,11 @@ function Home() {
           <div className="flex items-end gap-4">
             <div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                {t("home.shopping_platforms")}
+                Shopping Platforms
               </h2>
 
               <p className="mt-2 text-base text-muted-foreground">
-                {t("home.shopping_platforms_subtitle")}
+                {("home.shopping_platforms_subtitle")}
               </p>
             </div>
 
@@ -849,7 +848,7 @@ function Home() {
           </div>
 
           <Link to="/shopping" className="text-sm font-medium text-primary hover:underline">
-            {t("home.view_all")}
+            View All
           </Link>
         </div>
 
@@ -995,11 +994,11 @@ function Home() {
           <div className="flex items-end gap-4">
             <div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                {t("home.shopping_platforms2")}
+                Credit Cards
               </h2>
 
               <p className="mt-2 text-base text-muted-foreground">
-                {t("home.shopping_platforms_subtitle")}
+                {("home.shopping_platforms_subtitle")}
               </p>
             </div>
 
@@ -1031,7 +1030,7 @@ function Home() {
             to="/shopping"
             className="text-sm font-medium text-primary hover:underline"
           >
-            {t("home.view_all")}
+            {("home.view_all")}
           </Link>
         </div>
 
@@ -1277,11 +1276,11 @@ function Home() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {t("home.shopping_products")}
+              Shopping Products
             </h2>
 
             <p className="mt-2 text-base text-muted-foreground">
-              {t("home.shopping_products_subtitle")}
+              Check out our top product recommendations.
             </p>
           </div>
 
@@ -1289,7 +1288,7 @@ function Home() {
             to="/shopping"
             className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
           >
-            {t("home.view_all")}
+            {("home.view_all")}
           </Link>
         </div>
 
@@ -1304,7 +1303,7 @@ function Home() {
           <div className="rounded-2xl border border-border bg-card p-8 text-center">
             <ShoppingBag className="mx-auto h-8 w-8 text-muted-foreground" />
 
-            <p className="mt-3 text-sm text-muted-foreground">{t("home.shopping_empty")}</p>
+            <p className="mt-3 text-sm text-muted-foreground">No shopping deals available right now</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
@@ -1345,7 +1344,7 @@ function Home() {
 
                   <Button asChild size="sm" className="mt-4 w-full">
                     <a href={d.link || "#"} target="_blank" rel="noreferrer noopener sponsored">
-                      {t("home.shop_now")}
+                      {("Shop Now")}
                     </a>
                   </Button>
                 </div>
@@ -1361,11 +1360,11 @@ function Home() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {t("home.free_learning")}
+              Free Learning
             </h2>
 
             <p className="mt-2 text-base text-muted-foreground">
-              {t("home.free_learning_subtitle")}
+              Start your journey with our curated learning paths.
             </p>
           </div>
 
@@ -1373,7 +1372,7 @@ function Home() {
             to="/free-learning"
             className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
           >
-            {t("home.view_all")}
+            {("home.view_all")}
           </Link>
         </div>
 
@@ -1388,7 +1387,7 @@ function Home() {
           <div className="rounded-2xl border border-border bg-card p-8 text-center">
             <PlayCircle className="mx-auto h-8 w-8 text-muted-foreground" />
 
-            <p className="mt-3 text-sm text-muted-foreground">{t("home.free_learning_empty")}</p>
+            <p className="mt-3 text-sm text-muted-foreground">No learning videos available</p>
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -1443,7 +1442,7 @@ function Home() {
                         className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                       >
                         <PlayCircle className="h-4 w-4" />
-                        {t("home.watch_video")}
+                        {("home.watch_video")}
                       </a>
                     )}
                   </div>
@@ -1459,10 +1458,10 @@ function Home() {
         {/* Header */}
         <div className="mb-7 flex items-end justify-between">
           <div>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t("insurance")}</h2>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Insurance</h2>
 
             <p className="mt-2 text-base text-muted-foreground">
-              {t("Cover that actually fits your life")}
+              Cover that actually fits your life.
             </p>
           </div>
 
@@ -1470,7 +1469,7 @@ function Home() {
             to="/insurance"
             className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
           >
-            {t("home.view_all")}
+            View All
           </Link>
         </div>
 
@@ -1488,7 +1487,7 @@ function Home() {
           <div className="rounded-2xl border border-border bg-card p-8 text-center">
             <ShieldCheck className="mx-auto h-8 w-8 text-muted-foreground" />
 
-            <p className="mt-3 text-sm text-muted-foreground">{t("home.insurance_empty")}</p>
+            <p className="mt-3 text-sm text-muted-foreground">No insurance items available</p>
           </div>
         ) : (
           <div className="relative w-full overflow-hidden">
@@ -1555,7 +1554,7 @@ function Home() {
                           rel="noreferrer noopener"
                           className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                         >
-                          {t("home.learn_more")}
+                          Learn More
                           <ArrowRight className="h-4 w-4" />
                         </a>
                       )}
@@ -1608,7 +1607,7 @@ function Home() {
                           rel="noreferrer noopener"
                           className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                         >
-                          {t("home.learn_more")}
+                          Learn More
                           <ArrowRight className="h-4 w-4" />
                         </a>
                       )}
@@ -1636,11 +1635,11 @@ function Home() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {t("home.e_banking_apps")}
+              e-Banking Apps
             </h2>
 
             <p className="mt-2 text-base text-muted-foreground">
-              {t("home.e_banking_apps_subtitle")}
+              Essential apps for your digital banking.
             </p>
           </div>
         </div>
@@ -1681,10 +1680,10 @@ function Home() {
         <div className="mb-7 flex items-end justify-between">
           <div>
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              {t("home.key_features")}
+              Key Features
             </h2>
             <p className="mt-2 max-w-2xl text-muted-foreground">
-              {t("home.key_features_subtitle")}
+              Everything you need to take control of your financial life.
             </p>
           </div>
         </div>
@@ -1718,7 +1717,7 @@ function Home() {
                 <h3 className="font-semibold">{f.title}</h3>
                 <p className="mt-1.5 text-sm text-muted-foreground">{f.text}</p>
                 <span className="mt-4 inline-flex items-center text-sm font-medium text-primary">
-                  {t("home.explore")}
+                  Explore Now
                   <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </span>
               </div>
@@ -1734,15 +1733,15 @@ function Home() {
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
               <MessageCircle className="h-3.5 w-3.5" />
-              {t("home.whatsapp_channel_label")}
+              WhatsApp Channel
             </span>
 
             <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
-              {t("home.whatsapp_channel_title")}
+              Join our WhatsApp Channel
             </h2>
 
             <p className="mt-2 max-w-xl text-sm text-muted-foreground sm:text-base">
-              {t("home.whatsapp_channel_subtitle")} Scan the QR with your phone, or tap the button
+              Stay updated with the latest market news. Scan the QR with your phone, or tap the button
               below.
             </p>
 
@@ -1753,11 +1752,11 @@ function Home() {
               className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700"
             >
               <MessageCircle className="h-4 w-4" />
-              {t("home.whatsapp_btn")}
+              Join Channel
             </a>
 
             <p className="mt-3 text-[11px] text-muted-foreground">
-              {t("home.whatsapp_external_link")}
+              External link to WhatsApp
             </p>
           </div>
 
@@ -1782,7 +1781,7 @@ function Home() {
               className="h-48 w-48 rounded-xl border border-border bg-white p-2 transition-transform duration-300 group-hover:scale-105"
             />
             <span className="text-xs font-medium text-muted-foreground">
-              {t("home.whatsapp_qr_text")}
+              Scan to Join
             </span>
           </a>
         </div>
@@ -1795,15 +1794,15 @@ function Home() {
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
               <MessageCircle className="h-3.5 w-3.5" />
-              {t("home.whatsapp_channel_label")}
+              WhatsApp Channel
             </span>
 
             <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
-              {t("home2.whatsapp_channel_title")}
+              Join our WhatsApp Channel
             </h2>
 
             <p className="mt-2 max-w-xl text-sm text-muted-foreground sm:text-base">
-              {t("home2.whatsapp_channel_subtitle")} Scan the QR with your phone, or tap the button
+              Stay updated with the latest market news. Scan the QR with your phone, or tap the button
               below.
             </p>
 
@@ -1814,11 +1813,11 @@ function Home() {
               className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700"
             >
               <MessageCircle className="h-4 w-4" />
-              {t("home.whatsapp_btn")}
+              Join Channel
             </a>
 
             <p className="mt-3 text-[11px] text-muted-foreground">
-              {t("home.whatsapp_external_link")}
+              External link to WhatsApp
             </p>
           </div>
 
@@ -1843,7 +1842,7 @@ function Home() {
               className="h-48 w-48 rounded-xl border border-border bg-white p-2 transition-transform duration-300 group-hover:scale-105"
             />
             <span className="text-xs font-medium text-muted-foreground">
-              {t("home.whatsapp_qr_text")}
+              Scan to Join
             </span>
           </a>
         </div>
@@ -1852,12 +1851,12 @@ function Home() {
       {/* Ready to get started? */}
       <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6">
         <div className="rounded-3xl bg-ink px-8 py-14 text-center text-ink-foreground">
-          <h2 className="text-2xl font-bold sm:text-3xl">{t("home.ready_to_start")}</h2>
+          <h2 className="text-2xl font-bold sm:text-3xl">Ready to get started?</h2>
           <p className="mx-auto mt-3 max-w-xl text-ink-foreground/70">
-            {t("home.ready_to_start_subtitle")}
+            Join our community and start your journey to financial freedom today.
           </p>
           <Button asChild size="lg" className="mt-7">
-            <Link to="/auth">{t("home.ready_to_start_btn")}</Link>
+            <Link to="/auth">Get Started Now</Link>
           </Button>
         </div>
       </section>

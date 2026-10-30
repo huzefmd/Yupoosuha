@@ -7,7 +7,6 @@ import {
   X,
   LogOut,
   ShieldCheck,
-  Languages,
   Sun,
   Moon,
 } from "lucide-react";
@@ -25,36 +24,22 @@ import {
 
 import { useIsAdmin } from "@/lib/session";
 import { supabase } from "@/integrations/supabase/client";
-import { useLanguage } from "@/lib/language-context";
 import { useTheme } from "@/lib/theme-provider";
 
 const links = [
-  { to: "/", label: "nav.home" },
-  { to: "/free-learning", label: "nav.free_learning" },
-  { to: "/shopping", label: "nav.shopping" },
-  { to: "/insurance", label: "nav.insurance" },
-  { to: "/finance", label: "nav.finance" },
-  { to: "/jobs", label: "nav.jobs" },
-  { to: "/contact", label: "nav.contact" },
+  { to: "/", label: "Home" },
+  { to: "/free-learning", label: "Free Learning" },
+  { to: "/shopping", label: "Shopping" },
+  { to: "/insurance", label: "Insurance" },
+  { to: "/finance", label: "Finance" },
+  { to: "/jobs", label: "Jobs" },
+  { to: "/contact", label: "Contact" },
 ] as const;
-
-const LANGUAGES = [
-  { code: "en", label: "English" },
-  { code: "hi", label: "हिंदी" },
-  { code: "mr", label: "मराठी" },
-  { code: "gu", label: "ગુજરાતી" },
-  { code: "kn", label: "ಕನ್ನಡ" },
-  { code: "te", label: "తెలుగు" },
-  { code: "ml", label: "മലയാളം" },
-  { code: "ta", label: "தமிழ்" },
-  { code: "ur", label: "اردو" },
-];
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  const { language, setLanguage, t } = useLanguage();
   const { user, isAdmin } = useIsAdmin();
   const { theme, setTheme } = useTheme();
 
@@ -81,14 +66,14 @@ export function Navbar() {
     navigate({ to: "/" });
   };
 
-  const navLink = (to: string, labelKey: string) => (
+const navLink = (to: string, label: string) => (
     <Link
       key={to}
       to={to}
       onClick={() => setOpen(false)}
       className="rounded-full px-5 py-2 text-sm font-medium text-foreground transition-all duration-300 hover:bg-accent hover:text-primary hover:shadow-sm"
     >
-      {t(labelKey)}
+      {label}
     </Link>
   );
 
@@ -157,7 +142,7 @@ export function Navbar() {
             >
               <Link to="/admin">
                 <ShieldCheck className="mr-2 h-4 w-4" />
-                {t("nav.admin")}
+                Admin
               </Link>
             </Button>
           )}
@@ -171,11 +156,11 @@ export function Navbar() {
               className="rounded-full bg-gradient-to-r from-red-600 to-orange-500 px-5 text-white shadow-lg transition-all duration-300 hover:scale-105 hover:from-red-700 hover:to-orange-600"
             >
               <LogOut className="mr-2 h-4 w-4" />
-              {t("nav.signout")}
+              Sign Out
             </Button>
           ) : (
             <Button asChild size="sm">
-              <Link to="/auth">{t("nav.signin")}</Link>
+              <Link to="/auth">Sign In</Link>
             </Button>
           )}
         </div>
@@ -212,7 +197,7 @@ export function Navbar() {
                     "rounded-xl bg-primary text-primary-foreground font-semibold px-4 py-3 shadow",
                 }}
               >
-                {t(link.label)}
+                {link.label}
               </Link>
             ))}
           </div>
@@ -241,32 +226,6 @@ export function Navbar() {
               )}
             </Button>
 
-            {/* Mobile Language Selector */}
-            <div className="flex items-center gap-3 rounded-xl border border-border bg-muted px-2 py-2">
-              <Languages className="h-4 w-4 text-muted-foreground" />
-
-              <span className="text-xs font-medium text-muted-foreground">
-                Language
-              </span>
-
-              <Select
-                value={language}
-                onValueChange={setLanguage}
-              >
-                <SelectTrigger className="h-8 flex-1 rounded-lg border-none bg-card text-xs shadow-none focus:ring-0">
-                  <SelectValue placeholder="Select Language" />
-                </SelectTrigger>
-
-                <SelectContent>
-                  {LANGUAGES.map((lang) => (
-                    <SelectItem key={lang.code} value={lang.code}>
-                      {lang.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
             {/* Mobile Admin Button */}
             {isAdmin && (
               <Button
@@ -278,7 +237,7 @@ export function Navbar() {
                   onClick={() => setOpen(false)}
                 >
                   <ShieldCheck className="mr-2 h-4 w-4" />
-                  {t("nav.admin")}
+                  Admin
                 </Link>
               </Button>
             )}
@@ -291,7 +250,7 @@ export function Navbar() {
                 className="w-full rounded-xl border-border bg-card text-foreground hover:bg-accent"
               >
                 <LogOut className="mr-2 h-4 w-4" />
-                {t("nav.signout")}
+                Sign Out
               </Button>
             ) : (
               <Button
@@ -302,7 +261,7 @@ export function Navbar() {
                   to="/auth"
                   onClick={() => setOpen(false)}
                 >
-                  {t("nav.signin")}
+                  Sign In
                 </Link>
               </Button>
             )}
