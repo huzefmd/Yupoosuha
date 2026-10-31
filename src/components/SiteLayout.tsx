@@ -6,9 +6,9 @@ import { LiveChatWidget } from "./LiveChatWidget";
 export function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <Navbar />
+      {/* <Navbar /> */}
       <main className="flex-1">{children}</main>
-      <Footer />
+      {/* <Footer /> */}
       <LiveChatWidget />
     </div>
   );
