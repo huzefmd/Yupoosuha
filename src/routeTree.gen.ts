@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CreditCardsRouteImport } from './routes/credit-cards'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as FinanceRouteImport } from './routes/finance'
 import { Route as FreeLearningRouteImport } from './routes/free-learning'
@@ -40,6 +41,11 @@ const AuthRoute = AuthRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreditCardsRoute = CreditCardsRouteImport.update({
+  id: '/credit-cards',
+  path: '/credit-cards',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DisclaimerRoute = DisclaimerRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/credit-cards': typeof CreditCardsRoute
   '/disclaimer': typeof DisclaimerRoute
   '/finance': typeof FinanceRoute
   '/free-learning': typeof FreeLearningRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/credit-cards': typeof CreditCardsRoute
   '/disclaimer': typeof DisclaimerRoute
   '/finance': typeof FinanceRoute
   '/free-learning': typeof FreeLearningRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/credit-cards': typeof CreditCardsRoute
   '/disclaimer': typeof DisclaimerRoute
   '/finance': typeof FinanceRoute
   '/free-learning': typeof FreeLearningRoute
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/contact'
+    | '/credit-cards'
     | '/disclaimer'
     | '/finance'
     | '/free-learning'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/contact'
+    | '/credit-cards'
     | '/disclaimer'
     | '/finance'
     | '/free-learning'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/auth'
     | '/contact'
+    | '/credit-cards'
     | '/disclaimer'
     | '/finance'
     | '/free-learning'
@@ -176,6 +188,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
+  CreditCardsRoute: typeof CreditCardsRoute
   DisclaimerRoute: typeof DisclaimerRoute
   FinanceRoute: typeof FinanceRoute
   FreeLearningRoute: typeof FreeLearningRoute
@@ -214,6 +227,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/credit-cards': {
+      id: '/credit-cards'
+      path: '/credit-cards'
+      fullPath: '/credit-cards'
+      preLoaderRoute: typeof CreditCardsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/disclaimer': {
@@ -280,6 +300,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
+  CreditCardsRoute: CreditCardsRoute,
   DisclaimerRoute: DisclaimerRoute,
   FinanceRoute: FinanceRoute,
   FreeLearningRoute: FreeLearningRoute,

@@ -1,64 +1,26 @@
-import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink, Newspaper, TrendingUp, Globe, Briefcase } from "lucide-react";
+import { ExternalLink, TrendingUp } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getTrendingNews, getStockNews, type NewsArticle } from "@/lib/news.functions";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { getAllNews } from "@/lib/news.functions";
 
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-type Category = "all" | "market" | "stocks";
-
-const CATEGORIES: { label: string; value: Category; icon: React.ReactNode }[] = [
-  { label: "Stocks", value: "stocks", icon: <Briefcase className="w-4 h-4" /> },
-];
-
-const INDIAN_STOCK_SYMBOLS = [
-  "RELIANCE.NS",
-  "HDFCBANK.NS",
-  "INFY.NS",
-  "TCS.NS",
-  "ICICIBANK.NS",
-  "SBIN.NS",
-  "BHARTIARTL.NS",
-  "ITC.NS",
-];
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1611974717482-98257667755b?q=80&w=800&auto=format&fit=crop";
 
 export default function TrendingNow() {
-  const [activeCategory, setActiveCategory] = useState<Category>("stocks");
-
   const {
     data: news,
     isLoading,
     isError,
     error,
+    refetch,
   } = useQuery({
-    queryKey: ["trending-news", activeCategory],
-    queryFn: async () => {
-      try {
-        // Fetch stock-specific news for the symbols
-        const stockNewsPromises = INDIAN_STOCK_SYMBOLS.map((symbol) =>
-          getStockNews({ symbol }).then((res) => res.map((art) => ({ ...art, symbol }))),
-        );
-        const stockNewsResults = await Promise.all(stockNewsPromises);
-        const flattenedStockNews = stockNewsResults.flat();
-
-        if (flattenedStockNews.length > 0) {
-          return flattenedStockNews.sort((a, b) => b.datetime - a.datetime);
-        }
-
-        // Fallback to general market news if no stock-specific news is found
-        return await getTrendingNews({ category: "general" });
-      } catch (e: any) {
-        throw e;
-      }
-    },
+    queryKey: ["trending-news"],
+    queryFn: () => getAllNews(),
+    refetchInterval: 5 * 60 * 1000, // refresh every 5 minutes
+    staleTime: 2 * 60 * 1000,
   });
 
   const formatTime = (timestamp: number) => {
@@ -80,33 +42,20 @@ export default function TrendingNow() {
           </div>
           <div>
             <h2 className="text-3xl font-bold tracking-tight">Trending Now</h2>
-            <p className="text-muted-foreground">Latest updates from the market</p>
+            <p className="text-muted-foreground">
+              Latest updates from the market
+            </p>
           </div>
-        </div>
-
-        <div className="flex p-0.5 bg-muted rounded-md w-fit">
-          {CATEGORIES.map((cat) => (
-            <Button
-              key={cat.value}
-              variant={activeCategory === cat.value ? "default" : "ghost"}
-              size="sm"
-              className={cn(
-                "gap-1 px-2 py-0.5 text-[11px] h-6 transition-all",
-                activeCategory === cat.value ? "shadow-sm" : "",
-              )}
-              onClick={() => setActiveCategory(cat.value)}
-            >
-              {cat.icon}
-              {cat.label}
-            </Button>
-          ))}
         </div>
       </div>
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
-            <Card key={i} className="overflow-hidden border-none shadow-md bg-card">
+            <Card
+              key={i}
+              className="overflow-hidden border-none shadow-md bg-card"
+            >
               <Skeleton className="h-48 w-full" />
               <CardContent className="p-4 space-y-3">
                 <div className="flex justify-between items-center">
@@ -122,12 +71,16 @@ export default function TrendingNow() {
         </div>
       ) : isError ? (
         <div className="text-center py-12 bg-muted/50 rounded-2xl border-2 border-dashed">
-          <p className="text-muted-foreground mb-4">Oops! Something went wrong</p>
-          <Button variant="outline" onClick={() => (window as any).location.reload()}>
+          <p className="text-muted-foreground mb-4">
+            Oops! Something went wrong
+          </p>
+          <Button variant="outline" onClick={() => refetch()}>
             Retry
           </Button>
           <p className="text-xs text-muted-foreground mt-2">
-            {error instanceof Error ? error.message : "An unexpected error occurred"}
+            {error instanceof Error
+              ? error.message
+              : "An unexpected error occurred"}
           </p>
         </div>
       ) : (
@@ -138,28 +91,24 @@ export default function TrendingNow() {
                 key={article.id}
                 className="group overflow-hidden border-none shadow-md bg-card hover:shadow-xl transition-all duration-300 flex flex-col"
               >
-                <div className="relative aspect-video overflow-hidden">
+                <div className="relative aspect-video overflow-hidden bg-muted">
                   <img
-                    src={
-                      article.image ||
-                      "https://images.unsplash.com/photo-1611974717482-98257667755b?q=80&w=800&auto=format&fit=crop"
-                    }
+                    src={article.image || FALLBACK_IMAGE}
                     alt={article.headline}
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                    className="object-contain w-full h-full group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src =
-                        "https://images.unsplash.com/photo-1611974717482-98257667755b?q=80&w=800&auto=format&fit=crop";
+                      (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
                     }}
                   />
-                  {(article.related || article.symbol) && (
-                    <Badge className="absolute top-3 right-3 bg-blue-600/90 backdrop-blur-sm border-none text-white">
-                      {article.symbol || article.related}
-                    </Badge>
-                  )}
+                  <Badge className="absolute top-3 right-3 bg-blue-600/90 backdrop-blur-sm border-none text-white">
+                    {article.source}
+                  </Badge>
                 </div>
                 <CardContent className="p-5 flex flex-col flex-grow">
                   <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                    <span className="font-medium text-foreground">{article.source}</span>
+                    <span className="font-medium text-foreground">
+                      {article.source}
+                    </span>
                     <span>•</span>
                     <span>{formatTime(article.datetime)}</span>
                   </div>
@@ -192,7 +141,9 @@ export default function TrendingNow() {
             ))
           ) : (
             <div className="col-span-full text-center py-12 bg-muted/50 rounded-2xl border-2 border-dashed">
-              <p className="text-muted-foreground">No trending news available right now</p>
+              <p className="text-muted-foreground">
+                No trending news available right now
+              </p>
             </div>
           )}
         </div>

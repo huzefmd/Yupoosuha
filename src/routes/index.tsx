@@ -50,6 +50,7 @@ import sbmZetLogo from "@/assets/SBM ZET.jpeg";
 import scapiaLogo from "@/assets/SCAPIA.jpeg";
 import nj from "@/assets/nj.jpg"
 
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -396,14 +397,9 @@ function Home() {
     if (!el) return;
 
     if (el.scrollLeft <= 0) {
-      el.scrollLeft = el.scrollWidth / 2;
-    } else {
-      el.scrollBy({
-        left: -325,
-        behavior: "smooth",
-      });
+      el.scrollTo({ left: el.scrollWidth / 2, behavior: "instant" });
     }
-
+    el.scrollBy({ left: -325, behavior: "smooth" });
   };
 
   const scrollcreditPlatformsRight = () => {
@@ -411,15 +407,10 @@ function Home() {
     if (!el) return;
 
     if (el.scrollLeft >= el.scrollWidth / 2) {
-      el.scrollLeft = 0;
-    } else {
-      el.scrollBy({
-        left: 325,
-        behavior: "smooth",
-      });
+      el.scrollTo({ left: 0, behavior: "instant" });
     }
+    el.scrollBy({ left: 325, behavior: "smooth" });
   };
-
   const scrollPlatformsRight = () => {
     const el = shoppingPlatformsRef.current;
     if (!el) return;
@@ -494,122 +485,122 @@ function Home() {
 
   return (
     <SiteLayout>
-    <>
-      {/* Indices */}
-      <MarketIndices />
+      <>
+        {/* Indices */}
+        <MarketIndices />
 
-      {/* To Open a Free Demat Account */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
-        {/* Section Header */}
-        <div className="mb-7 flex items-end justify-between">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Financial Services
-            </h2>
+        {/* To Open a Free Demat Account */}
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
+          {/* Section Header */}
+          <div className="mb-7 flex items-end justify-between">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Financial Services
+              </h2>
 
-            <p className="mt-2 text-base text-muted-foreground sm:text-lg">
-              Get set up with the right accounts for your future.
-            </p>
+              <p className="mt-2 text-base text-muted-foreground sm:text-lg">
+                Get set up with the right accounts for your future.
+              </p>
+            </div>
+
+            <Link
+              to="/finance"
+              className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
+            >
+              View All
+            </Link>
           </div>
 
-          <Link
-            to="/finance"
-            className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
-          >
-            View All
-          </Link>
-        </div>
+          {/* Services */}
+          <div className="flex gap-5 overflow-x-auto pb-5 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            {" "}
+            {financialServices.map((service) => {
+              const external = service.href.startsWith("http");
 
-        {/* Services */}
-        <div className="flex gap-5 overflow-x-auto pb-5 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          {" "}
-          {financialServices.map((service) => {
-            const external = service.href.startsWith("http");
+              const cardContent = (
+                <>
+                  {/* Original Logo */}
+                  <div className="flex h-[120px] w-full items-center justify-center bg-white p-6">
+                    <img
+                      src={service.logo}
+                      alt={`${service.name} logo`}
+                      loading="lazy"
+                      width={160}
+                      height={80}
+                      className="max-h-[65px] max-w-[130px] object-contain transition-transform duration-300 group-hover:scale-110"
+                    />
+                  </div>
 
-            const cardContent = (
-              <>
-                {/* Original Logo */}
-                <div className="flex h-[120px] w-full items-center justify-center bg-white p-6">
-                  <img
-                    src={service.logo}
-                    alt={`${service.name} logo`}
-                    loading="lazy"
-                    width={160}
-                    height={80}
-                    className="max-h-[65px] max-w-[130px] object-contain transition-transform duration-300 group-hover:scale-110"
-                  />
-                </div>
+                  {/* Name + Category */}
+                  <div className="flex flex-1 flex-col justify-center px-4 py-3">
+                    <h3 className="text-base font-semibold leading-tight">{service.name}</h3>
 
-                {/* Name + Category */}
-                <div className="flex flex-1 flex-col justify-center px-4 py-3">
-                  <h3 className="text-base font-semibold leading-tight">{service.name}</h3>
+                    <p className="mt-1.5 line-clamp-1 text-xs text-muted-foreground">
+                      {service.category}
+                    </p>
+                  </div>
+                </>
+              );
 
-                  <p className="mt-1.5 line-clamp-1 text-xs text-muted-foreground">
-                    {service.category}
-                  </p>
-                </div>
-              </>
-            );
+              if (external) {
+                return (
+                  <a
+                    key={service.name}
+                    href={service.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex h-[190px] w-[190px] min-w-[190px] snap-start flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  >
+                    {cardContent}
+                  </a>
+                );
+              }
 
-            if (external) {
               return (
-                <a
+                <Link
                   key={service.name}
-                  href={service.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  to={service.href as any}
                   className="group flex h-[190px] w-[190px] min-w-[190px] snap-start flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 >
                   {cardContent}
-                </a>
+                </Link>
               );
-            }
+            })}
+          </div>
+        </section>
 
-            return (
-              <Link
-                key={service.name}
-                to={service.href as any}
-                className="group flex h-[190px] w-[190px] min-w-[190px] snap-start flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-              >
-                {cardContent}
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+        {/* START LEARNING  */}
+        <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:py-10">
+          {/* Section Header */}
+          <div className="mb-6 flex items-end justify-between">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Start Learning
+              </h2>
 
-      {/* START LEARNING  */}
-      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:py-10">
-        {/* Section Header */}
-        <div className="mb-6 flex items-end justify-between">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Start Learning
-            </h2>
+              <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+                Learn the basics of money and investing for free.
+              </p>
+            </div>
 
-            <p className="mt-2 text-sm text-muted-foreground sm:text-base">
-              Learn the basics of money and investing for free.
-            </p>
+            <Link
+              to="/free-learning"
+              className="shrink-0 text-sm font-medium text-primary hover:underline"
+            >
+              View All
+            </Link>
           </div>
 
-          <Link
-            to="/free-learning"
-            className="shrink-0 text-sm font-medium text-primary hover:underline"
-          >
-            View All
-          </Link>
-        </div>
-
-        {/* Learning Cards */}
-        <div className="space-y-5">
-          {/* ================= FIRST ROW - 3 CARDS ================= */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {learnTopics.slice(0, 3).map((t) => (
-              <Link
-                key={t.slug}
-                to="/learn/$topic"
-                params={{ topic: t.slug }}
-                className="
+          {/* Learning Cards */}
+          <div className="space-y-5">
+            {/* ================= FIRST ROW - 3 CARDS ================= */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {learnTopics.slice(0, 3).map((t) => (
+                <Link
+                  key={t.slug}
+                  to="/learn/$topic"
+                  params={{ topic: t.slug }}
+                  className="
             group
             relative
             flex
@@ -626,16 +617,16 @@ function Home() {
             hover:-translate-y-1
             hover:shadow-lg
           "
-              >
-                {/* Image */}
-                <div className="relative h-[150px] w-full overflow-hidden bg-white">
-                  <img
-                    src={t.image}
-                    alt={`${t.name} lesson`}
-                    loading="lazy"
-                    width={300}
-                    height={200}
-                    className="
+                >
+                  {/* Image */}
+                  <div className="relative h-[150px] w-full overflow-hidden bg-white">
+                    <img
+                      src={t.image}
+                      alt={`${t.name} lesson`}
+                      loading="lazy"
+                      width={300}
+                      height={200}
+                      className="
                 h-full
                 w-full
                 object-contain
@@ -643,38 +634,38 @@ function Home() {
                 duration-300
                 group-hover:scale-105
               "
-                  />
+                    />
 
-                  {/* Overlay */}
-                  <div
-                    className="
+                    {/* Overlay */}
+                    <div
+                      className="
                 absolute
                 inset-0
                 bg-black/5
                 transition-colors
                 group-hover:bg-black/0
               "
-                  />
-                </div>
+                    />
+                  </div>
 
-                {/* Title */}
-                <div className="flex flex-1 items-center px-5 py-3">
-                  <h3 className="line-clamp-2 text-sm font-semibold leading-tight sm:text-base">
-                    {t.name}
-                  </h3>
-                </div>
-              </Link>
-            ))}
-          </div>
+                  {/* Title */}
+                  <div className="flex flex-1 items-center px-5 py-3">
+                    <h3 className="line-clamp-2 text-sm font-semibold leading-tight sm:text-base">
+                      {t.name}
+                    </h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
 
-          {/* ================= SECOND ROW - 4 CARDS ================= */}
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {learnTopics.slice(3, 7).map((t) => (
-              <Link
-                key={t.slug}
-                to="/learn/$topic"
-                params={{ topic: t.slug }}
-                className="
+            {/* ================= SECOND ROW - 4 CARDS ================= */}
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              {learnTopics.slice(3, 7).map((t) => (
+                <Link
+                  key={t.slug}
+                  to="/learn/$topic"
+                  params={{ topic: t.slug }}
+                  className="
             group
             relative
             flex
@@ -691,16 +682,16 @@ function Home() {
             hover:-translate-y-1
             hover:shadow-lg
           "
-              >
-                {/* Image */}
-                <div className="relative h-[140px] w-full overflow-hidden bg-white">
-                  <img
-                    src={t.image}
-                    alt={`${t.name} lesson`}
-                    loading="lazy"
-                    width={300}
-                    height={200}
-                    className="
+                >
+                  {/* Image */}
+                  <div className="relative h-[140px] w-full overflow-hidden bg-white">
+                    <img
+                      src={t.image}
+                      alt={`${t.name} lesson`}
+                      loading="lazy"
+                      width={300}
+                      height={200}
+                      className="
                 h-full
                 w-full
                 object-contain
@@ -708,185 +699,185 @@ function Home() {
                 duration-300
                 group-hover:scale-105
               "
-                  />
+                    />
 
-                  {/* Overlay */}
-                  <div
-                    className="
+                    {/* Overlay */}
+                    <div
+                      className="
                 absolute
                 inset-0
                 bg-black/5
                 transition-colors
                 group-hover:bg-black/0
               "
-                  />
-                </div>
+                    />
+                  </div>
 
-                {/* Title */}
-                <div className="flex flex-1 items-center px-4 py-2">
-                  <h3 className="line-clamp-2 text-sm font-semibold leading-tight">{t.name}</h3>
-                </div>
-              </Link>
-            ))}
+                  {/* Title */}
+                  <div className="flex flex-1 items-center px-4 py-2">
+                    <h3 className="line-clamp-2 text-sm font-semibold leading-tight">{t.name}</h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* FINANCIAL SERVICES  */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
-        {/* Section Header */}
-        <div className="mb-7 flex items-end justify-between">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Financial Services
-            </h2>
+        {/* FINANCIAL SERVICES  */}
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
+          {/* Section Header */}
+          <div className="mb-7 flex items-end justify-between">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Financial Services
+              </h2>
 
-            <p className="mt-2 text-base text-muted-foreground sm:text-lg">
-              Get set up with the right accounts for your future.
-            </p>
+              <p className="mt-2 text-base text-muted-foreground sm:text-lg">
+                Get set up with the right accounts for your future.
+              </p>
+            </div>
+
+            <Link
+              to="/finance"
+              className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
+            >
+              View All
+            </Link>
           </div>
 
-          <Link
-            to="/finance"
-            className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
-          >
-            View All
-          </Link>
-        </div>
+          {/* Services */}
+          <div className="flex gap-5 overflow-x-auto pb-5 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            {" "}
+            {financialServices.map((service) => {
+              const external = service.href.startsWith("http");
 
-        {/* Services */}
-        <div className="flex gap-5 overflow-x-auto pb-5 snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          {" "}
-          {financialServices.map((service) => {
-            const external = service.href.startsWith("http");
+              const cardContent = (
+                <>
+                  {/* Original Logo */}
+                  <div className="flex h-[120px] w-full items-center justify-center bg-white p-6">
+                    <img
+                      src={service.logo}
+                      alt={`${service.name} logo`}
+                      loading="lazy"
+                      width={160}
+                      height={80}
+                      className="max-h-[65px] max-w-[130px] object-contain transition-transform duration-300 group-hover:scale-110"
+                    />
+                  </div>
 
-            const cardContent = (
-              <>
-                {/* Original Logo */}
-                <div className="flex h-[120px] w-full items-center justify-center bg-white p-6">
-                  <img
-                    src={service.logo}
-                    alt={`${service.name} logo`}
-                    loading="lazy"
-                    width={160}
-                    height={80}
-                    className="max-h-[65px] max-w-[130px] object-contain transition-transform duration-300 group-hover:scale-110"
-                  />
-                </div>
+                  {/* Name + Category */}
+                  <div className="flex flex-1 flex-col justify-center px-4 py-3">
+                    <h3 className="text-base font-semibold leading-tight">{service.name}</h3>
 
-                {/* Name + Category */}
-                <div className="flex flex-1 flex-col justify-center px-4 py-3">
-                  <h3 className="text-base font-semibold leading-tight">{service.name}</h3>
+                    <p className="mt-1.5 line-clamp-1 text-xs text-muted-foreground">
+                      {service.category}
+                    </p>
+                  </div>
+                </>
+              );
 
-                  <p className="mt-1.5 line-clamp-1 text-xs text-muted-foreground">
-                    {service.category}
-                  </p>
-                </div>
-              </>
-            );
+              if (external) {
+                return (
+                  <a
+                    key={service.name}
+                    href={service.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex h-[190px] w-[190px] min-w-[190px] snap-start flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  >
+                    {cardContent}
+                  </a>
+                );
+              }
 
-            if (external) {
               return (
-                <a
+                <Link
                   key={service.name}
-                  href={service.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  to={service.href as any}
                   className="group flex h-[190px] w-[190px] min-w-[190px] snap-start flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 >
                   {cardContent}
-                </a>
+                </Link>
               );
-            }
+            })}
+          </div>
+        </section>
 
-            return (
-              <Link
-                key={service.name}
-                to={service.href as any}
-                className="group flex h-[190px] w-[190px] min-w-[190px] snap-start flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-              >
-                {cardContent}
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+        {/* SHOOPPOING PRODUCTS  */}
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+          {/* Header */}
+          <div className="mb-7 flex items-end justify-between">
+            <div className="flex items-end gap-4">
+              <div>
+                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                  Shopping Platforms
+                </h2>
 
-      {/* SHOOPPOING PRODUCTS  */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-        {/* Header */}
-        <div className="mb-7 flex items-end justify-between">
-          <div className="flex items-end gap-4">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Shopping Platforms
-              </h2>
+                <p className="mt-2 text-base text-muted-foreground">
+                  {("Explore trusted platforms to find the best deals and products")}
+                </p>
+              </div>
 
-              <p className="mt-2 text-base text-muted-foreground">
-                {("home.shopping_platforms_subtitle")}
-              </p>
+              <div className="flex items-center gap-2 pb-1">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 rounded-full"
+                  onClick={scrollPlatformsLeft}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 rounded-full"
+                  onClick={scrollPlatformsRight}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2 pb-1">
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 rounded-full"
-                onClick={scrollPlatformsLeft}
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 rounded-full"
-                onClick={scrollPlatformsRight}
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
+            <Link to="/shopping" className="text-sm font-medium text-primary hover:underline">
+              View All
+            </Link>
           </div>
 
-          <Link to="/shopping" className="text-sm font-medium text-primary hover:underline">
-            View All
-          </Link>
-        </div>
+          {/* Carousel */}
+          <div className="group relative w-full">
+            {/* Left Button */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute -left-4 top-1/2 z-20 h-10 w-10 -translate-y-1/2 rounded-full border-border bg-background shadow-md transition-all hover:bg-accent hover:scale-105 active:scale-95"
+              onClick={scrollPlatformsLeft}
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
 
-        {/* Carousel */}
-        <div className="group relative w-full">
-          {/* Left Button */}
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute -left-4 top-1/2 z-20 h-10 w-10 -translate-y-1/2 rounded-full border-border bg-background shadow-md transition-all hover:bg-accent hover:scale-105 active:scale-95"
-            onClick={scrollPlatformsLeft}
-            aria-label="Scroll left"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
+            {/* Right Button */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute -right-4 top-1/2 z-20 h-10 w-10 -translate-y-1/2 rounded-full border-border bg-background shadow-md transition-all hover:bg-accent hover:scale-105 active:scale-95"
+              onClick={scrollPlatformsRight}
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Button>
 
-          {/* Right Button */}
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute -right-4 top-1/2 z-20 h-10 w-10 -translate-y-1/2 rounded-full border-border bg-background shadow-md transition-all hover:bg-accent hover:scale-105 active:scale-95"
-            onClick={scrollPlatformsRight}
-            aria-label="Scroll right"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </Button>
-
-          <div
-            ref={shoppingPlatformsRef}
-            className="flex w-full gap-5 overflow-x-auto scroll-smooth scrollbar-hide"
-          >
-            {shoppingPlatforms.map((platform) => (
-              <a
-                key={`first-${platform.name}`}
-                href={platform.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
+            <div
+              ref={shoppingPlatformsRef}
+              className="flex w-full gap-5 overflow-x-auto scroll-smooth scrollbar-hide"
+            >
+              {shoppingPlatforms.map((platform) => (
+                <a
+                  key={`first-${platform.name}`}
+                  href={platform.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
             group
             flex
             h-[210px]
@@ -905,14 +896,14 @@ function Home() {
             hover:-translate-y-1
             hover:shadow-xl
           "
-              >
-                {/* Image */}
-                <div className="flex h-[140px] items-center justify-center overflow-hidden bg-white p-6">
-                  <img
-                    src={platform.image}
-                    alt={`${platform.name} logo`}
-                    loading="lazy"
-                    className="
+                >
+                  {/* Image */}
+                  <div className="flex h-[140px] items-center justify-center overflow-hidden bg-white p-6">
+                    <img
+                      src={platform.image}
+                      alt={`${platform.name} logo`}
+                      loading="lazy"
+                      className="
                 max-h-full
                 max-w-full
                 object-contain
@@ -920,24 +911,24 @@ function Home() {
                 duration-300
                 group-hover:scale-110
               "
-                  />
-                </div>
+                    />
+                  </div>
 
-                {/* Details */}
-                <div className="flex flex-1 flex-col justify-center border-t border-border px-5">
-                  <h3 className="text-base font-semibold">{platform.name}</h3>
+                  {/* Details */}
+                  <div className="flex flex-1 flex-col justify-center border-t border-border px-5">
+                    <h3 className="text-base font-semibold">{platform.name}</h3>
 
-                  <p className="mt-1 text-sm text-muted-foreground">{platform.category}</p>
-                </div>
-              </a>
-            ))}
-            {shoppingPlatforms.map((platform) => (
-              <a
-                key={`second-${platform.name}`}
-                href={platform.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
+                    <p className="mt-1 text-sm text-muted-foreground">{platform.category}</p>
+                  </div>
+                </a>
+              ))}
+              {shoppingPlatforms.map((platform) => (
+                <a
+                  key={`second-${platform.name}`}
+                  href={platform.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
             group
             flex
             h-[210px]
@@ -956,14 +947,14 @@ function Home() {
             hover:-translate-y-1
             hover:shadow-xl
           "
-              >
-                {/* Image */}
-                <div className="flex h-[140px] items-center justify-center overflow-hidden bg-white p-6">
-                  <img
-                    src={platform.image}
-                    alt={`${platform.name} logo`}
-                    loading="lazy"
-                    className="
+                >
+                  {/* Image */}
+                  <div className="flex h-[140px] items-center justify-center overflow-hidden bg-white p-6">
+                    <img
+                      src={platform.image}
+                      alt={`${platform.name} logo`}
+                      loading="lazy"
+                      className="
                 max-h-full
                 max-w-full
                 object-contain
@@ -971,76 +962,76 @@ function Home() {
                 duration-300
                 group-hover:scale-110
               "
-                  />
-                </div>
+                    />
+                  </div>
 
-                {/* Details */}
-                <div className="flex flex-1 flex-col justify-center border-t border-border px-5">
-                  <h3 className="text-base font-semibold">{platform.name}</h3>
+                  {/* Details */}
+                  <div className="flex flex-1 flex-col justify-center border-t border-border px-5">
+                    <h3 className="text-base font-semibold">{platform.name}</h3>
 
-                  <p className="mt-1 text-sm text-muted-foreground">{platform.category}</p>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* credit cards  */}
-
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12" id="credit-cards">
-        {/* Header */}
-        <div className="mb-7 flex items-end justify-between">
-          <div className="flex items-end gap-4">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Credit Cards
-              </h2>
-
-              <p className="mt-2 text-base text-muted-foreground">
-                {("home.shopping_platforms_subtitle")}
-              </p>
-            </div>
-
-            {/* Header navigation */}
-            <div className="flex items-center gap-2 pb-1">
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 rounded-full"
-                onClick={scrollcreditPlatformsLeft}
-                aria-label="Scroll left"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 rounded-full"
-                onClick={scrollcreditPlatformsRight}
-                aria-label="Scroll right"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
+                    <p className="mt-1 text-sm text-muted-foreground">{platform.category}</p>
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
+        </section>
 
-          <Link
-            to="/shopping"
-            className="text-sm font-medium text-primary hover:underline"
-          >
-            {("home.view_all")}
-          </Link>
-        </div>
+        {/* credit cards  */}
 
-        {/* Carousel */}
-        <div className="group relative w-full overflow-hidden">
-          {/* Left Arrow */}
-          <Button
-            variant="outline"
-            size="icon"
-            className="
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12" id="credit-cards">
+          {/* Header */}
+          <div className="mb-7 flex items-end justify-between">
+            <div className="flex items-end gap-4">
+              <div>
+                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                  Credit Cards
+                </h2>
+
+                <p className="mt-2 text-base text-muted-foreground">
+                  {("Explore credit cards that match your lifestyle and financial goals")}
+                </p>
+              </div>
+
+              {/* Header navigation */}
+              <div className="flex items-center gap-2 pb-1">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 rounded-full"
+                  onClick={scrollcreditPlatformsLeft}
+                  aria-label="Scroll left"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-8 w-8 rounded-full"
+                  onClick={scrollcreditPlatformsRight}
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            <Link
+              to="/credit-cards"
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              {("View all")}
+            </Link>
+          </div>
+
+          {/* Carousel */}
+          <div className="group relative w-full">
+            {/* Left Arrow */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="
         absolute
         -left-4
         top-1/2
@@ -1057,17 +1048,17 @@ function Home() {
         hover:bg-accent
         active:scale-95
       "
-            onClick={scrollcreditPlatformsLeft}
-            aria-label="Scroll left"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
+              onClick={scrollcreditPlatformsLeft}
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
 
-          {/* Right Arrow */}
-          <Button
-            variant="outline"
-            size="icon"
-            className="
+            {/* Right Arrow */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="
         absolute
         -right-4
         top-1/2
@@ -1084,35 +1075,35 @@ function Home() {
         hover:bg-accent
         active:scale-95
       "
-            onClick={scrollcreditPlatformsRight}
-            aria-label="Scroll right"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </Button>
+              onClick={scrollcreditPlatformsRight}
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Button>
 
-          {/* Cards Track */}
-          <div
-            ref={creditCardsRef}
-            className="
+            {/* Cards Track */}
+            <div
+              ref={creditCardsRef}
+              className="
         credit-cards-track
         relative
         flex
-        w-max
+        w-full
         gap-6
         overflow-x-auto
         scroll-smooth
         scrollbar-hide
         py-2
       "
-          >
-            {/* First set */}
-            {creditCards.map((platform) => (
-              <a
-                key={`first-${platform.name}`}
-                href={platform.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
+            >
+              {/* First set */}
+              {creditCards.map((platform) => (
+                <a
+                  key={`first-${platform.name}`}
+                  href={platform.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
             group
             flex
             h-[360px]
@@ -1132,10 +1123,10 @@ function Home() {
             sm:w-[400px]
             sm:min-w-[400px]
           "
-              >
-                {/* Large Image */}
-                <div
-                  className="
+                >
+                  {/* Large Image */}
+                  <div
+                    className="
               flex
               h-[280px]
               w-full
@@ -1145,724 +1136,726 @@ function Home() {
               p-3
               sm:h-[310px]
             "
-                >
-                  <img
-                    src={platform.image}
-                    alt={`${platform.name} logo`}
-                    loading="lazy"
-                    className="
-                h-full
-                w-full
-                object-contain
-                transition-transform
-                duration-300
-                group-hover:scale-105
-              "
-                  />
-                </div>
-
-                {/* Details */}
-                <div
-                  className="
-              flex
-              flex-1
-              flex-col
-              justify-center
-              border-t
-              border-border
-              px-5
-              py-3
-            "
-                >
-                  <h3 className="text-base font-semibold">
-                    {platform.name}
-                  </h3>
-
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {platform.category}
-                  </p>
-                </div>
-              </a>
-            ))}
-
-            {/* Duplicate set for continuous carousel */}
-            {creditCards.map((platform) => (
-              <a
-                key={`second-${platform.name}`}
-                href={platform.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-            group
-            flex
-            h-[360px]
-            w-[360px]
-            min-w-[360px]
-            flex-col
-            overflow-hidden
-            rounded-2xl
-            border
-            border-border
-            bg-card
-            transition-all
-            duration-300
-            hover:-translate-y-1
-            hover:shadow-xl
-            sm:h-[400px]
-            sm:w-[400px]
-            sm:min-w-[400px]
-          "
-              >
-                {/* Large Image */}
-                <div
-                  className="
-              flex
-              h-[280px]
-              w-full
-              items-center
-              justify-center
-              overflow-hidden
-              p-3
-              sm:h-[310px]
-            "
-                >
-                  <img
-                    src={platform.image}
-                    alt={`${platform.name} logo`}
-                    loading="lazy"
-                    className="
-                h-full
-                w-full
-                object-contain
-                transition-transform
-                duration-300
-                group-hover:scale-105
-              "
-                  />
-                </div>
-
-                {/* Details */}
-                <div
-                  className="
-              flex
-              flex-1
-              flex-col
-              justify-center
-              border-t
-              border-border
-              px-5
-              py-3
-            "
-                >
-                  <h3 className="text-base font-semibold">
-                    {platform.name}
-                  </h3>
-
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {platform.category}
-                  </p>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* TRENDING NEWS  */}
-      <TrendingNow />
-
-      {/* SHOPING PRODUCTS  */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
-        {/* Header */}
-        <div className="mb-7 flex items-end justify-between">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Shopping Products
-            </h2>
-
-            <p className="mt-2 text-base text-muted-foreground">
-              Check out our top product recommendations.
-            </p>
-          </div>
-
-          <Link
-            to="/shopping"
-            className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
-          >
-            {("home.view_all")}
-          </Link>
-        </div>
-
-        {/* Loading */}
-        {shoppingDealsLoading ? (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-[300px] animate-pulse rounded-2xl bg-muted" />
-            ))}
-          </div>
-        ) : !shoppingDeals?.length ? (
-          <div className="rounded-2xl border border-border bg-card p-8 text-center">
-            <ShoppingBag className="mx-auto h-8 w-8 text-muted-foreground" />
-
-            <p className="mt-3 text-sm text-muted-foreground">No shopping deals available right now</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            {shoppingDeals.slice(0, 10).map((d) => (
-              <article
-                key={d.id}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-              >
-                {/* Product Image */}
-                <div className="aspect-square overflow-hidden bg-secondary">
-                  {d.image_url ? (
+                  >
                     <img
-                      src={d.image_url}
-                      alt={d.title}
+                      src={platform.image}
+                      alt={`${platform.name} logo`}
                       loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="
+                h-full
+                w-full
+                object-contain
+                transition-transform
+                duration-300
+                group-hover:scale-105
+              "
                     />
-                  ) : (
-                    <div className="flex h-full items-center justify-center text-muted-foreground">
-                      <ShoppingBag className="h-8 w-8" />
-                    </div>
-                  )}
-                </div>
-
-                {/* Product Details */}
-                <div className="flex flex-1 flex-col p-4">
-                  <h3 className="line-clamp-2 text-sm font-semibold leading-tight">{d.title}</h3>
-
-                  <div className="mt-2 flex flex-wrap items-center gap-2">
-                    {d.price && <span className="text-base font-bold">{d.price}</span>}
-
-                    {d.discount && (
-                      <span className="rounded-full bg-brand-yellow/40 px-2 py-0.5 text-[11px] font-semibold text-accent-foreground">
-                        {d.discount}
-                      </span>
-                    )}
                   </div>
 
-                  <Button asChild size="sm" className="mt-4 w-full">
-                    <a href={d.link || "#"} target="_blank" rel="noreferrer noopener sponsored">
-                      {("Shop Now")}
-                    </a>
-                  </Button>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-      </section>
+                  {/* Details */}
+                  <div
+                    className="
+              flex
+              flex-1
+              flex-col
+              justify-center
+              border-t
+              border-border
+              px-5
+              py-3
+            "
+                  >
+                    <h3 className="text-base font-semibold">
+                      {platform.name}
+                    </h3>
 
-      {/* FREEE LEARNING  */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
-        {/* Header */}
-        <div className="mb-7 flex items-end justify-between">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Free Learning
-            </h2>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {platform.category}
+                    </p>
+                  </div>
+                </a>
+              ))}
 
-            <p className="mt-2 text-base text-muted-foreground">
-              Start your journey with our curated learning paths.
-            </p>
-          </div>
-
-          <Link
-            to="/free-learning"
-            className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
-          >
-            {("home.view_all")}
-          </Link>
-        </div>
-
-        {/* Loading */}
-        {learningVideosLoading ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="h-72 animate-pulse rounded-2xl bg-muted" />
-            ))}
-          </div>
-        ) : !learningVideos?.length ? (
-          <div className="rounded-2xl border border-border bg-card p-8 text-center">
-            <PlayCircle className="mx-auto h-8 w-8 text-muted-foreground" />
-
-            <p className="mt-3 text-sm text-muted-foreground">No learning videos available</p>
-          </div>
-        ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {learningVideos.slice(0, 6).map((v) => {
-              const embed = youtubeEmbed(v.video_url);
-              return (
-                <article
-                  key={v.id}
-                  className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              {/* Duplicate set for continuous carousel */}
+              {creditCards.map((platform) => (
+                <a
+                  key={`second-${platform.name}`}
+                  href={platform.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+            group
+            flex
+            h-[360px]
+            w-[360px]
+            min-w-[360px]
+            flex-col
+            overflow-hidden
+            rounded-2xl
+            border
+            border-border
+            bg-card
+            transition-all
+            duration-300
+            hover:-translate-y-1
+            hover:shadow-xl
+            sm:h-[400px]
+            sm:w-[400px]
+            sm:min-w-[400px]
+          "
                 >
-                  {/* Video thumbnail / embed */}
-                  <div className="aspect-video overflow-hidden bg-secondary">
-                    {embed ? (
-                      <iframe
-                        src={embed}
-                        title={v.title}
-                        loading="lazy"
-                        allowFullScreen
-                        className="h-full w-full"
-                      />
-                    ) : v.thumbnail_url ? (
+                  {/* Large Image */}
+                  <div
+                    className="
+              flex
+              h-[280px]
+              w-full
+              items-center
+              justify-center
+              overflow-hidden
+              p-3
+              sm:h-[310px]
+            "
+                  >
+                    <img
+                      src={platform.image}
+                      alt={`${platform.name} logo`}
+                      loading="lazy"
+                      className="
+                h-full
+                w-full
+                object-contain
+                transition-transform
+                duration-300
+                group-hover:scale-105
+              "
+                    />
+                  </div>
+
+                  {/* Details */}
+                  <div
+                    className="
+              flex
+              flex-1
+              flex-col
+              justify-center
+              border-t
+              border-border
+              px-5
+              py-3
+            "
+                  >
+                    <h3 className="text-base font-semibold">
+                      {platform.name}
+                    </h3>
+
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {platform.category}
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        
+        {/* TRENDING NEWS  */}
+        <TrendingNow />
+
+        {/* SHOPING PRODUCTS  */}
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
+          {/* Header */}
+          <div className="mb-7 flex items-end justify-between">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Shopping Products
+              </h2>
+
+              <p className="mt-2 text-base text-muted-foreground">
+                Check out our top product recommendations.
+              </p>
+            </div>
+
+            <Link
+              to="/shopping"
+              className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
+            >
+              {("View all")}
+            </Link>
+          </div>
+
+          {/* Loading */}
+          {shoppingDealsLoading ? (
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-[300px] animate-pulse rounded-2xl bg-muted" />
+              ))}
+            </div>
+          ) : !shoppingDeals?.length ? (
+            <div className="rounded-2xl border border-border bg-card p-8 text-center">
+              <ShoppingBag className="mx-auto h-8 w-8 text-muted-foreground" />
+
+              <p className="mt-3 text-sm text-muted-foreground">No shopping deals available right now</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+              {shoppingDeals.slice(0, 10).map((d) => (
+                <article
+                  key={d.id}
+                  className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                >
+                  {/* Product Image */}
+                  <div className="aspect-square overflow-hidden bg-secondary">
+                    {d.image_url ? (
                       <img
-                        src={v.thumbnail_url}
-                        alt={v.title}
+                        src={d.image_url}
+                        alt={d.title}
                         loading="lazy"
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     ) : (
                       <div className="flex h-full items-center justify-center text-muted-foreground">
-                        <PlayCircle className="h-10 w-10" />
+                        <ShoppingBag className="h-8 w-8" />
                       </div>
                     )}
                   </div>
 
-                  {/* Video details */}
-                  <div className="flex flex-1 flex-col p-5">
-                    <h3 className="line-clamp-2 text-base font-semibold leading-tight">
-                      {v.title}
-                    </h3>
+                  {/* Product Details */}
+                  <div className="flex flex-1 flex-col p-4">
+                    <h3 className="line-clamp-2 text-sm font-semibold leading-tight">{d.title}</h3>
 
-                    {v.description && (
-                      <p className="mt-1.5 line-clamp-2 text-sm text-muted-foreground">
-                        {v.description}
-                      </p>
-                    )}
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      {d.price && <span className="text-base font-bold">{d.price}</span>}
 
-                    {!embed && (
-                      <a
-                        href={v.video_url}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-                      >
-                        <PlayCircle className="h-4 w-4" />
-                        {("home.watch_video")}
+                      {d.discount && (
+                        <span className="rounded-full bg-brand-yellow/40 px-2 py-0.5 text-[11px] font-semibold text-accent-foreground">
+                          {d.discount}
+                        </span>
+                      )}
+                    </div>
+
+                    <Button asChild size="sm" className="mt-4 w-full">
+                      <a href={d.link || "#"} target="_blank" rel="noreferrer noopener sponsored">
+                        {("Shop Now")}
                       </a>
-                    )}
+                    </Button>
                   </div>
                 </article>
-              );
-            })}
-          </div>
-        )}
-      </section>
+              ))}
+            </div>
+          )}
+        </section>
 
-      {/* INSURANCE */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12" id="insurance">
-        {/* Header */}
-        <div className="mb-7 flex items-end justify-between">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Insurance</h2>
+        {/* FREEE LEARNING  */}
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
+          {/* Header */}
+          <div className="mb-7 flex items-end justify-between">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Free Learning
+              </h2>
 
-            <p className="mt-2 text-base text-muted-foreground">
-              Cover that actually fits your life.
-            </p>
-          </div>
+              <p className="mt-2 text-base text-muted-foreground">
+                Start your journey with our curated learning paths.
+              </p>
+            </div>
 
-          <Link
-            to="/insurance"
-            className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
-          >
-            View All
-          </Link>
-        </div>
-
-        {/* Loading */}
-        {insuranceLoading ? (
-          <div className="flex gap-6 overflow-hidden">
-            {[0, 1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="h-[340px] w-[360px] min-w-[360px] animate-pulse rounded-3xl bg-muted"
-              />
-            ))}
-          </div>
-        ) : !insuranceItems?.length ? (
-          <div className="rounded-2xl border border-border bg-card p-8 text-center">
-            <ShieldCheck className="mx-auto h-8 w-8 text-muted-foreground" />
-
-            <p className="mt-3 text-sm text-muted-foreground">No insurance items available</p>
-          </div>
-        ) : (
-          <div className="relative w-full overflow-hidden">
-            {/* Left Button */}
-            <button
-              type="button"
-              onClick={scrollLeft}
-              aria-label="Scroll left"
-              className="absolute left-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 shadow-lg backdrop-blur transition hover:scale-105"
+            <Link
+              to="/free-learning"
+              className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
             >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
+              {("home.view_all")}
+            </Link>
+          </div>
 
-            {/* Right Button */}
-            <button
-              type="button"
-              onClick={scrollRight}
-              aria-label="Scroll right"
-              className="absolute right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 shadow-lg backdrop-blur transition hover:scale-105"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-            {/* Left fade */}
-            <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-background to-transparent" />
+          {/* Loading */}
+          {learningVideosLoading ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="h-72 animate-pulse rounded-2xl bg-muted" />
+              ))}
+            </div>
+          ) : !learningVideos?.length ? (
+            <div className="rounded-2xl border border-border bg-card p-8 text-center">
+              <PlayCircle className="mx-auto h-8 w-8 text-muted-foreground" />
 
-            {/* Right fade */}
-            <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-background to-transparent" />
-
-            <div ref={insuranceRef} className="shopping-track flex w-max gap-6">
-              {/* First set */}
-              {insuranceItems.map((item) => {
-                const cardContent = (
-                  <>
-                    {/* Image or icon */}
-                    <div className="flex h-[200px] w-full items-center justify-center overflow-hidden bg-secondary">
-                      {item.image_url ? (
-                        <img
-                          src={item.image_url}
-                          alt={item.title}
+              <p className="mt-3 text-sm text-muted-foreground">No learning videos available</p>
+            </div>
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {learningVideos.slice(0, 6).map((v) => {
+                const embed = youtubeEmbed(v.video_url);
+                return (
+                  <article
+                    key={v.id}
+                    className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  >
+                    {/* Video thumbnail / embed */}
+                    <div className="aspect-video overflow-hidden bg-secondary">
+                      {embed ? (
+                        <iframe
+                          src={embed}
+                          title={v.title}
                           loading="lazy"
-                          className="h-full w-full object-cover"
+                          allowFullScreen
+                          className="h-full w-full"
+                        />
+                      ) : v.thumbnail_url ? (
+                        <img
+                          src={v.thumbnail_url}
+                          alt={v.title}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       ) : (
-                        <span className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                          <ShieldCheck className="h-10 w-10" />
-                        </span>
+                        <div className="flex h-full items-center justify-center text-muted-foreground">
+                          <PlayCircle className="h-10 w-10" />
+                        </div>
                       )}
                     </div>
 
-                    {/* Details */}
-                    <div className="flex flex-1 flex-col gap-2 border-t border-border px-6 py-5">
-                      <h3 className="line-clamp-2 text-lg font-semibold leading-tight">
-                        {item.title}
+                    {/* Video details */}
+                    <div className="flex flex-1 flex-col p-5">
+                      <h3 className="line-clamp-2 text-base font-semibold leading-tight">
+                        {v.title}
                       </h3>
 
-                      <p className="line-clamp-3 text-sm text-muted-foreground">
-                        {item.description}
-                      </p>
+                      {v.description && (
+                        <p className="mt-1.5 line-clamp-2 text-sm text-muted-foreground">
+                          {v.description}
+                        </p>
+                      )}
 
-                      {item.link && (
+                      {!embed && (
                         <a
-                          href={item.link}
+                          href={v.video_url}
                           target="_blank"
                           rel="noreferrer noopener"
                           className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                         >
-                          Learn More
-                          <ArrowRight className="h-4 w-4" />
+                          <PlayCircle className="h-4 w-4" />
+                          {("home.watch_video")}
                         </a>
                       )}
                     </div>
-                  </>
-                );
-
-                return (
-                  <article
-                    key={`first-${item.id}`}
-                    className="group flex h-[340px] w-[360px] min-w-[360px] flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                  >
-                    {cardContent}
-                  </article>
-                );
-              })}
-
-              {/* Duplicate set for seamless loop */}
-              {insuranceItems.map((item) => {
-                const cardContent = (
-                  <>
-                    <div className="flex h-[200px] w-full items-center justify-center overflow-hidden bg-secondary">
-                      {item.image_url ? (
-                        <img
-                          src={item.image_url}
-                          alt={item.title}
-                          loading="lazy"
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <span className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                          <ShieldCheck className="h-10 w-10" />
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex flex-1 flex-col gap-2 border-t border-border px-6 py-5">
-                      <h3 className="line-clamp-2 text-lg font-semibold leading-tight">
-                        {item.title}
-                      </h3>
-
-                      <p className="line-clamp-3 text-sm text-muted-foreground">
-                        {item.description}
-                      </p>
-
-                      {item.link && (
-                        <a
-                          href={item.link}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                          className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-                        >
-                          Learn More
-                          <ArrowRight className="h-4 w-4" />
-                        </a>
-                      )}
-                    </div>
-                  </>
-                );
-
-                return (
-                  <article
-                    key={`second-${item.id}`}
-                    className="group flex h-[340px] w-[360px] min-w-[360px] flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                  >
-                    {cardContent}
                   </article>
                 );
               })}
             </div>
-          </div>
-        )}
-      </section>
+          )}
+        </section>
 
-      {/* E BANKING APPS */}
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
-        {/* Header */}
-        <div className="mb-7 flex items-end justify-between">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              e-Banking Apps
-            </h2>
+        {/* INSURANCE */}
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12" id="insurance">
+          {/* Header */}
+          <div className="mb-7 flex items-end justify-between">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Insurance</h2>
 
-            <p className="mt-2 text-base text-muted-foreground">
-              Essential apps for your digital banking.
-            </p>
-          </div>
-        </div>
+              <p className="mt-2 text-base text-muted-foreground">
+                Cover that actually fits your life.
+              </p>
+            </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {eBankingApps.map((app) => (
-            <a
-              key={app.name}
-              href={app.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex h-[180px] w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-            >
-              {/* Logo */}
-              <div className="flex h-[110px] w-full items-center justify-center overflow-hidden bg-white p-5">
-                <img
-                  src={app.image}
-                  alt={`${app.name} logo`}
-                  loading="lazy"
-                  className="max-h-[70px] max-w-[140px] object-contain transition-transform duration-300 group-hover:scale-110"
-                />
-              </div>
-
-              {/* Details */}
-              <div className="flex flex-1 flex-col justify-center border-t border-border px-4 py-3 text-center">
-                <h3 className="text-sm font-semibold leading-tight">{app.name}</h3>
-
-                <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{app.category}</p>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* KEY FEATURES SECTION */}
-      <section className="mx-auto max-w-7xl px-4 pb-4 sm:px-6">
-        <div className="mb-7 flex items-end justify-between">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-              Key Features
-            </h2>
-            <p className="mt-2 max-w-2xl text-muted-foreground">
-              Everything you need to take control of your financial life.
-            </p>
-          </div>
-        </div>
-        <div className="mt-2 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((f) => (
             <Link
-              key={f.title}
-              to={f.to}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              to="/insurance"
+              className="shrink-0 text-sm font-semibold text-primary hover:underline sm:text-base"
             >
-              {/* Image header with tinted overlay */}
-              <div className="relative aspect-[16/9] w-full overflow-hidden bg-secondary">
-                <img
-                  src={f.image}
-                  alt={f.title}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-
-                {/* Tinted gradient overlay (top-left bias so the icon stays legible) */}
-                <div className={"absolute inset-0 bg-gradient-to-br " + f.overlay} />
-
-                {/* Floating icon badge (glassmorphic, themed to the feature) */}
-                <span className="absolute bottom-3 left-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/95 shadow-md backdrop-blur transition-transform duration-500 group-hover:scale-110">
-                  <f.icon className={"h-5 w-5 " + f.accent} />
-                </span>
-              </div>
-
-              {/* Body */}
-              <div className="flex flex-1 flex-col p-5">
-                <h3 className="font-semibold">{f.title}</h3>
-                <p className="mt-1.5 text-sm text-muted-foreground">{f.text}</p>
-                <span className="mt-4 inline-flex items-center text-sm font-medium text-primary">
-                  Explore Now
-                  <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </span>
-              </div>
+              View All
             </Link>
-          ))}
-        </div>
-      </section>
+          </div>
 
-      {/* whatsapp section 1*/}
-      <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
-        <div className="grid items-center gap-8 rounded-3xl border border-border bg-card p-6 shadow-card sm:p-10 lg:grid-cols-[1fr_auto]">
-          {/* Copy + link */}
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
-              <MessageCircle className="h-3.5 w-3.5" />
-              WhatsApp Channel
-            </span>
+          {/* Loading */}
+          {insuranceLoading ? (
+            <div className="flex gap-6 overflow-hidden">
+              {[0, 1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="h-[340px] w-[360px] min-w-[360px] animate-pulse rounded-3xl bg-muted"
+                />
+              ))}
+            </div>
+          ) : !insuranceItems?.length ? (
+            <div className="rounded-2xl border border-border bg-card p-8 text-center">
+              <ShieldCheck className="mx-auto h-8 w-8 text-muted-foreground" />
 
-            <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
-              Join our WhatsApp Channel
-            </h2>
+              <p className="mt-3 text-sm text-muted-foreground">No insurance items available</p>
+            </div>
+          ) : (
+            <div className="relative w-full overflow-hidden">
+              {/* Left Button */}
+              <button
+                type="button"
+                onClick={scrollLeft}
+                aria-label="Scroll left"
+                className="absolute left-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 shadow-lg backdrop-blur transition hover:scale-105"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
 
-            <p className="mt-2 max-w-xl text-sm text-muted-foreground sm:text-base">
-              Stay updated with the latest market news. Scan the QR with your phone, or tap the button
-              below.
-            </p>
+              {/* Right Button */}
+              <button
+                type="button"
+                onClick={scrollRight}
+                aria-label="Scroll right"
+                className="absolute right-3 top-1/2 z-30 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/95 shadow-lg backdrop-blur transition hover:scale-105"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+              {/* Left fade */}
+              <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-20 bg-gradient-to-r from-background to-transparent" />
 
+              {/* Right fade */}
+              <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-20 bg-gradient-to-l from-background to-transparent" />
+
+              <div ref={insuranceRef} className="shopping-track flex w-max gap-6">
+                {/* First set */}
+                {insuranceItems.map((item) => {
+                  const cardContent = (
+                    <>
+                      {/* Image or icon */}
+                      <div className="flex h-[200px] w-full items-center justify-center overflow-hidden bg-secondary">
+                        {item.image_url ? (
+                          <img
+                            src={item.image_url}
+                            alt={item.title}
+                            loading="lazy"
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <span className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                            <ShieldCheck className="h-10 w-10" />
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Details */}
+                      <div className="flex flex-1 flex-col gap-2 border-t border-border px-6 py-5">
+                        <h3 className="line-clamp-2 text-lg font-semibold leading-tight">
+                          {item.title}
+                        </h3>
+
+                        <p className="line-clamp-3 text-sm text-muted-foreground">
+                          {item.description}
+                        </p>
+
+                        {item.link && (
+                          <a
+                            href={item.link}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                          >
+                            Learn More
+                            <ArrowRight className="h-4 w-4" />
+                          </a>
+                        )}
+                      </div>
+                    </>
+                  );
+
+                  return (
+                    <article
+                      key={`first-${item.id}`}
+                      className="group flex h-[340px] w-[360px] min-w-[360px] flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    >
+                      {cardContent}
+                    </article>
+                  );
+                })}
+
+                {/* Duplicate set for seamless loop */}
+                {insuranceItems.map((item) => {
+                  const cardContent = (
+                    <>
+                      <div className="flex h-[200px] w-full items-center justify-center overflow-hidden bg-secondary">
+                        {item.image_url ? (
+                          <img
+                            src={item.image_url}
+                            alt={item.title}
+                            loading="lazy"
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <span className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                            <ShieldCheck className="h-10 w-10" />
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex flex-1 flex-col gap-2 border-t border-border px-6 py-5">
+                        <h3 className="line-clamp-2 text-lg font-semibold leading-tight">
+                          {item.title}
+                        </h3>
+
+                        <p className="line-clamp-3 text-sm text-muted-foreground">
+                          {item.description}
+                        </p>
+
+                        {item.link && (
+                          <a
+                            href={item.link}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                          >
+                            Learn More
+                            <ArrowRight className="h-4 w-4" />
+                          </a>
+                        )}
+                      </div>
+                    </>
+                  );
+
+                  return (
+                    <article
+                      key={`second-${item.id}`}
+                      className="group flex h-[340px] w-[360px] min-w-[360px] flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    >
+                      {cardContent}
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* E BANKING APPS */}
+        <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-12">
+          {/* Header */}
+          <div className="mb-7 flex items-end justify-between">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                e-Banking Apps
+              </h2>
+
+              <p className="mt-2 text-base text-muted-foreground">
+                Essential apps for your digital banking.
+              </p>
+            </div>
+          </div>
+
+          {/* Grid */}
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            {eBankingApps.map((app) => (
+              <a
+                key={app.name}
+                href={app.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex h-[180px] w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              >
+                {/* Logo */}
+                <div className="flex h-[110px] w-full items-center justify-center overflow-hidden bg-white p-5">
+                  <img
+                    src={app.image}
+                    alt={`${app.name} logo`}
+                    loading="lazy"
+                    className="max-h-[70px] max-w-[140px] object-contain transition-transform duration-300 group-hover:scale-110"
+                  />
+                </div>
+
+                {/* Details */}
+                <div className="flex flex-1 flex-col justify-center border-t border-border px-4 py-3 text-center">
+                  <h3 className="text-sm font-semibold leading-tight">{app.name}</h3>
+
+                  <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{app.category}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        {/* KEY FEATURES SECTION */}
+        <section className="mx-auto max-w-7xl px-4 pb-4 sm:px-6">
+          <div className="mb-7 flex items-end justify-between">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                Key Features
+              </h2>
+              <p className="mt-2 max-w-2xl text-muted-foreground">
+                Everything you need to take control of your financial life.
+              </p>
+            </div>
+          </div>
+          <div className="mt-2 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((f) => (
+              <Link
+                key={f.title}
+                to={f.to}
+                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              >
+                {/* Image header with tinted overlay */}
+                <div className="relative aspect-[16/9] w-full overflow-hidden bg-secondary">
+                  <img
+                    src={f.image}
+                    alt={f.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+
+                  {/* Tinted gradient overlay (top-left bias so the icon stays legible) */}
+                  <div className={"absolute inset-0 bg-gradient-to-br " + f.overlay} />
+
+                  {/* Floating icon badge (glassmorphic, themed to the feature) */}
+                  <span className="absolute bottom-3 left-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/95 shadow-md backdrop-blur transition-transform duration-500 group-hover:scale-110">
+                    <f.icon className={"h-5 w-5 " + f.accent} />
+                  </span>
+                </div>
+
+                {/* Body */}
+                <div className="flex flex-1 flex-col p-5">
+                  <h3 className="font-semibold">{f.title}</h3>
+                  <p className="mt-1.5 text-sm text-muted-foreground">{f.text}</p>
+                  <span className="mt-4 inline-flex items-center text-sm font-medium text-primary">
+                    Explore Now
+                    <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* whatsapp section 1*/}
+        <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
+          <div className="grid items-center gap-8 rounded-3xl border border-border bg-card p-6 shadow-card sm:p-10 lg:grid-cols-[1fr_auto]">
+            {/* Copy + link */}
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                <MessageCircle className="h-3.5 w-3.5" />
+                WhatsApp Channel
+              </span>
+
+              <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
+                Join our WhatsApp Channel
+              </h2>
+
+              <p className="mt-2 max-w-xl text-sm text-muted-foreground sm:text-base">
+                Stay updated with the latest market news. Scan the QR with your phone, or tap the button
+                below.
+              </p>
+
+              <a
+                href="https://www.whatsapp.com/channel/0029VaTSXv865yDLKWr6f80L"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700"
+              >
+                <MessageCircle className="h-4 w-4" />
+                Join Channel
+              </a>
+
+              <p className="mt-3 text-[11px] text-muted-foreground">
+                External link to WhatsApp
+              </p>
+            </div>
+
+            {/* QR card — clicking the image opens the same link */}
             <a
               href="https://www.whatsapp.com/channel/0029VaTSXv865yDLKWr6f80L"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700"
+              aria-label="Scan or click to open our WhatsApp channel"
+              className="group mx-auto flex w-full max-w-xs flex-col items-center gap-3 rounded-2xl border border-border bg-background p-5 transition-shadow hover:shadow-lg sm:mx-0"
             >
-              <MessageCircle className="h-4 w-4" />
-              Join Channel
+              <img
+                src={
+                  "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
+                  encodeURIComponent("https://www.whatsapp.com/channel/0029VaTSXv865yDLKWr6f80L") +
+                  "&color=22c55e"
+                }
+                alt="WhatsApp channel QR code"
+                width={200}
+                height={200}
+                loading="lazy"
+                className="h-48 w-48 rounded-xl border border-border bg-white p-2 transition-transform duration-300 group-hover:scale-105"
+              />
+              <span className="text-xs font-medium text-muted-foreground">
+                Scan to Join
+              </span>
             </a>
-
-            <p className="mt-3 text-[11px] text-muted-foreground">
-              External link to WhatsApp
-            </p>
           </div>
+        </section>
 
-          {/* QR card — clicking the image opens the same link */}
-          <a
-            href="https://www.whatsapp.com/channel/0029VaTSXv865yDLKWr6f80L"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Scan or click to open our WhatsApp channel"
-            className="group mx-auto flex w-full max-w-xs flex-col items-center gap-3 rounded-2xl border border-border bg-background p-5 transition-shadow hover:shadow-lg sm:mx-0"
-          >
-            <img
-              src={
-                "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
-                encodeURIComponent("https://www.whatsapp.com/channel/0029VaTSXv865yDLKWr6f80L") +
-                "&color=22c55e"
-              }
-              alt="WhatsApp channel QR code"
-              width={200}
-              height={200}
-              loading="lazy"
-              className="h-48 w-48 rounded-xl border border-border bg-white p-2 transition-transform duration-300 group-hover:scale-105"
-            />
-            <span className="text-xs font-medium text-muted-foreground">
-              Scan to Join
-            </span>
-          </a>
-        </div>
-      </section>
+        {/* whatsapp section 2*/}
+        <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
+          <div className="grid items-center gap-8 rounded-3xl border border-border bg-card p-6 shadow-card sm:p-10 lg:grid-cols-[1fr_auto]">
+            {/* Copy + link */}
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                <MessageCircle className="h-3.5 w-3.5" />
+                WhatsApp Channel
+              </span>
 
-      {/* whatsapp section 2*/}
-      <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
-        <div className="grid items-center gap-8 rounded-3xl border border-border bg-card p-6 shadow-card sm:p-10 lg:grid-cols-[1fr_auto]">
-          {/* Copy + link */}
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
-              <MessageCircle className="h-3.5 w-3.5" />
-              WhatsApp Channel
-            </span>
+              <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
+                Join our WhatsApp Channel
+              </h2>
 
-            <h2 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
-              Join our WhatsApp Channel
-            </h2>
+              <p className="mt-2 max-w-xl text-sm text-muted-foreground sm:text-base">
+                Stay updated with the latest market news. Scan the QR with your phone, or tap the button
+                below.
+              </p>
 
-            <p className="mt-2 max-w-xl text-sm text-muted-foreground sm:text-base">
-              Stay updated with the latest market news. Scan the QR with your phone, or tap the button
-              below.
-            </p>
+              <a
+                href="https://whatsapp.com/channel/0029Vb3uBAZHgZWZnidqEF26"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700"
+              >
+                <MessageCircle className="h-4 w-4" />
+                Join Channel
+              </a>
 
+              <p className="mt-3 text-[11px] text-muted-foreground">
+                External link to WhatsApp
+              </p>
+            </div>
+
+            {/* QR card — clicking the image opens the same link */}
             <a
               href="https://whatsapp.com/channel/0029Vb3uBAZHgZWZnidqEF26"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700"
+              aria-label="Scan or click to open our WhatsApp channel"
+              className="group mx-auto flex w-full max-w-xs flex-col items-center gap-3 rounded-2xl border border-border bg-background p-5 transition-shadow hover:shadow-lg sm:mx-0"
             >
-              <MessageCircle className="h-4 w-4" />
-              Join Channel
+              <img
+                src={
+                  "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
+                  encodeURIComponent("https://www.whatsapp.com/channel/0029VaTSXv865yDLKWr6f80L") +
+                  "&color=22c55e"
+                }
+                alt="WhatsApp channel QR code"
+                width={200}
+                height={200}
+                loading="lazy"
+                className="h-48 w-48 rounded-xl border border-border bg-white p-2 transition-transform duration-300 group-hover:scale-105"
+              />
+              <span className="text-xs font-medium text-muted-foreground">
+                Scan to Join
+              </span>
             </a>
-
-            <p className="mt-3 text-[11px] text-muted-foreground">
-              External link to WhatsApp
-            </p>
           </div>
+        </section>
 
-          {/* QR card — clicking the image opens the same link */}
-          <a
-            href="https://whatsapp.com/channel/0029Vb3uBAZHgZWZnidqEF26"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Scan or click to open our WhatsApp channel"
-            className="group mx-auto flex w-full max-w-xs flex-col items-center gap-3 rounded-2xl border border-border bg-background p-5 transition-shadow hover:shadow-lg sm:mx-0"
-          >
-            <img
-              src={
-                "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" +
-                encodeURIComponent("https://www.whatsapp.com/channel/0029VaTSXv865yDLKWr6f80L") +
-                "&color=22c55e"
-              }
-              alt="WhatsApp channel QR code"
-              width={200}
-              height={200}
-              loading="lazy"
-              className="h-48 w-48 rounded-xl border border-border bg-white p-2 transition-transform duration-300 group-hover:scale-105"
-            />
-            <span className="text-xs font-medium text-muted-foreground">
-              Scan to Join
-            </span>
-          </a>
-        </div>
-      </section>
+        {/* Ready to get started? */}
+        <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6">
+          <div className="rounded-3xl bg-ink px-8 py-14 text-center text-ink-foreground">
+            <h2 className="text-2xl font-bold sm:text-3xl">Ready to get started?</h2>
+            <p className="mx-auto mt-3 max-w-xl text-ink-foreground/70">
+              Join our community and start your journey to financial freedom today.
+            </p>
+            <Button asChild size="lg" className="mt-7">
+              <Link to="/auth">Get Started Now</Link>
+            </Button>
+          </div>
+        </section>
 
-      {/* Ready to get started? */}
-      <section className="mx-auto max-w-7xl px-4 pt-16 sm:px-6">
-        <div className="rounded-3xl bg-ink px-8 py-14 text-center text-ink-foreground">
-          <h2 className="text-2xl font-bold sm:text-3xl">Ready to get started?</h2>
-          <p className="mx-auto mt-3 max-w-xl text-ink-foreground/70">
-            Join our community and start your journey to financial freedom today.
-          </p>
-          <Button asChild size="lg" className="mt-7">
-            <Link to="/auth">Get Started Now</Link>
-          </Button>
-        </div>
-      </section>
+      </>
+    </SiteLayout >
 
-    </>
-      </SiteLayout >
-        
   );
 }

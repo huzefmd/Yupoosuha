@@ -1,10 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
+import { XMLParser } from "fast-xml-parser";
 
 export type NewsArticle = {
   category: string;
   datetime: number;
   headline: string;
-  id: number;
+  id: number | string;
   image: string;
   related: string;
   source: string;
@@ -82,3 +83,70 @@ export const getStockNews = createServerFn({ method: "GET" })
       return []; // Return empty array instead of crashing for a single stock
     }
   });
+
+// ---------------------------------------------------------------------------
+// RSS feeds from news channels (free, no API key)
+// ---------------------------------------------------------------------------
+
+const FEEDS = [
+  { source: "Economic Times", url: "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms" },
+  { source: "Moneycontrol", url: "https://www.moneycontrol.com/rss/latestnews.xml" },
+  { source: "Livemint", url: "https://www.livemint.com/rss/markets" },
+  { source: "CNBC", url: "https://www.cnbc.com/id/10001147/device/rss/rss.html" },
+  { source: "BBC Business", url: "https://feeds.bbci.co.uk/news/business/rss.xml" },
+];
+
+const xmlParser = new XMLParser({ ignoreAttributes: false });
+
+// Simple in-memory cache so every visitor doesn't hit the publishers' feeds
+let cache: { at: number; data: NewsArticle[] } | null = null;
+const CACHE_MS = 3 * 60 * 1000;
+
+async function fetchAllFeeds(): Promise<NewsArticle[]> {
+  if (cache && Date.now() - cache.at < CACHE_MS) return cache.data;
+
+  const results = await Promise.allSettled(
+    FEEDS.map(async ({ source, url }) => {
+      const res = await fetchWithTimeout(url, {
+        headers: { "User-Agent": "Mozilla/5.0" },
+      });
+      if (!res.ok) throw new Error(`${source}: ${res.status}`);
+      const xml = await res.text();
+      const raw = xmlParser.parse(xml)?.rss?.channel?.item ?? [];
+      const items = Array.isArray(raw) ? raw : [raw];
+
+      return items.map(
+        (i: any): NewsArticle => ({
+          id: String(i.guid?.["#text"] ?? i.guid ?? i.link),
+          headline: String(i.title ?? ""),
+          summary: String(i.description ?? "")
+            .replace(/<[^>]+>/g, "")
+            .trim()
+            .slice(0, 200),
+          url: String(i.link ?? ""),
+          source,
+          datetime: Math.floor(new Date(i.pubDate).getTime() / 1000) || 0,
+          image: i["media:content"]?.["@_url"] ?? i.enclosure?.["@_url"] ?? "",
+          category: "general",
+          related: "",
+        }),
+      );
+    }),
+  );
+
+  const all = results.flatMap((r) => (r.status === "fulfilled" ? r.value : []));
+
+  // Remove duplicate links, newest first
+  const seen = new Set<string>();
+  const data = all
+    .filter((a) => a.url && !seen.has(a.url) && seen.add(a.url))
+    .sort((a, b) => b.datetime - a.datetime)
+    .slice(0, 30);
+
+  if (data.length > 0) cache = { at: Date.now(), data };
+  return data;
+}
+
+export const getAllNews = createServerFn({ method: "GET" }).handler(async () => {
+  return await fetchAllFeeds();
+});

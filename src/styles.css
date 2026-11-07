@@ -139,13 +139,13 @@
   animation-play-state: paused;
 }
 
-.credit-cards-track {
+/* .credit-cards-track {
   animation: credit-cards-scroll-left 40s linear infinite;
 }
 
 .credit-cards-track:hover {
   animation-play-state: paused;
-}
+} */
 
 @keyframes shopping-scroll-right {
   0% {

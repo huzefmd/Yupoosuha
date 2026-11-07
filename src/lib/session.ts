@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+
+import { XMLParser } from "fast-xml-parser";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
