@@ -10,6 +10,8 @@ export type IndexQuote = {
   updatedAt: string;
 };
 
+export type SeriesPoint = { t: number; v: number };
+
 const YAHOO: Record<string, string> = {
   "NIFTY 50": "^NSEI",
   SENSEX: "^BSESN",
@@ -26,6 +28,13 @@ const YAHOO: Record<string, string> = {
   "L&T": "LT.NS",
   "KOTAK BANK": "KOTAKBANK.NS",
   "AXIS BANK": "AXISBANK.NS",
+};
+
+// Extra tabs (kept separate so the stock search list is not affected)
+const EXTRA_YAHOO: Record<string, string> = {
+  CRUDEOIL: "CL=F", // WTI crude, USD per barrel (use "BZ=F" for Brent)
+  US10Y: "^TNX", // US 10Y yield in %
+  GOLD: "GC=F", // COMEX gold, USD per troy ounce (converted to INR below)
 };
 
 async function fromYahoo(name: string): Promise<IndexQuote | null> {
@@ -112,7 +121,6 @@ export const getMarketIndices = createServerFn({ method: "GET" }).handler(async 
   };
 });
 
-
 export type FlowPoint = {
   date: string;
   day: string;
@@ -164,29 +172,13 @@ function normalizeFlowDate(value: unknown): string {
       Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06",
       Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12",
     };
-    const month = months[monthStr.charAt(0).toUpperCase() + monthStr.slice(1).toLowerCase()] || "01";
-    return `${year}-${month}-${day.padStart(2, "0")}`;
+    const key = monthStr!.charAt(0).toUpperCase() + monthStr!.slice(1).toLowerCase();
+    const month = months[key] || "01";
+    return `${year}-${month}-${day!.padStart(2, "0")}`;
   }
 
   return "";
 }
-
-const FALLBACK_FLOW_DATA: FlowData = {
-  fii: [
-    { date: "2023-10-01", day: "01", value: 120 },
-    { date: "2023-10-02", day: "02", value: -450 },
-    { date: "2023-10-03", day: "03", value: 310 },
-    { date: "2023-10-04", day: "04", value: 890 },
-    { date: "2023-10-05", day: "05", value: -120 },
-  ],
-  dii: [
-    { date: "2023-10-01", day: "01", value: -200 },
-    { date: "2023-10-02", day: "02", value: 670 },
-    { date: "2023-10-03", day: "03", value: 430 },
-    { date: "2023-10-04", day: "04", value: -110 },
-    { date: "2023-10-05", day: "05", value: 980 },
-  ],
-};
 
 export const getFlowData = createServerFn({
   method: "GET",
@@ -263,10 +255,28 @@ const RANGES: Record<string, { range: string; interval: string }> = {
   "1Y": { range: "1y", interval: "1d" },
 };
 
+// Live USD -> INR rate (used to show gold in rupees)
+async function getUsdInr(): Promise<number | null> {
+  try {
+    const res = await fetch(
+      "https://query1.finance.yahoo.com/v8/finance/chart/USDINR%3DX?range=1d&interval=5m",
+      { headers: { "User-Agent": "Mozilla/5.0", Accept: "application/json" } },
+    );
+    if (!res.ok) return null;
+    const json = (await res.json()) as {
+      chart?: { result?: Array<{ meta?: Record<string, unknown> }> };
+    };
+    const price = json.chart?.result?.[0]?.meta?.["regularMarketPrice"];
+    return typeof price === "number" ? price : null;
+  } catch {
+    return null;
+  }
+}
+
 export const getIndexSeries = createServerFn({ method: "GET" })
   .validator((data: { name: string; range: string }) => data)
   .handler(async ({ data }): Promise<IndexSeries | null> => {
-    const symbol = YAHOO[data.name];
+    const symbol = YAHOO[data.name] ?? EXTRA_YAHOO[data.name];
     const cfg = RANGES[data.range] ?? RANGES["1D"]!;
     if (!symbol) return null;
     try {
@@ -306,7 +316,8 @@ export const getIndexSeries = createServerFn({ method: "GET" })
           : undefined) ??
         points[0]?.v ??
         last;
-      return {
+
+      const result: IndexSeries = {
         name: data.name,
         range: data.range,
         points,
@@ -318,6 +329,25 @@ export const getIndexSeries = createServerFn({ method: "GET" })
         updatedAt: new Date().toISOString(),
         source: "Yahoo Finance",
       };
+
+      // Friendly names for the extra tabs
+      if (data.name === "CRUDEOIL") result.name = "Crude Oil WTI (USD/barrel)";
+      if (data.name === "US10Y") result.name = "US 10Y Treasury Yield";
+
+      // Convert gold from USD per ounce to INR per 10 grams
+      if (data.name === "GOLD") {
+        const fx = await getUsdInr();
+        if (!fx) return null; // better to show "unavailable" than a wrong price
+        const k = (fx / 31.1035) * 10;
+        result.name = "Gold (INR per 10 g)";
+        result.last *= k;
+        result.change *= k;
+        result.previousClose *= k;
+        result.points = result.points.map((p) => ({ t: p.t, v: p.v * k }));
+        result.source = "Yahoo Finance (COMEX gold x USD/INR)";
+      }
+
+      return result;
     } catch {
       return null;
     }

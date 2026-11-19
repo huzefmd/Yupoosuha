@@ -33,7 +33,7 @@ async function fetchWithTimeout(url: string, options: RequestInit = {}) {
 export const getTrendingNews = createServerFn({ method: "GET" })
   .validator((data: { category?: string }) => data)
   .handler(async ({ data }) => {
-    const apiKey = process.env.FINNHUB_API_KEY;
+    const apiKey = process.env["FINNHUB_API_KEY"];
     if (!apiKey) {
       throw new Error("FINNHUB_API_KEY is missing from server environment");
     }
@@ -57,7 +57,7 @@ export const getTrendingNews = createServerFn({ method: "GET" })
 export const getStockNews = createServerFn({ method: "GET" })
   .validator((data: { symbol: string }) => data)
   .handler(async ({ data }) => {
-    const apiKey = process.env.FINNHUB_API_KEY;
+    const apiKey = process.env["FINNHUB_API_KEY"];
     if (!apiKey) {
       throw new Error("FINNHUB_API_KEY is missing from server environment");
     }

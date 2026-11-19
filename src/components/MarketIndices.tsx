@@ -1,132 +1,119 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { RefreshCw, Clock3, Search } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import {
     getMarketIndices,
     getIndexSeries,
-    getAvailableSymbols,
     getFlowData,
     type IndexQuote,
-    type FlowData,
 } from "@/lib/indices.functions";
-import {
-    Area,
-    AreaChart,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from "recharts";
-import {
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart";
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-    Button,
-} from "@/components/ui/button";
-import {
-    Input,
-} from "@/components/ui/input";
+import { Area, AreaChart, Tooltip, XAxis, YAxis } from "recharts";
+import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 
+/* =========================================================
+   HELPERS
+========================================================= */
 
-function fmt(n: number) {
+function fmt(n: number | undefined | null) {
+    if (n === undefined || n === null || Number.isNaN(n)) return "--";
     return n.toLocaleString("en-IN", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
     });
 }
 
+function formatFlowDate(date: string) {
+    if (!date) return "--";
+    const [year, month, day] = date.split("-").map(Number);
+    if (!year || !month || !day) return "--";
+    return new Date(Date.UTC(year, month - 1, day)).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        timeZone: "UTC",
+    });
+}
+
 /* =========================================================
-   MOCK SERIES DATA
+   TABS CONFIG
+========================================================= */
+
+// Symbols must match the keys in EXTRA_YAHOO in indices.functions.ts
+const EXTRA_TABS = [
+    { label: "CRUDE OIL", symbol: "CRUDEOIL", prefix: "$", suffix: "" },
+    { label: "10Y US BOND", symbol: "US10Y", prefix: "", suffix: "%" },
+    { label: "GOLD", symbol: "GOLD", prefix: "₹", suffix: "" },
+];
+
+const INDEX_SERIES_NAMES = ["NIFTY 50", "SENSEX", "BANK NIFTY"];
+
+const RANGES = ["1D", "1W", "1M", "3M", "1Y"];
+
+/* =========================================================
+   SAMPLE CHART DATA
+   Only used for NIFTY / SENSEX / BANK NIFTY if the live
+   chart request fails.
 ========================================================= */
 
 const generateMockPoints = (base: number, variance: number, count: number) => {
-    const points = [];
+    const points: { t: number; v: number }[] = [];
     let currentVal = base;
-
     const trend = (Math.random() - 0.4) * (variance * 0.1);
 
     for (let i = 0; i < count; i++) {
         currentVal += trend + (Math.random() - 0.5) * variance;
-        points.push({
-            t: Date.now() - (count - i) * 3600000,
-            v: currentVal,
-        });
+        points.push({ t: Date.now() - (count - i) * 3600000, v: currentVal });
     }
     return points;
 };
 
-const MOCK_SERIES_DATA: Record<string, Record<string, any>> = {
-    "NIFTY": {
-        "1D": { points: generateMockPoints(25000, 10, 50) },
-        "1W": { points: generateMockPoints(25000, 50, 50) },
-        "1M": { points: generateMockPoints(25000, 100, 50) },
-        "3M": { points: generateMockPoints(25000, 200, 50) },
-        "1Y": { points: generateMockPoints(25000, 500, 50) },
-    },
-    "SENSEX": {
-        "1D": { points: generateMockPoints(80000, 30, 50) },
-        "1W": { points: generateMockPoints(80000, 150, 50) },
-        "1M": { points: generateMockPoints(80000, 300, 50) },
-        "3M": { points: generateMockPoints(80000, 600, 50) },
-        "1Y": { points: generateMockPoints(80000, 1500, 50) },
-    },
-    "BANK NIFTY": {
-        "1D": { points: generateMockPoints(52000, 20, 50) },
-        "1W": { points: generateMockPoints(52000, 100, 50) },
-        "1M": { points: generateMockPoints(52000, 200, 50) },
-        "3M": { points: generateMockPoints(52000, 400, 50) },
-        "1Y": { points: generateMockPoints(52000, 1000, 50) },
-    },
+const MOCK_SERIES_DATA: Record<string, Record<string, { points: { t: number; v: number }[] }>> = {
+    NIFTY: Object.fromEntries(
+        RANGES.map((r, i) => [r, { points: generateMockPoints(25000, [10, 50, 100, 200, 500][i]!, 50) }])
+    ),
+    SENSEX: Object.fromEntries(
+        RANGES.map((r, i) => [r, { points: generateMockPoints(80000, [30, 150, 300, 600, 1500][i]!, 50) }])
+    ),
+    "BANK NIFTY": Object.fromEntries(
+        RANGES.map((r, i) => [r, { points: generateMockPoints(52000, [20, 100, 200, 400, 1000][i]!, 50) }])
+    ),
 };
 
 /* =========================================================
-   INTERACTIVE MARKET CHART
+   CHART
 ========================================================= */
 
 function InteractiveChart({
     quote,
     timeRange,
-    seriesData
+    points,
 }: {
-    quote: IndexQuote;
+    quote: Pick<IndexQuote, "change">;
     timeRange: string;
-    seriesData: any
+    points?: { t: number; v: number }[];
 }) {
-    const chartConfig = {
-        value: {
-            label: "Index Value",
-            color: quote.change >= 0 ? "#10b981" : "#ef4444",
-        },
-    };
+    const color = quote.change >= 0 ? "#10b981" : "#ef4444";
+    const chartConfig = { value: { label: "Value", color } };
 
-    // Format data for Recharts
-    const data = seriesData?.points?.map((p: any) => ({
-        time: new Date(p.t).toLocaleTimeString("en-IN", {
-            hour: "2-digit",
-            minute: "2-digit",
-        }),
-        value: p.v,
-    })) ?? [];
+    const data =
+        points?.map((p) => ({
+            time:
+                timeRange === "1D"
+                    ? new Date(p.t).toLocaleTimeString("en-IN", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                    })
+                    : new Date(p.t).toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "short",
+                    }),
+            value: p.v,
+        })) ?? [];
 
     if (!data.length) {
         return (
-            <div className="flex h-full items-center justify-center text-sm text-slate-400">
-                {seriesData?.isLoading ? "Loading chart data..." : "No chart data available for this selection."}
+            <div className="flex h-[180px] items-center justify-center text-sm text-muted-foreground">
+                No chart data available for this selection.
             </div>
         );
     }
@@ -134,42 +121,29 @@ function InteractiveChart({
     return (
         <div className="relative h-[180px] w-full">
             <ChartContainer config={chartConfig} className="h-full w-full">
-                <AreaChart
-                    data={data}
-                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                >
+                <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                     <defs>
                         <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop
-                                offset="0%"
-                                stopColor={chartConfig.value.color}
-                                stopOpacity={0.2}
-                            />
-                            <stop
-                                offset="100%"
-                                stopColor={chartConfig.value.color}
-                                stopOpacity={0}
-                            />
+                            <stop offset="0%" stopColor={color} stopOpacity={0.2} />
+                            <stop offset="100%" stopColor={color} stopOpacity={0} />
                         </linearGradient>
                     </defs>
-                    <XAxis
-                        dataKey="time"
-                        hide
-                    />
+                    <XAxis dataKey="time" hide />
                     <YAxis
                         domain={["auto", "auto"]}
                         tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
+                        tickFormatter={(v: number) =>
+                            v.toLocaleString("en-IN", { maximumFractionDigits: 2 })
+                        }
                         axisLine={false}
                         tickLine={false}
-                        width={40}
+                        width={56}
                     />
-                    <Tooltip
-                        content={<ChartTooltipContent />}
-                    />  
+                    <Tooltip content={<ChartTooltipContent />} />
                     <Area
                         type="linear"
                         dataKey="value"
-                        stroke={chartConfig.value.color}
+                        stroke={color}
                         fill="url(#chartGradient)"
                         strokeWidth={1.5}
                         dot={false}
@@ -182,72 +156,17 @@ function InteractiveChart({
 }
 
 /* =========================================================
-   FII / DII DATA
-========================================================= */
-
-const fiiFlowData = [
-    { day: "27", value: -820 },
-    { day: "28", value: 1120 },
-    { day: "29", value: 640 },
-    { day: "30", value: 1240 },
-    { day: "31", value: 180 },
-    { day: "01", value: 300 },
-    { day: "02", value: 420 },
-    { day: "03", value: -180 },
-    { day: "04", value: -120 },
-    { day: "05", value: -540 },
-];
-
-const diiFlowData = [
-    { day: "27", value: 640 },
-    { day: "28", value: 380 },
-    { day: "29", value: -260 },
-    { day: "30", value: 910 },
-    { day: "31", value: 1050 },
-    { day: "01", value: 720 },
-    { day: "02", value: -140 },
-    { day: "03", value: 860 },
-    { day: "04", value: 990 },
-    { day: "05", value: 512 },
-];
-
-
-
-function formatFlowDate(date: string) {
-    if (!date) return "--";
-
-    const [year, month, day] = date.split("-").map(Number);
-
-    if (!year || !month || !day) return "--";
-
-    return new Date(
-        Date.UTC(year, month - 1, day)
-    ).toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        timeZone: "UTC",
-    });
-}
-
-type FlowKind = "FII" | "DII";
-
-/* =========================================================
-   FII / DII BAR CHART
+   FII / DII BARS
 ========================================================= */
 
 function FlowBars({
     data,
 }: {
-    data: {
-        date: string;
-        day: string;
-        value: number;
-    }[];
+    data: { date: string; day: string; value: number }[];
 }) {
     if (!data || data.length === 0) {
         return (
-            <div className="mt-5 flex h-[120px] items-center justify-center text-sm text-slate-400">
+            <div className="mt-5 flex h-[120px] items-center justify-center text-sm text-muted-foreground">
                 No flow data available.
             </div>
         );
@@ -259,11 +178,7 @@ function FlowBars({
         <div className="mt-5 flex h-[140px] items-end justify-between gap-3 pb-4">
             {data.map((item) => {
                 const positive = item.value >= 0;
-
-                const height = Math.max(
-                    8,
-                    (Math.abs(item.value) / max) * 80
-                );
+                const height = Math.max(8, (Math.abs(item.value) / max) * 80);
 
                 return (
                     <div
@@ -271,21 +186,16 @@ function FlowBars({
                         className="relative flex h-full flex-1 flex-col items-center justify-end"
                     >
                         <div
-                            className={`absolute bottom-6 w-full max-w-[27px] rounded-t-md ${positive
-                                ? "bg-emerald-500"
-                                : "bg-red-500"
+                            className={`absolute bottom-6 w-full max-w-[27px] rounded-t-md ${positive ? "bg-emerald-500" : "bg-red-500"
                                 }`}
-                            style={{
-                                height: `${height}px`,
-                            }}
+                            style={{ height: `${height}px` }}
                         />
                         <div
-                            className={`absolute bottom-full mb-1 whitespace-nowrap text-[9px] font-bold ${positive
-                                ? "text-emerald-500"
-                                : "text-red-500"
+                            className={`absolute bottom-full mb-1 whitespace-nowrap text-[9px] font-bold ${positive ? "text-emerald-500" : "text-red-500"
                                 }`}
                         >
-                            {positive ? "+" : ""}{item.value.toFixed(0)}
+                            {positive ? "+" : ""}
+                            {item.value.toFixed(0)}
                         </div>
                         <span className="absolute bottom-0 text-[10px] font-black text-foreground">
                             {item.date ? item.date.split("-")[2] : "--"}
@@ -314,13 +224,10 @@ function IndexTab({
         <button
             type="button"
             onClick={onClick}
-            className={`relative pb-3 text-base font-medium transition ${active
-                ? "text-foreground"
-                : "text-muted-foreground hover:text-foreground"
+            className={`relative whitespace-nowrap pb-3 text-base font-medium transition ${active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                 }`}
         >
             {label}
-
             {active && (
                 <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] rounded-full bg-foreground" />
             )}
@@ -333,19 +240,22 @@ function IndexTab({
 ========================================================= */
 
 export function MarketIndices() {
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(0); // 0-2 Indian indices, 3-5 extra tabs
     const [timeRange, setTimeRange] = useState("1D");
     const [flowTab, setFlowTab] = useState<"FII" | "DII">("FII");
     const [selectedStockName, setSelectedStockName] = useState<string | null>(null);
-    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-    const {
-        data,
-        isLoading,
-        isFetching,
-        dataUpdatedAt,
-        refetch,
-    } = useQuery({
+    const extra = activeIndex >= 3 ? EXTRA_TABS[activeIndex - 3] : null;
+
+    // Extra tabs and searched stocks take their price AND chart from the series query.
+    const useSeriesQuote = !!selectedStockName || !!extra;
+
+    const seriesName =
+        selectedStockName || extra?.symbol || INDEX_SERIES_NAMES[activeIndex] || "NIFTY 50";
+
+    /* ---------- queries ---------- */
+
+    const { data, isLoading, isFetching, dataUpdatedAt, refetch } = useQuery({
         queryKey: ["market-indices"],
         queryFn: () => getMarketIndices(),
         refetchInterval: 30_000,
@@ -359,149 +269,116 @@ export function MarketIndices() {
         refetchInterval: 60_000,
     });
 
-    const { data: symbols } = useQuery({
-        queryKey: ["available-symbols"],
-        queryFn: () => getAvailableSymbols(),
+    const {
+        data: seriesData,
+        isLoading: isSeriesLoading,
+        isFetching: isSeriesFetching,
+        dataUpdatedAt: seriesUpdatedAt,
+        refetch: refetchSeries,
+        error: seriesError,
+    } = useQuery({
+        queryKey: ["index-series", seriesName, timeRange],
+        // TanStack Start server functions take their input inside a `data` key
+        queryFn: () => getIndexSeries({ data: { name: seriesName, range: timeRange } }),
+        refetchInterval: 30_000,
+        staleTime: 0,
+        retry: 1,
     });
 
-    const { data: seriesData, isLoading: isSeriesLoading } = useQuery({
-        queryKey: ["index-series", selectedStockName || "NIFTY 50", timeRange],
-        queryFn: () => getIndexSeries({ name: selectedStockName || "NIFTY 50", range: timeRange }),
-        enabled: !!(selectedStockName || "NIFTY 50"),
-    });
+    /* ---------- pick the quote to display ---------- */
 
     const quotes = data?.quotes ?? [];
 
     const nifty =
         quotes.find((q) => {
             const name = q.name.toLowerCase();
-            return (
-                name.includes("nifty") &&
-                !name.includes("bank")
-            );
+            return name.includes("nifty") && !name.includes("bank");
         }) ?? quotes[0];
 
     const sensex =
-        quotes.find((q) =>
-            q.name
-                .toLowerCase()
-                .includes("sensex")
-        ) ?? quotes[1];
+        quotes.find((q) => q.name.toLowerCase().includes("sensex")) ?? quotes[1];
 
     const bankNifty =
         quotes.find((q) => {
             const name = q.name.toLowerCase();
-            return (
-                name.includes("bank nifty") ||
-                name.includes("banknifty")
-            );
+            return name.includes("bank nifty") || name.includes("banknifty");
         }) ?? quotes[2];
 
-    const defaultQuote =
-        activeIndex === 0
-            ? nifty
-            : activeIndex === 1
-                ? sensex
-                : bankNifty;
-
+    const indexQuote = activeIndex === 0 ? nifty : activeIndex === 1 ? sensex : bankNifty;
     const currentLabel = activeIndex === 0 ? "NIFTY" : activeIndex === 1 ? "SENSEX" : "BANK NIFTY";
 
-    const selectedQuote = selectedStockName
-        ? (seriesData as any)
-        : defaultQuote;
+    // No fake quotes: if the API returns nothing we show "unavailable".
+    const seriesQuote = (seriesData as any)?.last != null ? (seriesData as any) : null;
+    const displayQuote: any = useSeriesQuote ? seriesQuote : indexQuote;
 
-    // FALLBACK: If real API data for a searched stock is unavailable,
-    // we create a mock quote so the UI doesn't show "Live prices are unavailable"
-    const displayQuote = selectedStockName && (!selectedQuote || !selectedQuote.last)
-        ? {
-            name: selectedStockName,
-            last: 2500 + Math.random() * 100,
-            change: (Math.random() - 0.5) * 20,
-            percentChange: (Math.random() - 0.5) * 2,
-            previousClose: 2490,
-            source: "Mock Data",
-            updatedAt: new Date().toISOString(),
-        }
-        : selectedQuote;
+    const livePoints: { t: number; v: number }[] | undefined = (seriesData as any)?.points;
 
-    const seriesDataForChart = selectedStockName
-        ? (seriesData?.points?.length ? seriesData : { points: generateMockPoints(displayQuote.last, displayQuote.last * 0.01, 50) })
-        : (typeof window === "undefined" ? { points: [] } : MOCK_SERIES_DATA[currentLabel]?.[timeRange]);
+    const chartPoints: { t: number; v: number }[] | undefined = useSeriesQuote
+        ? livePoints
+        : livePoints?.length
+            ? livePoints
+            : typeof window === "undefined"
+                ? []
+                : MOCK_SERIES_DATA[currentLabel]?.[timeRange]?.points;
 
-    const marketClosed = true;
+    const prefix = !selectedStockName && extra ? extra.prefix : "";
+    const suffix = !selectedStockName && extra ? extra.suffix : "";
 
+    const loading = useSeriesQuote ? isSeriesLoading : isLoading;
+    const lastUpdated = useSeriesQuote ? seriesUpdatedAt : dataUpdatedAt;
+    const refreshing = isFetching || (useSeriesQuote && isSeriesFetching);
 
-    const activeFlowData =
-        flowTab === "FII"
-            ? flowData?.fii
-            : flowData?.dii;
+    /* ---------- FII / DII ---------- */
 
-    const latestFlow =
-        activeFlowData?.[activeFlowData.length - 1];
-
+    const activeFlowData = flowTab === "FII" ? flowData?.fii : flowData?.dii;
+    const latestFlow = activeFlowData?.[activeFlowData.length - 1];
     const latestFlowValue = latestFlow?.value;
+    const flowDate = latestFlow ? formatFlowDate(latestFlow.date) : "--";
 
-    const flowDate = latestFlow
-        ? formatFlowDate(latestFlow.date)
-        : "--";
+    const selectTab = (index: number) => {
+        setActiveIndex(index);
+        setSelectedStockName(null);
+    };
 
     return (
         <section className="mx-auto max-w-7xl px-4 pt-10 pb-10 sm:px-6">
-            {/* ===================================================
-              HEADER
-          =================================================== */}
-
+            {/* HEADER */}
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                    Indices
-                </h2>
+                <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Indices</h2>
+            </div>
 
-               </div>
-
-            {/* ===================================================
-              MAIN CARD
-          =================================================== */}
-
+            {/* MAIN CARD */}
             <div className="overflow-hidden rounded-[24px] border border-border bg-card shadow-card">
-                {/* =================================================
-                    INDEX TABS
-                ================================================= */}
-
+                {/* TABS */}
                 <div className="px-6 pt-5 sm:px-7">
-                    <div className="flex gap-7 border-b border-border">
+                    <div className="flex gap-7 overflow-x-auto border-b border-border">
                         <IndexTab
                             label="NIFTY"
                             active={activeIndex === 0 && !selectedStockName}
-                            onClick={() => {
-                                setActiveIndex(0);
-                                setSelectedStockName(null);
-                            }}
+                            onClick={() => selectTab(0)}
                         />
-
                         <IndexTab
                             label="SENSEX"
                             active={activeIndex === 1 && !selectedStockName}
-                            onClick={() => {
-                                setActiveIndex(1);
-                                setSelectedStockName(null);
-                            }}
+                            onClick={() => selectTab(1)}
                         />
-
                         <IndexTab
                             label="BANK NIFTY"
                             active={activeIndex === 2 && !selectedStockName}
-                            onClick={() => {
-                                setActiveIndex(2);
-                                setSelectedStockName(null);
-                            }}
+                            onClick={() => selectTab(2)}
                         />
+                        {EXTRA_TABS.map((tab, i) => (
+                            <IndexTab
+                                key={tab.symbol}
+                                label={tab.label}
+                                active={activeIndex === i + 3 && !selectedStockName}
+                                onClick={() => selectTab(i + 3)}
+                            />
+                        ))}
                     </div>
                 </div>
-                {/* =================================================
-                    LOADING
-                    ================================================= */}
 
-                {isLoading ? (
+                {loading ? (
                     <div className="grid min-h-[450px] place-items-center">
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <RefreshCw className="h-4 w-4 animate-spin" />
@@ -510,105 +387,81 @@ export function MarketIndices() {
                     </div>
                 ) : displayQuote ? (
                     <>
-                        {/* =============================================
-                            QUOTE + CHART
-                        ============================================= */}
-
+                        {/* QUOTE + CHART */}
                         <div className="grid gap-8 px-6 py-7 lg:grid-cols-[0.9fr_1.6fr] lg:px-7">
-                            {/* ===========================================
-                                  LEFT QUOTE
-                            =========================================== */}
-
+                            {/* LEFT QUOTE */}
                             <div className="flex flex-col justify-center">
                                 <div className="flex items-baseline gap-2">
                                     <span className="text-[34px] font-medium tracking-tight text-foreground sm:text-[38px]">
+                                        {prefix}
                                         {fmt(displayQuote.last)}
+                                        {suffix}
                                     </span>
 
                                     <span
                                         className={`text-sm font-medium ${displayQuote.change >= 0
-                                            ? "text-emerald-600"
-                                            : "text-red-500"
+                                                ? "text-emerald-600"
+                                                : "text-red-500"
                                             }`}
                                     >
-                                        {displayQuote.change >= 0
-                                            ? "+"
-                                            : ""}
+                                        {displayQuote.change >= 0 ? "+" : ""}
                                         {fmt(displayQuote.change)}
                                     </span>
                                 </div>
 
                                 <div
-                                    className={`mt-1 text-sm font-medium ${displayQuote.percentChange >=
-                                        0
-                                        ? "text-emerald-600"
-                                        : "text-red-500"
+                                    className={`mt-1 text-sm font-medium ${displayQuote.percentChange >= 0
+                                            ? "text-emerald-600"
+                                            : "text-red-500"
                                         }`}
                                 >
-                                    {displayQuote.percentChange >= 0
-                                        ? "+"
-                                        : ""}
-                                    {displayQuote.percentChange.toFixed(
-                                        2
-                                    )}
-                                    %
+                                    {displayQuote.percentChange >= 0 ? "+" : ""}
+                                    {displayQuote.percentChange.toFixed(2)}%
                                 </div>
 
                                 <div className="mt-4 space-y-1 text-[11px] text-muted-foreground">
                                     <p>
-                                        Prev close:{" "}
-                                        {fmt(
-                                            displayQuote.previousClose
-                                        )}
+                                        Prev close: {prefix}
+                                        {fmt(displayQuote.previousClose)}
+                                        {suffix}
                                     </p>
 
                                     <div className="flex flex-wrap gap-x-10 gap-y-1">
                                         <span>
                                             Last:{" "}
-                                            {dataUpdatedAt
-                                                ? new Date(
-                                                    dataUpdatedAt
-                                                ).toLocaleTimeString(
-                                                    "en-IN",
-                                                    {
-                                                        hour: "2-digit",
-                                                        minute: "2-digit",
-                                                    }
-                                                )
+                                            {lastUpdated
+                                                ? new Date(lastUpdated).toLocaleTimeString("en-IN", {
+                                                    hour: "2-digit",
+                                                    minute: "2-digit",
+                                                })
                                                 : "--"}
                                         </span>
-
                                         <span>
-                                            Index:{" "}
-                                            {displayQuote.name}
+                                            {useSeriesQuote ? "Symbol" : "Index"}: {displayQuote.name}
                                         </span>
+                                        {displayQuote.source && <span>Source: {displayQuote.source}</span>}
                                     </div>
                                 </div>
                             </div>
 
-                            {/* ===========================================
-                                  CHART
-                            =========================================== */}
-
+                            {/* CHART */}
                             <div className="relative pt-1 pl-7 sm:pl-10">
                                 <InteractiveChart
                                     quote={displayQuote}
                                     timeRange={timeRange}
-                                    seriesData={seriesDataForChart}
+                                    points={chartPoints}
                                 />
-
-                                {/* Time range buttons */}
 
                                 <div className="mt-8 flex justify-end">
                                     <div className="flex items-center rounded-full border border-border bg-card p-0.5 shadow-sm">
-                                        {["1D", "1W", "1M", "3M", "1Y"].map((range) => (
+                                        {RANGES.map((range) => (
                                             <button
                                                 key={range}
                                                 type="button"
                                                 onClick={() => setTimeRange(range)}
                                                 className={`rounded-full px-3 py-1.5 text-[11px] font-medium transition ${timeRange === range
-                                                    ? "border border-border bg-card text-foreground shadow-sm"
-                                                    : "text-muted-foreground hover:text-foreground"
+                                                        ? "border border-border bg-card text-foreground shadow-sm"
+                                                        : "text-muted-foreground hover:text-foreground"
                                                     }`}
                                             >
                                                 {range}
@@ -619,142 +472,70 @@ export function MarketIndices() {
                             </div>
                         </div>
 
-                        {/* =================================================
-                            DIVIDER
-                            ================================================= */}
-
-                      
-
-                        {/* =================================================
-                            MARKET STATUS
-                            ================================================= */}
-
-                        {/* <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-5 sm:px-7">
-                            <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-[11px] text-muted-foreground">
-                                <Clock3 className="h-3.5 w-3.5" />
-
-                                <span>
-                                    {marketClosed
-                                        ? "Market Closed"
-                                        : "Market Open"}
-                                </span>
-                            </div>
-
-                            <div className="text-right text-[10px] text-muted-foreground">
-                                {marketClosed
-                                    ? `Market closed. Last updated: ${dataUpdatedAt
-                                        ? new Date(
-                                            dataUpdatedAt
-                                        ).toLocaleString(
-                                            "en-IN",
-                                            {
-                                                day: "2-digit",
-                                                month: "short",
-                                                year: "numeric",
-                                                hour: "2-digit",
-                                                minute: "2-digit",
-                                            }
-                                        )
-                                        : "--"
-                                    }.`
-                                    : "Market is currently open."}
-                            </div>
-                        </div> */}
-
-                        {/* =================================================
-                            FII / DII
-                            ================================================= */}
-
+                        {/* FII / DII */}
                         <div className="px-6 pb-7 sm:px-7">
-                            {/* FII / DII tabs */}
-
                             <div className="flex gap-7 border-b border-border">
-                                <button
-                                    type="button"
-                                    onClick={() => setFlowTab("FII")}
-                                    className={`relative pb-3 text-xs font-semibold transition ${flowTab === "FII"
-                                        ? "text-foreground"
-                                        : "text-muted-foreground hover:text-foreground"
-                                        }`}
-                                >
-                                    FII Cash
-
-                                    {flowTab === "FII" && (
-                                        <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-foreground" />
-                                    )}
-                                </button>
-
-                                <button
-                                    type="button"
-                                    onClick={() => setFlowTab("DII")}
-                                    className={`relative pb-3 text-xs font-semibold transition ${flowTab === "DII"
-                                        ? "text-foreground"
-                                        : "text-muted-foreground hover:text-foreground"
-                                        }`}
-                                >
-                                    DII Cash
-
-                                    {flowTab === "DII" && (
-                                        <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-foreground" />
-                                    )}
-                                </button>
-                            </div>
-
-                            {/* FII / DII value */}
-
-                                <div className="mt-4">
-                                    <div
-                                        className={`text-[21px] font-medium ${latestFlowValue === undefined
-                                                ? "text-muted-foreground"
-                                                : latestFlowValue >= 0
-                                                    ? "text-emerald-600"
-                                                    : "text-red-500"
+                                {(["FII", "DII"] as const).map((kind) => (
+                                    <button
+                                        key={kind}
+                                        type="button"
+                                        onClick={() => setFlowTab(kind)}
+                                        className={`relative pb-3 text-xs font-semibold transition ${flowTab === kind
+                                                ? "text-foreground"
+                                                : "text-muted-foreground hover:text-foreground"
                                             }`}
                                     >
-                                        {latestFlowValue === undefined
-                                            ? "--"
-                                            : `${latestFlowValue >= 0 ? "+" : ""}${latestFlowValue.toFixed(2)} Cr.`}
-                                    </div>
+                                        {kind} Cash
+                                        {flowTab === kind && (
+                                            <span className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-foreground" />
+                                        )}
+                                    </button>
+                                ))}
+                            </div>
 
-                                    <div className="mt-1 text-[11px] text-muted-foreground">
-                                        {isFlowLoading
-                                            ? "Loading report date..."
-                                            : flowDate}
-                                    </div>
-
-                                    <FlowBars data={activeFlowData ?? []} />
+                            <div className="mt-4">
+                                <div
+                                    className={`text-[21px] font-medium ${latestFlowValue === undefined
+                                            ? "text-muted-foreground"
+                                            : latestFlowValue >= 0
+                                                ? "text-emerald-600"
+                                                : "text-red-500"
+                                        }`}
+                                >
+                                    {latestFlowValue === undefined
+                                        ? "--"
+                                        : `${latestFlowValue >= 0 ? "+" : ""}${latestFlowValue.toFixed(2)} Cr.`}
                                 </div>
+
+                                <div className="mt-1 text-[11px] text-muted-foreground">
+                                    {isFlowLoading ? "Loading report date..." : flowDate}
+                                </div>
+
+                                <FlowBars data={activeFlowData ?? []} />
+                            </div>
                         </div>
                     </>
                 ) : (
-                    /* =================================================
-                       NO DATA
-                    ================================================= */
-
                     <div className="px-6 py-12 text-center text-sm text-muted-foreground">
-                        Live prices are unavailable right now.
-                        Please try again shortly.
+                        Live prices are unavailable right now. Please try again shortly.
+                        {useSeriesQuote && seriesError && (
+                            <div className="mt-2 text-xs text-red-500">{String(seriesError)}</div>
+                        )}
                     </div>
                 )}
 
-                {/* =================================================
-                    REFRESH
-                    ================================================= */}
-
+                {/* REFRESH */}
                 <div className="border-t border-border px-6 py-3 text-right sm:px-7">
                     <button
                         type="button"
-                        onClick={() => void refetch()}
-                        disabled={isFetching}
+                        onClick={() => {
+                            void refetch();
+                            void refetchSeries();
+                        }}
+                        disabled={refreshing}
                         className="inline-flex items-center gap-2 text-xs font-medium text-muted-foreground transition hover:text-foreground disabled:opacity-50"
                     >
-                        <RefreshCw
-                            className={`h-3.5 w-3.5 ${isFetching
-                                ? "animate-spin"
-                                : ""
-                                }`}
-                        />
-
+                        <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? "animate-spin" : ""}`} />
                         Refresh
                     </button>
                 </div>

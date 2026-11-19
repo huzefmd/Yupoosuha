@@ -769,9 +769,9 @@ function Home() {
                   <div className="flex flex-1 flex-col justify-center px-4 py-3">
                     <h3 className="text-base font-semibold leading-tight">{service.name}</h3>
 
-                    <p className="mt-1.5 line-clamp-1 text-xs text-muted-foreground">
+                    {/* <p className="mt-1.5 line-clamp-1 text-xs text-muted-foreground">
                       {service.category}
-                    </p>
+                    </p> */}
                   </div>
                 </>
               );
@@ -1259,7 +1259,7 @@ function Home() {
           </div>
         </section>
 
-        
+
         {/* TRENDING NEWS  */}
         <TrendingNow />
 
